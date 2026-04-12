@@ -1,0 +1,36 @@
+<view class="container">
+  <!-- 顶部标题 -->
+  <view class="header">吴健雄先生生平</view>
+
+  <!-- 1. 时间轴主体 -->
+  <view class="timeline">
+    <block wx:for="{{timelineData}}" wx:key="year">
+      <!-- 点击整个条目区域触发 -->
+      <view class="timeline-item {{item.side}}" bindtap="toggleDetail" data-index="{{index}}">
+        
+        <!-- 年份 -->
+        <view class="year {{activeIndex === index ? 'highlight' : ''}}">
+          {{item.year}}
+        </view>
+        
+        <!-- 中间的圆点 -->
+        <view class="dot {{activeIndex === index ? 'active-dot' : ''}}"></view>
+        
+        <!-- 这里的占位是为了保持 flex 布局平衡，不显示内容 -->
+        <view class="placeholder"></view>
+        
+      </view>
+    </block>
+  </view>
+
+  <!-- 2. 放大后的弹窗层 (全屏覆盖) -->
+  <!-- 只有当 activeIndex !== -1 时才显示这个遮罩 -->
+  <view class="modal-mask" wx:if="{{activeIndex !== -1}}" catchtap="toggleDetail">
+    <!-- 弹窗内容 -->
+    <view class="modal-content">
+      <view class="modal-year">{{timelineData[activeIndex].year}}</view>
+      <view class="modal-text">{{timelineData[activeIndex].content}}</view>
+     
+    </view>
+  </view>
+</view>

@@ -1,0 +1,192 @@
+/* 页面背景 */
+page {
+  background-color: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: 100rpx;
+}
+
+.header {
+  text-align: center;
+  font-size: 44rpx;
+  font-weight: bold;
+  color: #333;
+  padding: 40rpx 0;
+  letter-spacing: 2rpx;
+}
+
+/* --- 时间轴布局 --- */
+.timeline {
+  position: relative;
+}
+
+.timeline-item {
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 40rpx 0;
+  position: relative;
+}
+
+/* 左侧样式 */
+.timeline-item.left {
+  flex-direction: row;
+}
+.timeline-item.left .year {
+  width: 50%;
+  text-align: right;
+  padding-right: 40rpx;
+}
+.timeline-item.left .dot {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.timeline-item.left .placeholder {
+  width: 50%;
+}
+
+/* 右侧样式 */
+.timeline-item.right {
+  flex-direction: row-reverse;
+}
+.timeline-item.right .year {
+  width: 50%;
+  text-align: left;
+  padding-left: 40rpx;
+}
+.timeline-item.right .dot {
+  left: 50%;
+  transform: translateX(-50%);
+}
+.timeline-item.right .placeholder {
+  width: 50%;
+}
+
+/* 中间贯穿的曲线 (SVG 模拟) */
+/* 这里使用一个简单的伪元素画一条竖线，实际项目中可以用 SVG 画波浪线 */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4rpx;
+  background: linear-gradient(to bottom, #d4c3a5, #a08358, #d4c3a5);
+  transform: translateX(-50%);
+  border-radius: 2rpx;
+  z-index: 0;
+}
+
+/* 年份样式 */
+.year {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #999;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+/* 选中状态下的年份高亮 */
+.year.highlight {
+  color: #a08358;
+  transform: scale(1.2);
+}
+
+/* 圆点样式 */
+.dot {
+  position: absolute;
+  top: 50rpx; /* 对齐年份中心 */
+  width: 30rpx;
+  height: 30rpx;
+  background-color: #fff;
+  border: 4rpx solid #d4c3a5;
+  border-radius: 50%;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+
+/* 选中状态下的圆点 */
+.active-dot {
+  background-color: #a08358;
+  transform: translateX(-50%) scale(1.5);
+  box-shadow: 0 0 20rpx rgba(160, 131, 88, 0.6);
+}
+
+/* --- 弹窗遮罩层 (核心动画部分) --- */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
+  z-index: 100;
+  
+  /* 动画：淡入 */
+  animation: fadeIn 0.5s ease-out forwards;
+  
+  /* 居中布局 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+/* 弹窗内容框 */
+.modal-content {
+  background-color: #fff;
+  width: 100%;
+  max-width: 600rpx;
+  padding: 60rpx 40rpx;
+  border-radius: 20rpx;
+  text-align: center;
+  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.3);
+  
+  /* 动画：缓慢放大 */
+  animation: scaleUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.modal-year {
+  font-size: 50rpx;
+  font-weight: bold;
+  color: #a08358;
+  margin-bottom: 30rpx;
+}
+
+.modal-text {
+  font-size: 32rpx;
+  color: #333;
+  line-height: 1.8;
+  margin-bottom: 40rpx;
+}
+
+.modal-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* --- 关键帧动画定义 --- */
+
+/* 淡入动画 */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* 放大动画 */
+@keyframes scaleUp {
+  from { 
+    opacity: 0;
+    transform: scale(0.5); 
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1); 
+  }
+}
