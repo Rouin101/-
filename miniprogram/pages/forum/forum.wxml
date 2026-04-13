@@ -1,1 +1,63 @@
-<view>ceshi</view>
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <text class="title">纪念论坛</text>
+    <view class="header-right">
+      <!-- 发帖按钮 -->
+      <button class="add-btn" bindtap="openPostModal">+ 发帖</button>
+      <!-- 登录按钮：未登录显示文字，已登录显示头像 -->
+      <button class="login-btn" bindtap="handleLogin" wx:if="{{!hasLogin}}">登录</button>
+      <image class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" bindtap="handleLogin" wx:else></image>
+    </view>
+  </view>
+
+  <!-- 帖子列表 -->
+  <scroll-view scroll-y class="post-list">
+    <view class="post-item" wx:for="{{postList}}" wx:key="_id" bindtap="openDetailModal" data-id="{{item._id}}">
+      <view class="post-header">
+        <image class="avatar" src="{{item.userInfo.avatarUrl || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+        <view class="user-info">
+          <text class="nickname">{{item.userInfo.nickName || '匿名'}}</text>
+          <text class="time">{{item.createTimeStr}}</text>
+        </view>
+      </view>
+      <view class="post-title">{{item.title}}</view>
+      <view class="post-excerpt">{{item.content}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 发帖弹窗 -->
+  <view class="modal" wx:if="{{showPostModal}}">
+    <view class="modal-mask" bindtap="closePostModal"></view>
+    <view class="modal-content">
+      <view class="modal-title">发布新帖</view>
+      <input class="input" placeholder="请输入标题" bindinput="onPostTitleInput" value="{{postTitle}}" />
+      <textarea class="textarea" placeholder="请输入内容..." bindinput="onPostContentInput" value="{{postContent}}" />
+      <view class="modal-btns">
+        <button class="cancel-btn" bindtap="closePostModal">取消</button>
+        <button class="submit-btn" bindtap="submitPost">发布</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 详情与评论弹窗 -->
+  <view class="modal" wx:if="{{showDetailModal}}">
+    <view class="modal-mask" bindtap="closeDetailModal"></view>
+    <view class="modal-content detail-content">
+      <view class="modal-title">{{detail.title}}</view>
+      <view class="detail-body">
+        <text class="detail-text">{{detail.content}}</text>
+        <view class="comments-list">
+          <view class="comment-item" wx:for="{{comments}}" wx:key="_id">
+            <text class="comment-nick">{{item.userInfo.nickName || '匿名'}}:</text>
+            <text class="comment-text">{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="comment-input-area">
+        <input class="comment-input" placeholder="写下你的致敬..." bindinput="onCommentInput" value="{{commentText}}" />
+        <button class="send-btn" bindtap="submitComment">发送</button>
+      </view>
+    </view>
+  </view>
+</view>
