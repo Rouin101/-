@@ -1,192 +1,363 @@
-/* 页面背景 */
-page {
-  background-color: #f5f5f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
-}
-
-.container {
-  position: relative;
-  width: 100%;
+.page-container {
   min-height: 100vh;
-  padding-bottom: 100rpx;
 }
 
-.header {
-  text-align: center;
-  font-size: 44rpx;
-  font-weight: bold;
-  color: #333;
-  padding: 40rpx 0;
-  letter-spacing: 2rpx;
+.no-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
-/* --- 时间轴布局 --- */
-.timeline {
+.timeline-container {
+  min-height: 100vh;
+  background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
+  padding: 30rpx 30rpx 100rpx;
   position: relative;
+}
+
+/* 装饰背景 */
+.bg-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(58, 110, 165, 0.08) 0%, rgba(58, 110, 165, 0) 70%);
+}
+
+.bg-circle-1 { width: 500rpx; height: 500rpx; top: -150rpx; right: -150rpx; }
+.bg-circle-2 { width: 700rpx; height: 700rpx; bottom: 200rpx; left: -300rpx; }
+.bg-circle-3 { width: 350rpx; height: 350rpx; top: 40%; right: -100rpx; }
+
+/* 头部样式 */
+.hero {
+  text-align: center;
+  margin-bottom: 60rpx;
+  padding: 20rpx 0 20rpx;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-image {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+  box-shadow: 0 8rpx 24rpx rgba(58, 110, 165, 0.2);
+  background-color: #ffffff;
+  border: 2rpx solid rgba(58, 110, 165, 0.2);
+}
+
+.hero-image-large {
+  width: 160rpx !important;
+  height: 160rpx !important;
+  margin-bottom: 24rpx;
+  box-shadow: 0 12rpx 32rpx rgba(58, 110, 165, 0.25);
+  border: 3rpx solid rgba(58, 110, 165, 0.3);
+}
+
+.hero-title {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1a2a4f 0%, #3a6ea5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: 2rpx;
+  margin-bottom: 12rpx;
+}
+
+.hero-subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: #6c7f9e;
+}
+
+.hero-line {
+  width: 80rpx;
+  height: 4rpx;
+  background: linear-gradient(90deg, #3a6ea5, #a0c4e8);
+  margin: 24rpx auto 0;
+  border-radius: 4rpx;
+}
+
+/* 时间线布局 */
+.timeline-list {
+  position: relative;
+  z-index: 2;
 }
 
 .timeline-item {
   display: flex;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 40rpx 0;
+  margin-bottom: 40rpx;
+}
+
+.timeline-left {
+  width: 140rpx;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
 }
 
-/* 左侧样式 */
-.timeline-item.left {
-  flex-direction: row;
-}
-.timeline-item.left .year {
-  width: 50%;
-  text-align: right;
-  padding-right: 40rpx;
-}
-.timeline-item.left .dot {
-  left: 50%;
-  transform: translateX(-50%);
-}
-.timeline-item.left .placeholder {
-  width: 50%;
+.timeline-year {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #3a6ea5;
+  background: rgba(58, 110, 165, 0.12);
+  padding: 8rpx 16rpx;
+  border-radius: 32rpx;
+  margin-bottom: 16rpx;
 }
 
-/* 右侧样式 */
-.timeline-item.right {
-  flex-direction: row-reverse;
-}
-.timeline-item.right .year {
-  width: 50%;
-  text-align: left;
-  padding-left: 40rpx;
-}
-.timeline-item.right .dot {
-  left: 50%;
-  transform: translateX(-50%);
-}
-.timeline-item.right .placeholder {
-  width: 50%;
+.timeline-dot-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* 中间贯穿的曲线 (SVG 模拟) */
-/* 这里使用一个简单的伪元素画一条竖线，实际项目中可以用 SVG 画波浪线 */
-.timeline::before {
+.timeline-dot {
+  width: 28rpx;
+  height: 28rpx;
+  background: linear-gradient(135deg, #3a6ea5, #5b8cbb);
+  border: 4rpx solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 12rpx rgba(58, 110, 165, 0.3);
+  z-index: 3;
+  transition: all 0.2s;
+}
+
+.timeline-line {
+  width: 4rpx;
+  height: 80rpx;
+  background: linear-gradient(180deg, #3a6ea5, #c5d5e8);
+  margin-top: 8rpx;
+  border-radius: 2rpx;
+}
+
+.timeline-item:last-child .timeline-line {
+  display: none;
+}
+
+.timeline-right {
+  flex: 1;
+  padding-left: 20rpx;
+}
+
+.timeline-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
+  border-radius: 28rpx;
+  padding: 20rpx 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-card::before {
   content: '';
   position: absolute;
-  left: 50%;
   top: 0;
-  bottom: 0;
-  width: 4rpx;
-  background: linear-gradient(to bottom, #d4c3a5, #a08358, #d4c3a5);
-  transform: translateX(-50%);
-  border-radius: 2rpx;
-  z-index: 0;
+  left: 0;
+  right: 0;
+  height: 6rpx;
+  background: linear-gradient(90deg, #3a6ea5, #a0c4e8, #3a6ea5);
 }
 
-/* 年份样式 */
-.year {
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 16rpx;
+}
+
+.card-title {
   font-size: 32rpx;
-  font-weight: bold;
-  color: #999;
-  transition: all 0.3s ease;
-  z-index: 1;
+  font-weight: 700;
+  color: #1a2a4f;
+  letter-spacing: 1rpx;
+  line-height: 1.4;
+  flex: 1;
+  word-break: break-word;
 }
 
-/* 选中状态下的年份高亮 */
-.year.highlight {
-  color: #a08358;
+.card-image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 16rpx;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  background: #f0f2f5;
+}
+
+.card-arrow {
+  font-size: 36rpx;
+  color: #3a6ea5;
+  opacity: 0.4;
+  flex-shrink: 0;
+  margin-left: 12rpx;
+  transition: all 0.2s;
+}
+
+.timeline-item:active .timeline-card {
+  transform: scale(0.98);
+  background: #ffffff;
+}
+
+.timeline-item:active .card-arrow {
+  opacity: 1;
+  transform: translateX(6rpx);
+}
+
+.timeline-item:active .timeline-dot {
   transform: scale(1.2);
 }
 
-/* 圆点样式 */
-.dot {
-  position: absolute;
-  top: 50rpx; /* 对齐年份中心 */
-  width: 30rpx;
-  height: 30rpx;
-  background-color: #fff;
-  border: 4rpx solid #d4c3a5;
-  border-radius: 50%;
-  z-index: 2;
-  transition: all 0.3s ease;
-}
-
-/* 选中状态下的圆点 */
-.active-dot {
-  background-color: #a08358;
-  transform: translateX(-50%) scale(1.5);
-  box-shadow: 0 0 20rpx rgba(160, 131, 88, 0.6);
-}
-
-/* --- 弹窗遮罩层 (核心动画部分) --- */
+/* ========== 弹窗样式 ========== */
 .modal-mask {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色背景 */
-  z-index: 100;
-  
-  /* 动画：淡入 */
-  animation: fadeIn 0.5s ease-out forwards;
-  
-  /* 居中布局 */
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12rpx);
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 40rpx;
-  box-sizing: border-box;
+  justify-content: center;
+  z-index: 1000;
 }
 
-/* 弹窗内容框 */
-.modal-content {
-  background-color: #fff;
-  width: 100%;
-  max-width: 600rpx;
-  padding: 60rpx 40rpx;
-  border-radius: 20rpx;
+.modal-container {
+  width: 85%;
+  max-width: 680rpx;
+  max-height: 80vh;
+  background: linear-gradient(145deg, #ffffff, #f8fafd);
+  border-radius: 56rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalPop 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+  box-shadow: 0 32rpx 64rpx rgba(0, 0, 0, 0.2);
+}
+
+@keyframes modalPop {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 32rpx 32rpx 20rpx;
   text-align: center;
-  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.3);
-  
-  /* 动画：缓慢放大 */
-  animation: scaleUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  border-bottom: 1px solid #eef2f8;
+  background: linear-gradient(135deg, #f9fcff, #ffffff);
+  flex-shrink: 0;
 }
 
 .modal-year {
-  font-size: 50rpx;
-  font-weight: bold;
-  color: #a08358;
-  margin-bottom: 30rpx;
-}
-
-.modal-text {
-  font-size: 32rpx;
-  color: #333;
-  line-height: 1.8;
-  margin-bottom: 40rpx;
-}
-
-.modal-hint {
+  display: inline-block;
+  background: linear-gradient(135deg, #eaf3fc, #dfeaf5);
+  padding: 6rpx 24rpx;
+  border-radius: 60rpx;
   font-size: 24rpx;
-  color: #999;
+  font-weight: 600;
+  color: #2c5f8a;
+  margin-bottom: 12rpx;
 }
 
-/* --- 关键帧动画定义 --- */
-
-/* 淡入动画 */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.modal-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1a2a4f;
+  display: block;
+  letter-spacing: 1rpx;
+  word-break: break-word;
 }
 
-/* 放大动画 */
-@keyframes scaleUp {
-  from { 
-    opacity: 0;
-    transform: scale(0.5); 
-  }
-  to { 
-    opacity: 1;
-    transform: scale(1); 
-  }
+/* ========== 滚动区域 ========== */
+.modal-scroll-content {
+  flex: 1;
+  padding: 28rpx 32rpx 20rpx 32rpx;
+  box-sizing: border-box;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+/* ========== 文字 ========== */
+.modal-text-wrapper {
+  width: 100%;
+  margin-bottom: 28rpx;
+}
+
+/* 文字样式 */
+.modal-text {
+  line-height: 1.7;
+  color: #2c405c;
+  font-size: 28rpx;
+  text-align: justify;
+  word-break: break-word;
+  white-space: normal;
+  display: block;
+  width: 100%;
+}
+
+/* 图片区域 */
+.modal-image-wrapper {
+  margin-top: 8rpx;
+  margin-bottom: 16rpx;
+  border-radius: 24rpx;
+  overflow: hidden;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.modal-image {
+  width: 100%;
+  border-radius: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 关闭按钮 */
+.modal-close {
+  background: #eff3fa;
+  padding: 28rpx;
+  text-align: center;
+  font-weight: 600;
+  color: #3a6ea5;
+  font-size: 32rpx;
+  border-top: 1px solid #e6ecf3;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.modal-close:active {
+  background: #e2e8f2;
 }

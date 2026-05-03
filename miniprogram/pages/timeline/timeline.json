@@ -1,3 +1,7 @@
 {
-  "navigationBarTitleText": "生平"
+  "usingComponents": {},
+  "navigationBarTitleText": "吴健雄 · 生平时间线",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f0f2f5"
 }

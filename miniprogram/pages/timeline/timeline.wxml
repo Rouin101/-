@@ -1,36 +1,69 @@
-<view class="container">
-  <!-- 顶部标题 -->
-  <view class="header">吴健雄先生生平</view>
-
-  <!-- 1. 时间轴主体 -->
-  <view class="timeline">
-    <block wx:for="{{timelineData}}" wx:key="year">
-      <!-- 点击整个条目区域触发 -->
-      <view class="timeline-item {{item.side}}" bindtap="toggleDetail" data-index="{{index}}">
-        
-        <!-- 年份 -->
-        <view class="year {{activeIndex === index ? 'highlight' : ''}}">
-          {{item.year}}
-        </view>
-        
-        <!-- 中间的圆点 -->
-        <view class="dot {{activeIndex === index ? 'active-dot' : ''}}"></view>
-        
-        <!-- 这里的占位是为了保持 flex 布局平衡，不显示内容 -->
-        <view class="placeholder"></view>
-        
-      </view>
-    </block>
-  </view>
-
-  <!-- 2. 放大后的弹窗层 (全屏覆盖) -->
-  <!-- 只有当 activeIndex !== -1 时才显示这个遮罩 -->
-  <view class="modal-mask" wx:if="{{activeIndex !== -1}}" catchtap="toggleDetail">
-    <!-- 弹窗内容 -->
-    <view class="modal-content">
-      <view class="modal-year">{{timelineData[activeIndex].year}}</view>
-      <view class="modal-text">{{timelineData[activeIndex].content}}</view>
-     
+<view class="page-container {{pageScrollLock ? 'no-scroll' : ''}}">
+  <view class="timeline-container">
+    <view class="bg-decoration">
+      <view class="bg-circle bg-circle-1"></view>
+      <view class="bg-circle bg-circle-2"></view>
+      <view class="bg-circle bg-circle-3"></view>
     </view>
+
+    <!-- 头部标题区 -->
+    <view class="hero">
+      <image wx:if="{{headerImage}}" class="hero-image hero-image-large" src="{{headerImage}}" mode="aspectFill" binderror="onImageError" data-src="{{headerImage}}"></image>
+      <text class="hero-title">吴健雄 · 时光轨迹</text>
+      <text class="hero-subtitle">世界物理女王 · 核物理先驱</text>
+      <view class="hero-line"></view>
+    </view>
+
+    <!-- 时间线列表 -->
+    <view class="timeline-list">
+      <block wx:for="{{timelineList}}" wx:key="index">
+        <view class="timeline-item" bindtap="onTapEvent" data-event="{{item}}">
+          <view class="timeline-left">
+            <view class="timeline-year">{{item.year}}</view>
+            <view class="timeline-dot-wrapper">
+              <view class="timeline-dot"></view>
+              <view class="timeline-line" wx:if="{{index < timelineList.length - 1}}"></view>
+            </view>
+          </view>
+          
+          <view class="timeline-right">
+            <view class="timeline-card">
+              <view class="card-content">
+                <view class="card-title">{{item.title}}</view>
+                <image 
+                  wx:if="{{item.image && item.image !== ''}}" 
+                  class="card-image" 
+                  src="{{item.image}}" 
+                  mode="aspectFill"
+                  binderror="onImageError"
+                  data-src="{{item.image}}"
+                ></image>
+              </view>
+              <view class="card-arrow">→</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="onCloseModal" catchtouchmove="{{pageScrollLock ? 'preventMove' : ''}}">
+  <view class="modal-container" catchtap="stopPropagation">
+    <view class="modal-header">
+      <view class="modal-year">{{currentEvent.year}}</view>
+      <text class="modal-title">{{currentEvent.title}}</text>
+    </view>
+    
+    <scroll-view class="modal-scroll-content" scroll-y enhanced show-scrollbar="{{false}}">
+      <view class="modal-text-wrapper">
+        <text class="modal-text">{{currentEvent.description}}</text>
+      </view>
+      <view wx:if="{{currentEvent.image && currentEvent.image !== ''}}" class="modal-image-wrapper">
+        <image class="modal-image" src="{{currentEvent.image}}" mode="widthFix" binderror="onImageError" data-src="{{currentEvent.image}}"></image>
+      </view>
+    </scroll-view>
+    
+    <view class="modal-close" bindtap="onCloseModal">关 闭</view>
   </view>
 </view>
