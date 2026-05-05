@@ -1,0 +1,93 @@
+page {
+  background-color: #f5f5f5;
+  height: 100%;
+}
+
+.container {
+  height: 100vh;
+  box-sizing: border-box;
+  padding: 10rpx;
+}
+
+/* 瀑布流样式 */
+.waterfall {
+  column-count: 2;
+  column-gap: 10rpx;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-bottom: 10rpx;
+  break-inside: avoid;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+.card-img {
+  width: 100%;        /* 宽度占满列宽 */
+  
+  display: block;     /* 消除图片底部缝隙 */
+  background-color: #f5f5f5; /* 加个底色，防止加载时透明 */
+}
+
+.card-content {
+  padding: 20rpx;       /* 增加一点内边距 */
+}
+
+.card-title {
+  font-size: 30rpx;     /* 稍微调大一点字体 */
+  color: #333;
+  font-weight: 500;     /* 加粗一点点 */
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 限制最多两行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 16rpx;  /* 标题和底部用户信息的间距 */
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+}
+
+.avatar {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
+}
+
+.nickname {
+  font-size: 22rpx;
+  color: #666;
+  flex: 1;
+}
+
+.likes {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* --- 新增：悬浮按钮样式 --- */
+.fab-btn {
+  position: fixed;
+  right: 40rpx;
+  bottom: 80rpx;
+  width: 100rpx;
+  height: 100rpx;
+  background: linear-gradient(45deg, #ff2442, #ff6b81); /* 小红书红渐变 */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 20rpx rgba(255, 36, 66, 0.4);
+  z-index: 999;
+}
+
+.plus-icon {
+  color: #fff;
+  font-size: 60rpx;
+  font-weight: 300;
+  line-height: 1;
+}

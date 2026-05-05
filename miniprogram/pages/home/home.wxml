@@ -1,3 +1,27 @@
-<view style=" height: 300px; width: 100%;">
-  我是红色的
+<scroll-view scroll-y class="container">
+  <view class="waterfall">
+    <view class="card" wx:for="{{noteList}}" wx:key="_id">
+      <!-- 修改点：mode改为 widthFix，加上 bindload 事件 -->
+      <image 
+        class="card-img" 
+        src="{{item.image}}" 
+        mode="widthFix" 
+        lazy-load
+        bindload="onImageLoad"
+      ></image>
+      
+      <view class="card-content">
+        <text class="card-title">{{item.title}}</text>
+        <view class="card-footer">
+          <image class="avatar" src="{{item.avatar || '/default-avatar.png'}}"></image>
+          <text class="nickname">{{item.nickname}}</text>
+          <text class="likes">❤️ {{item.likes || 0}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+<!-- 悬浮发布按钮 -->
+<view class="fab-btn" bindtap="chooseAndUpload">
+  <text class="plus-icon">+</text>
 </view>
