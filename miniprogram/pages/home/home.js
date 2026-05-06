@@ -6,7 +6,8 @@ Page({
     currentDetail: null,     // 详情页数据
     showPublishModal: false, // 控制发帖弹窗显示
     tempTitle: '',           // 暂存标题
-    tempContent: ''          // 新增：暂存内容
+    tempContent: '',     // 新增：暂存内容
+    tempFilePath: []
   },
 
   onLoad: function() {
@@ -27,8 +28,9 @@ Page({
   openPublishModal: function() {
     this.setData({
       showPublishModal: true,
-      tempTitle: '',      // 打开时清空之前的输入
-      tempContent: ''
+      tempTitle: '',
+      tempContent: '',
+      tempFilePaths: []
     })
   },
 
