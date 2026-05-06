@@ -1,4 +1,7 @@
 {
-  "navigationBarTitleText": "精选"
-  
+  "navigationBarTitleText": "精选",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": true
 }
