@@ -8,7 +8,7 @@ Page({
   onLoad: function() {
     this.getNotes()
   },
-
+  //start
   // 获取列表
   getNotes: function() {
     wx.showLoading({ title: '加载中...' })
