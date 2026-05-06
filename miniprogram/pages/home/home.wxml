@@ -1,27 +1,56 @@
 <scroll-view scroll-y class="container">
   <view class="waterfall">
     <view class="card" wx:for="{{noteList}}" wx:key="_id">
-      <!-- 修改点：mode改为 widthFix，加上 bindload 事件 -->
-      <image 
-        class="card-img" 
-        src="{{item.image}}" 
-        mode="widthFix" 
-        lazy-load
-        bindload="onImageLoad"
-      ></image>
-      
-      <view class="card-content">
-        <text class="card-title">{{item.title}}</text>
-        <view class="card-footer">
-          <image class="avatar" src="{{item.avatar || '/default-avatar.png'}}"></image>
-          <text class="nickname">{{item.nickname}}</text>
-          <text class="likes">❤️ {{item.likes || 0}}</text>
+      <!-- 修改点：加上 bindtap="showDetail"，并传递当前项的数据 -->
+      <view bindtap="showDetail" data-item="{{item}}">
+        <image 
+          class="card-img" 
+          src="{{item.image}}" 
+          mode="widthFix" 
+          lazy-load
+          bindload="onImageLoad"
+          data-index="{{index}}"
+        ></image>
+        
+        <view class="card-content">
+          <text class="card-title">{{item.title}}</text>
+          <view class="card-footer">
+            <image class="avatar" src="{{item.avatar || '/images/default-avatar.png'}}"></image>
+            <text class="nickname">{{item.nickname}}</text>
+            <text class="likes">❤️ {{item.likes || 0}}</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
 </scroll-view>
+
 <!-- 悬浮发布按钮 -->
 <view class="fab-btn" bindtap="chooseAndUpload">
   <text class="plus-icon">+</text>
+</view>
+
+<!-- --- 新增：详情弹窗 --- -->
+<!-- 使用 wx:if 控制显示隐藏，currentDetail 有数据时才显示 -->
+<view class="detail-modal" wx:if="{{currentDetail}}" catchtouchmove="true">
+  <!-- 半透明遮罩层 -->
+  <view class="modal-mask" bindtap="hideDetail"></view>
+  
+  <!-- 内容卡片 -->
+  <view class="modal-content">
+    <!-- 关闭按钮 -->
+    <view class="close-btn" bindtap="hideDetail">×</view>
+    
+    <!-- 大图 -->
+    <image class="detail-image" src="{{currentDetail.image}}" mode="widthFix"></image>
+    
+    <!-- 标题 -->
+    <view class="detail-title">{{currentDetail.title}}</view>
+    
+    <!-- 用户信息 -->
+    <view class="detail-user">
+      <image class="detail-avatar" src="{{currentDetail.avatar}}"></image>
+      <text class="detail-nickname">{{currentDetail.nickname}}</text>
+    </view>
+  </view>
 </view>

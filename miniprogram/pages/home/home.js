@@ -2,7 +2,9 @@ const db = wx.cloud.database()
 
 Page({
   data: {
-    noteList: []
+    noteList: [],
+    currentDetail: null, // 新增：用来存当前点击的那个帖子的数据
+    tempTitle: ''  
   },
 
   onLoad: function() {
@@ -55,43 +57,43 @@ Page({
     })
   },
 
-// --- 新增：选图逻辑 ---
-selectImage: function() {
-  wx.chooseMedia({
-    count: 1,
-    mediaType: ['image'],
-    sourceType: ['album', 'camera'],
-    success: (res) => {
-      const tempFilePath = res.tempFiles[0].tempFilePath
-      const title = this.data.tempTitle // 拿到刚才输入的标题
-      
-      // 拿到标题和图片后，执行上传
-      this.uploadAndSave(tempFilePath, title)
-    },
-    fail: (err) => {
-      // 用户取消选图，不做处理
-    }
-  })
-},
+  // --- 新增：选图逻辑 ---
+  selectImage: function() {
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        const tempFilePath = res.tempFiles[0].tempFilePath
+        const title = this.data.tempTitle // 拿到刚才输入的标题
+        
+        // 拿到标题和图片后，执行上传
+        this.uploadAndSave(tempFilePath, title)
+      },
+      fail: (err) => {
+        // 用户取消选图，不做处理
+      }
+    })
+  },
 
-// --- 修改：上传并保存 (把 title 传进来) ---
-uploadAndSave: function(filePath, title) {
-  wx.showLoading({ title: '发布中...', mask: true })
-  
-  const fileName = Date.now() + '_' + Math.floor(Math.random() * 1000) + '.jpg'
-  
-  wx.cloud.uploadFile({
-    cloudPath: `notes_images/${fileName}`,
-    filePath: filePath,
-    success: (uploadRes) => {
-      this.saveToDatabase(uploadRes.fileID, title)
-    },
-    fail: (err) => {
-      wx.hideLoading()
-      wx.showToast({ title: '上传失败', icon: 'none' })
-    }
-  })
-},
+  // --- 修改：上传并保存 (把 title 传进来) ---
+  uploadAndSave: function(filePath, title) {
+    wx.showLoading({ title: '发布中...', mask: true })
+    
+    const fileName = Date.now() + '_' + Math.floor(Math.random() * 1000) + '.jpg'
+    
+    wx.cloud.uploadFile({
+      cloudPath: `notes_images/${fileName}`,
+      filePath: filePath,
+      success: (uploadRes) => {
+        this.saveToDatabase(uploadRes.fileID, title)
+      },
+      fail: (err) => {
+        wx.hideLoading()
+        wx.showToast({ title: '上传失败', icon: 'none' })
+      }
+    })
+  },
 
   // --- 修改：保存到数据库 (接收 title 参数) ---
   saveToDatabase: function(fileID, title) {
@@ -114,5 +116,23 @@ uploadAndSave: function(filePath, title) {
       wx.hideLoading()
       wx.showToast({ title: '发布失败', icon: 'none' })
     })
+  },
+
+
+ // --- 新增：显示详情弹窗 ---
+  showDetail: function(e) {
+    // 获取点击卡片时传递的 item 数据
+    const item = e.currentTarget.dataset.item
+    this.setData({
+      currentDetail: item
+    })
+  },
+
+// --- 新增：隐藏详情弹窗 ---
+  hideDetail: function() {
+    this.setData({
+      currentDetail: null
+    })
   }
+
 })
