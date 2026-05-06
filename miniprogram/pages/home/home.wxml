@@ -1,17 +1,14 @@
 <scroll-view scroll-y class="container">
   <view class="waterfall">
     <view class="card" wx:for="{{noteList}}" wx:key="_id">
-      <!-- 修改点：加上 bindtap="showDetail"，并传递当前项的数据 -->
+      <!-- 点击卡片显示详情 -->
       <view bindtap="showDetail" data-item="{{item}}">
         <image 
           class="card-img" 
           src="{{item.image}}" 
           mode="widthFix" 
           lazy-load
-          bindload="onImageLoad"
-          data-index="{{index}}"
         ></image>
-        
         <view class="card-content">
           <text class="card-title">{{item.title}}</text>
           <view class="card-footer">
@@ -26,28 +23,66 @@
 </scroll-view>
 
 <!-- 悬浮发布按钮 -->
-<view class="fab-btn" bindtap="chooseAndUpload">
+<view class="fab-btn" bindtap="openPublishModal">
   <text class="plus-icon">+</text>
 </view>
 
-<!-- --- 新增：详情弹窗 --- -->
-<!-- 使用 wx:if 控制显示隐藏，currentDetail 有数据时才显示 -->
-<view class="detail-modal" wx:if="{{currentDetail}}" catchtouchmove="true">
-  <!-- 半透明遮罩层 -->
-  <view class="modal-mask" bindtap="hideDetail"></view>
+<!-- --- 修复：发帖弹窗 --- -->
+<view class="custom-modal" wx:if="{{showPublishModal}}">
+  <!-- 遮罩层：只负责点击关闭，不再拦截所有触摸事件 -->
+  <view class="modal-mask" bindtap="closePublishModal"></view>
   
-  <!-- 内容卡片 -->
+  <view class="modal-box">
+    <view class="modal-header">
+      <text class="modal-title">发布笔记</text>
+      <text class="modal-close" bindtap="closePublishModal">×</text>
+    </view>
+    
+    <scroll-view scroll-y class="modal-body">
+      <!-- 标题输入 -->
+      <input 
+        class="input-title" 
+        placeholder="填写标题..." 
+        value="{{tempTitle}}" 
+        bindinput="onTitleInput"
+        adjust-position="{{false}}" 
+        focus="{{showPublishModal}}"
+      />
+      
+      <!-- 内容输入 (多行) -->
+      <textarea 
+        class="input-content" 
+        placeholder="填写正文内容..." 
+        value="{{tempContent}}" 
+        bindinput="onContentInput" 
+        auto-height
+        adjust-position="{{false}}"
+        fixed="{{true}}"
+      />
+    </scroll-view>
+    
+    <view class="modal-footer">
+      <button class="btn-submit" bindtap="confirmPublish">发布</button>
+    </view>
+  </view>
+</view>
+
+<!-- --- 2. 修改：详情弹窗 (增加内容显示) --- -->
+<view class="detail-modal" wx:if="{{currentDetail}}" catchtouchmove="true">
+  <view class="modal-mask" bindtap="hideDetail"></view>
   <view class="modal-content">
-    <!-- 关闭按钮 -->
     <view class="close-btn" bindtap="hideDetail">×</view>
     
-    <!-- 大图 -->
     <image class="detail-image" src="{{currentDetail.image}}" mode="widthFix"></image>
     
-    <!-- 标题 -->
-    <view class="detail-title">{{currentDetail.title}}</view>
-    
-    <!-- 用户信息 -->
+    <view class="detail-body">
+      <view class="detail-title">{{currentDetail.title}}</view>
+      <!-- 新增：显示正文内容 -->
+      <view class="detail-content" wx:if="{{currentDetail.content}}">
+        {{currentDetail.content}}
+      </view>
+    </view>
+
     <view class="detail-user">
       <image class="detail-avatar" src="{{currentDetail.avatar}}"></image>
       <text class="detail-nickname">{{currentDetail.nickname}}</text>

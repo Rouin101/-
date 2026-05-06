@@ -3,81 +3,81 @@ const db = wx.cloud.database()
 Page({
   data: {
     noteList: [],
-    currentDetail: null, // 新增：用来存当前点击的那个帖子的数据
-    tempTitle: ''  
+    currentDetail: null,     // 详情页数据
+    showPublishModal: false, // 控制发帖弹窗显示
+    tempTitle: '',           // 暂存标题
+    tempContent: ''          // 新增：暂存内容
   },
 
   onLoad: function() {
     this.getNotes()
   },
-  
-  //start
-  // 获取列表
+
   getNotes: function() {
     wx.showLoading({ title: '加载中...' })
-    db.collection('notes')
-      .orderBy('createTime', 'desc')
-      .get()
-      .then(res => {
-        this.setData({ noteList: res.data })
-        wx.hideLoading()
-      })
-      .catch(err => {
-        console.error('获取失败', err)
-        wx.hideLoading()
-      })
-  },
-
-  // --- 新增：图片加载完成的回调 ---
-  // 作用：图片加载完后，触发一次 setData，强制让瀑布流重新计算高度
-  // 这样能有效防止图片加载慢导致的布局重叠或闪烁
-  onImageLoad: function() {
-    // 这里不需要做任何事，只需要触发 setData 即可刷新视图
-    // 为了性能，实际项目中可以用防抖，但在这种简单列表里直接刷新即可
-    this.setData({ noteList: this.data.noteList });
-  },
-
-   // --- 修改点：点击 + 号，先弹出输入框 ---
-   chooseAndUpload: function() {
-    // 1. 先弹出输入标题的框
-    wx.showModal({
-      title: '发布新笔记',
-      placeholderText: '请输入标题...', // 只有基础库2.15.0以上支持
-      editable: true, // 允许输入
-      confirmText: '下一步',
-      success: (res) => {
-        if (res.confirm && res.content) {
-          // 用户输入了标题，存到 data 里，然后去选图
-          this.setData({ tempTitle: res.content })
-          this.selectImage() 
-        } else if (res.confirm && !res.content) {
-          wx.showToast({ title: '标题不能为空', icon: 'none' })
-        }
-      }
+    db.collection('notes').orderBy('createTime', 'desc').get().then(res => {
+      this.setData({ noteList: res.data })
+      wx.hideLoading()
+    }).catch(err => {
+      wx.hideLoading()
     })
   },
 
-  // --- 新增：选图逻辑 ---
-  selectImage: function() {
+  // --- 修改：打开弹窗 ---
+  openPublishModal: function() {
+    this.setData({
+      showPublishModal: true,
+      tempTitle: '',      // 打开时清空之前的输入
+      tempContent: ''
+    })
+  },
+
+  // --- 修改：关闭弹窗 ---
+  closePublishModal: function() {
+    this.setData({
+      showPublishModal: false
+    })
+  },
+
+  // --- 新增：监听标题输入 ---
+  onTitleInput: function(e) {
+    this.setData({ tempTitle: e.detail.value })
+  },
+
+  // --- 新增：监听内容输入 ---
+  onContentInput: function(e) {
+    this.setData({ tempContent: e.detail.value })
+  },
+
+  // --- 修改：确认发布逻辑 ---
+  confirmPublish: function() {
+    const title = this.data.tempTitle.trim()
+    const content = this.data.tempContent.trim()
+
+    if (!title) {
+      wx.showToast({ title: '标题不能为空', icon: 'none' })
+      return
+    }
+    // 如果希望内容也是必填，可以解开下面注释
+    // if (!content) {
+    //   wx.showToast({ title: '内容不能为空', icon: 'none' })
+    //   return
+    // }
+
     wx.chooseMedia({
       count: 1,
       mediaType: ['image'],
       sourceType: ['album', 'camera'],
       success: (res) => {
         const tempFilePath = res.tempFiles[0].tempFilePath
-        const title = this.data.tempTitle // 拿到刚才输入的标题
-        
-        // 拿到标题和图片后，执行上传
-        this.uploadAndSave(tempFilePath, title)
+        this.uploadAndSave(tempFilePath, title, content)
       },
-      fail: (err) => {
-        // 用户取消选图，不做处理
-      }
+      fail: (err) => { console.log(err) }
     })
   },
 
-  // --- 修改：上传并保存 (把 title 传进来) ---
-  uploadAndSave: function(filePath, title) {
+  // --- 修改：上传并保存 (增加 content 参数) ---
+  uploadAndSave: function(filePath, title, content) {
     wx.showLoading({ title: '发布中...', mask: true })
     
     const fileName = Date.now() + '_' + Math.floor(Math.random() * 1000) + '.jpg'
@@ -86,7 +86,7 @@ Page({
       cloudPath: `notes_images/${fileName}`,
       filePath: filePath,
       success: (uploadRes) => {
-        this.saveToDatabase(uploadRes.fileID, title)
+        this.saveToDatabase(uploadRes.fileID, title, content)
       },
       fail: (err) => {
         wx.hideLoading()
@@ -95,13 +95,14 @@ Page({
     })
   },
 
-  // --- 修改：保存到数据库 (接收 title 参数) ---
-  saveToDatabase: function(fileID, title) {
+  // --- 修改：保存到数据库 ---
+  saveToDatabase: function(fileID, title, content) {
     const defaultAvatar = '/images/default-avatar.png'; 
 
     db.collection('notes').add({
       data: {
-        title: title, // 使用用户输入的标题
+        title: title,
+        content: content, // 存入内容
         image: fileID,
         avatar: defaultAvatar, 
         nickname: '我',
@@ -111,28 +112,21 @@ Page({
     }).then(() => {
       wx.hideLoading()
       wx.showToast({ title: '发布成功' })
-      this.getNotes() // 刷新列表
+      this.closePublishModal() // 关闭弹窗
+      this.getNotes()          // 刷新列表
     }).catch(err => {
       wx.hideLoading()
       wx.showToast({ title: '发布失败', icon: 'none' })
     })
   },
 
-
- // --- 新增：显示详情弹窗 ---
+  // --- 详情页逻辑保持不变 ---
   showDetail: function(e) {
-    // 获取点击卡片时传递的 item 数据
     const item = e.currentTarget.dataset.item
-    this.setData({
-      currentDetail: item
-    })
+    this.setData({ currentDetail: item })
   },
 
-// --- 新增：隐藏详情弹窗 ---
   hideDetail: function() {
-    this.setData({
-      currentDetail: null
-    })
+    this.setData({ currentDetail: null })
   }
-
 })
