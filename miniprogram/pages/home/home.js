@@ -10,9 +10,7 @@ Page({
     this.getNotes()
   },
 
-  onShow: function() {
-    this.getNotes()
-  },
+
 
   onPullDownRefresh: function() {
     this.getNotes().then(() => {
