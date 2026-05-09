@@ -6,7 +6,8 @@
     "pages/forum/forum",
     "pages/profile/profile",
     "pages/profile-edit/profile-edit",
-    "pages/home-publish/home-publish"
+    "pages/home-publish/home-publish",
+    "pages/home-detail/home-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

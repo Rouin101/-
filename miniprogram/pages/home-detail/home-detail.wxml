@@ -1,0 +1,20 @@
+<view class="detail-container">
+  <!-- 顶部图片 -->
+  <image class="detail-image" src="{{detailInfo.image}}" mode="widthFix" wx:if="{{detailInfo.image}}"></image>
+  
+  <!-- 内容区域 -->
+  <view class="detail-body">
+    <view class="detail-title">{{detailInfo.title}}</view>
+    
+    <!-- 正文内容 -->
+    <view class="detail-content" wx:if="{{detailInfo.content}}">
+      {{detailInfo.content}}
+    </view>
+  </view>
+
+  <!-- 底部用户信息 -->
+  <view class="detail-user">
+    <image class="detail-avatar" src="{{detailInfo.avatar || '/images/default-avatar.png'}}"></image>
+    <text class="detail-nickname">{{detailInfo.nickname}}</text>
+  </view>
+</view>

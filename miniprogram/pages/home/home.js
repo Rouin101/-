@@ -3,18 +3,17 @@ const db = wx.cloud.database()
 Page({
   data: {
     noteList: []
+    // 删除 currentDetail
   },
 
   onLoad: function() {
     this.getNotes()
-    
   },
 
   onShow: function() {
-    // 当从发布页面返回时，onShow 会被触发，这里重新拉取列表
     this.getNotes()
   },
-  // 下拉刷新时重新获取数据
+
   onPullDownRefresh: function() {
     this.getNotes().then(() => {
       wx.stopPullDownRefresh()
@@ -30,15 +29,6 @@ Page({
       wx.hideLoading()
       console.error(err)
     })
-  },
-
-  // 详情页逻辑保持不变
-  showDetail: function(e) {
-    const item = e.currentTarget.dataset.item
-    this.setData({ currentDetail: item })
-  },
-
-  hideDetail: function() {
-    this.setData({ currentDetail: null })
   }
+  // 删除 showDetail 和 hideDetail 函数
 })
