@@ -25,6 +25,7 @@
   </view>
 
   <!-- 3. 正文内容输入 (已修复注释问题) -->
+  <!-- 3. 正文内容输入 -->
   <view class="form-item content-wrapper">
     <textarea 
       class="content-textarea" 
@@ -32,9 +33,9 @@
       value="{{content}}" 
       bindinput="onContentInput"
       rows="10"
-      fixed="true"
     ></textarea>
   </view>
+  
 
   <!-- 4. 底部操作栏 -->
   <view class="bottom-bar">

@@ -2,14 +2,16 @@
   <view class="waterfall">
     <view class="card" wx:for="{{noteList}}" wx:key="_id">
       
-      <!-- 修改点：使用 navigator 跳转，并传递 item._id -->
+      
       <navigator url="/pages/home-detail/home-detail?id={{item._id}}">
         <image 
+          wx:if="{{item.images && item.images.length > 0}}"
           class="card-img" 
-          src="{{item.image}}" 
+          src="{{item.images[0]}}" 
           mode="widthFix" 
           lazy-load
         ></image>
+        
         <view class="card-content">
           <text class="card-title">{{item.title}}</text>
           <view class="card-footer">
