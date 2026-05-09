@@ -1,0 +1,134 @@
+page {
+  background-color: #fff;
+  /* 删除 display: flex 和 flex-direction: column */
+  /* 让页面回归正常的文档流布局 */
+}
+
+.container {
+  padding: 20rpx;
+  padding-bottom: 100rpx; 
+  /* 如果需要占满屏幕，可以用 min-height */
+  min-height: 100vh; 
+  box-sizing: border-box;
+}
+/* 图片区域 */
+.image-section {
+  padding: 20rpx;
+  background: #fff;
+  margin-bottom: 20rpx;
+}
+
+/* 图片列表：Flex 布局，允许换行 */
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx; /* 图片之间的间距 */
+  margin-bottom: 20rpx;
+}
+
+/* 单个图片容器 */
+.image-item {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background-color: #f5f5f5;
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* 删除按钮 */
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  line-height: 40rpx;
+  font-size: 24rpx;
+  border-bottom-left-radius: 8rpx;
+  z-index: 10;
+}
+
+/* 上传按钮样式 */
+.upload-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200rpx;
+  height: 200rpx;
+  border: 1rpx dashed #ccc;
+  border-radius: 12rpx;
+  background-color: #fafafa;
+}
+
+.upload-icon {
+  font-size: 60rpx;
+  color: #999;
+  margin-bottom: 10rpx;
+}
+
+.upload-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 表单通用样式 */
+.form-item {
+  padding: 0 30rpx;
+  margin-bottom: 20rpx;
+  background: #fff;
+}
+
+.title-input {
+  height: 80rpx;
+  font-size: 32rpx;
+  border-bottom: 1rpx solid #eee;
+}
+
+.content-wrapper {
+  padding: 20rpx 30rpx;
+  background: #fff;
+  /* 确保没有 overflow: hidden 导致内容被切掉 */
+}
+
+.content-textarea {
+  width: 100%;
+  min-height: 300rpx; /* 强制最小高度 */
+  font-size: 30rpx;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff; /* 确保背景是白色的 */
+}
+
+/* 底部按钮 */
+.bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx;
+  background: #fff;
+  margin-top: 20rpx;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.btn-publish {
+  background: #ff2442;
+  color: #fff;
+  flex: 1;
+  margin-left: 20rpx;
+}
+
