@@ -22,10 +22,9 @@
   </view>
 </scroll-view>
 
-<!-- 悬浮发布按钮 -->
-<view class="fab-btn" bindtap="openPublishModal">
+<navigator url="/pages/home-publish/home-publish" class="fab-btn" hover-class="none">
   <text class="plus-icon">+</text>
-</view>
+</navigator>
 
 <!-- --- 修复：发帖弹窗 --- -->
 <view class="custom-modal" wx:if="{{showPublishModal}}">

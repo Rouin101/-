@@ -5,7 +5,8 @@
     "pages/quiz/quiz",
     "pages/forum/forum",
     "pages/profile/profile",
-    "pages/profile-edit/profile-edit"
+    "pages/profile-edit/profile-edit",
+    "pages/home-publish/home-publish"
   ],
   "window": {
     "backgroundTextStyle": "light",
