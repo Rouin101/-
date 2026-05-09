@@ -28,11 +28,11 @@
   <!-- 3. 正文内容输入 -->
   <view class="form-item content-wrapper">
     <textarea 
-      class="content-textarea" 
-      placeholder="分享你的生活点滴..." 
+      class="publish-textarea" 
+      placeholder="请输入正文内容..." 
       value="{{content}}" 
       bindinput="onContentInput"
-      rows="10"
+      maxlength="-1" 
     ></textarea>
   </view>
   
