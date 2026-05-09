@@ -1,13 +1,13 @@
 <view class="container">
-  <!-- 1. 图片上传区域 -->
+  <!-- 1. 图片上传与预览区域 -->
   <view class="image-section">
-    <view class="image-list" wx:if="{{tempFilePath}}">
-      <image class="preview-img" src="{{tempFilePath}}" mode="aspectFill"></image>
-      <view class="delete-btn" bindtap="deleteImage">×</view>
+    <view class="image-list">
+      <view class="image-item" wx:for="{{tempFilePaths}}" wx:key="*this">
+        <image class="preview-img" src="{{item}}" mode="aspectFill"></image>
+        <view class="delete-btn" data-index="{{index}}" bindtap="deleteImage">×</view>
+      </view>
     </view>
-    
-    <!-- 如果没有图片，显示上传按钮 -->
-    <view class="upload-btn" wx:else bindtap="chooseImage">
+    <view class="upload-btn" bindtap="chooseImage">
       <text class="upload-icon">+</text>
       <text class="upload-text">添加图片</text>
     </view>
@@ -15,12 +15,25 @@
 
   <!-- 2. 标题输入 -->
   <view class="form-item">
-    <input class="title-input" placeholder="填写标题会有更多赞哦~" value="{{title}}" bindinput="onTitleInput" />
+    <input 
+      class="title-input" 
+      placeholder="填写标题会有更多赞哦~" 
+      value="{{title}}" 
+      bindinput="onTitleInput" 
+      maxlength="20"
+    />
   </view>
 
-  <!-- 3. 内容输入 -->
-  <view class="form-item">
-    <textarea class="content-textarea" placeholder="分享你的生活点滴..." value="{{content}}" bindinput="onContentInput" auto-height />
+  <!-- 3. 正文内容输入 (已修复注释问题) -->
+  <view class="form-item content-wrapper">
+    <textarea 
+      class="content-textarea" 
+      placeholder="分享你的生活点滴..." 
+      value="{{content}}" 
+      bindinput="onContentInput"
+      rows="10"
+      fixed="true"
+    ></textarea>
   </view>
 
   <!-- 4. 底部操作栏 -->

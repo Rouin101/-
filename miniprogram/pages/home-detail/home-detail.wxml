@@ -1,18 +1,21 @@
 <view class="detail-container">
-  <!-- 顶部图片 -->
-  <image class="detail-image" src="{{detailInfo.image}}" mode="widthFix" wx:if="{{detailInfo.image}}"></image>
+  <!-- 【修改点】使用 swiper 实现左右滑动 -->
+  <!-- indicator-dots 显示小圆点, circular 开启循环播放 -->
+  <swiper class="detail-swiper" indicator-dots="{{true}}" circular="{{true}}" autoplay="{{false}}">
+    <swiper-item wx:for="{{detailInfo.images}}" wx:key="*this">
+      <image class="detail-image" src="{{item}}" mode="aspectFill"></image>
+    </swiper-item>
+  </swiper>
   
-  <!-- 内容区域 -->
+  <!-- 内容区域保持不变 -->
   <view class="detail-body">
     <view class="detail-title">{{detailInfo.title}}</view>
-    
-    <!-- 正文内容 -->
     <view class="detail-content" wx:if="{{detailInfo.content}}">
       {{detailInfo.content}}
     </view>
   </view>
 
-  <!-- 底部用户信息 -->
+  <!-- 底部用户信息保持不变 -->
   <view class="detail-user">
     <image class="detail-avatar" src="{{detailInfo.avatar || '/images/default-avatar.png'}}"></image>
     <text class="detail-nickname">{{detailInfo.nickname}}</text>
