@@ -1,56 +1,57 @@
 {
-"pages": [
-  "pages/home/home",
-  "pages/timeline/timeline",
-  "pages/quiz/quiz",
-  "pages/forum/forum",
-  "pages/profile/profile"
-],
-"window": {
-  "backgroundTextStyle": "light",
-  "navigationBarBackgroundColor": "#fff",
-  "navigationBarTitleText": "NJU Table",
-  "navigationBarTextStyle": "black",
-  "enablePullDownRefresh": true
-},
-"style": "v2",
-"sitemapLocation": "sitemap.json",
-"tabBar": {
-  "color": "#999999",
-  "selectedColor": "#07c160",
-  "backgroundColor": "#ffffff",
-  "borderStyle": "black",
-  "list": [
-    {
-      "pagePath": "pages/home/home",
-      "text": "精选",
-      "iconPath": "images/bottom-icons/home.png",
-      "selectedIconPath": "images/bottom-icons/home-active.png"
-    },
-    {
-      "pagePath": "pages/timeline/timeline",
-      "text": "生平",
-      "iconPath": "images/bottom-icons/time.png",
-      "selectedIconPath": "images/bottom-icons/time-active.png"
-    },
-    {
-      "pagePath": "pages/quiz/quiz",
-      "text": "答题",
-      "iconPath": "images/bottom-icons/quiz.png",
-      "selectedIconPath": "images/bottom-icons/quiz-active.png"
-    },
-    {
-      "pagePath": "pages/forum/forum",
-      "text": "论坛",
-      "iconPath": "images/bottom-icons/forum.png",
-      "selectedIconPath": "images/bottom-icons/forum-active.png"
-    },
-    {
-      "pagePath": "pages/profile/profile",
-      "text": "我的",
-      "iconPath": "images/bottom-icons/user.png",
-      "selectedIconPath": "images/bottom-icons/user-active.png"
-    }
-  ]
-}
+  "pages": [
+    "pages/home/home",
+    "pages/timeline/timeline",
+    "pages/quiz/quiz",
+    "pages/forum/forum",
+    "pages/profile/profile",
+    "pages/profile-edit/profile-edit"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "NJU Table",
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#07c160",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "精选",
+        "iconPath": "images/bottom-icons/home.png",
+        "selectedIconPath": "images/bottom-icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/timeline/timeline",
+        "text": "生平",
+        "iconPath": "images/bottom-icons/time.png",
+        "selectedIconPath": "images/bottom-icons/time-active.png"
+      },
+      {
+        "pagePath": "pages/quiz/quiz",
+        "text": "答题",
+        "iconPath": "images/bottom-icons/quiz.png",
+        "selectedIconPath": "images/bottom-icons/quiz-active.png"
+      },
+      {
+        "pagePath": "pages/forum/forum",
+        "text": "论坛",
+        "iconPath": "images/bottom-icons/forum.png",
+        "selectedIconPath": "images/bottom-icons/forum-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "images/bottom-icons/user.png",
+        "selectedIconPath": "images/bottom-icons/user-active.png"
+      }
+    ]
+  }
 }

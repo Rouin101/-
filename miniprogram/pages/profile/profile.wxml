@@ -1,0 +1,198 @@
+<view class="container">
+
+<!-- 顶部用户信息 -->
+<view class="profile-card">
+
+  <!-- 头像 -->
+  <view class="avatar-wrap">
+    <image
+      class="avatar"
+      src="{{userInfo.avatar || '/images/default-avatar.png'}}"
+      mode="aspectFill"
+    />
+  </view>
+
+  <!-- 用户信息 -->
+  <view class="user-info">
+
+    <text class="nickname">
+      {{userInfo.nickname || '未登录'}}
+    </text>
+
+    <text class="bio">
+      {{userInfo.bio || '这个人很懒，还没有简介'}}
+    </text>
+
+    <!-- 编辑资料 -->
+    <view
+      class="edit-btn"
+      bindtap="goEditProfile"
+    >
+      编辑资料
+    </view>
+
+  </view>
+
+</view>
+
+<!-- 数据统计 -->
+<view class="score-card">
+
+  <view class="score-item">
+    <text class="score-num red">
+      {{userInfo.score || 0}}
+    </text>
+
+    <text class="score-label">
+      答题积分
+    </text>
+  </view>
+
+  <view class="divider"></view>
+
+  <view class="score-item">
+    <text class="score-num">
+      {{myNotes.length}}
+    </text>
+
+    <text class="score-label">
+      我的帖子
+    </text>
+  </view>
+
+  <view class="divider"></view>
+
+  <view class="score-item">
+    <text class="score-num">
+      {{myForumPosts.length}}
+    </text>
+
+    <text class="score-label">
+      论坛发布
+    </text>
+  </view>
+
+</view>
+
+<!-- tab -->
+<view class="tab-bar">
+
+  <view
+    class="tab-item {{activeTab === 'notes' ? 'active' : ''}}"
+    bindtap="switchTab"
+    data-tab="notes"
+  >
+    我的帖子
+  </view>
+
+  <view
+    class="tab-item {{activeTab === 'forum' ? 'active' : ''}}"
+    bindtap="switchTab"
+    data-tab="forum"
+  >
+    论坛发布
+  </view>
+
+</view>
+
+<!-- 加载中 -->
+<view
+  wx:if="{{loading}}"
+  class="empty-tip"
+>
+  加载中...
+</view>
+
+<!-- 精选帖子 -->
+<view wx:elif="{{activeTab === 'notes'}}">
+
+  <view
+    wx:if="{{myNotes.length === 0}}"
+    class="empty-tip"
+  >
+    暂无我的帖子
+  </view>
+
+  <view
+    wx:else
+    class="note-list"
+  >
+
+    <view
+      class="note-item"
+      wx:for="{{myNotes}}"
+      wx:key="_id"
+      bindtap="goToNote"
+      data-item="{{item}}"
+    >
+
+      <image
+        class="note-img"
+        src="{{item.image}}"
+        mode="aspectFill"
+      />
+
+      <view class="note-content">
+
+        <text class="note-title">
+          {{item.title}}
+        </text>
+
+        <view class="note-footer">
+
+          <text class="note-likes">
+            ❤️ {{item.likes}}
+          </text>
+
+        </view>
+
+      </view>
+
+    </view>
+
+  </view>
+
+</view>
+
+<!-- 论坛帖子 -->
+<view wx:elif="{{activeTab === 'forum'}}">
+
+  <view
+    wx:if="{{myForumPosts.length === 0}}"
+    class="empty-tip"
+  >
+    暂无论坛发布
+  </view>
+
+  <view
+    wx:else
+    class="note-list"
+  >
+
+    <view
+      class="forum-item"
+      wx:for="{{myForumPosts}}"
+      wx:key="_id"
+      bindtap="goToForum"
+      data-item="{{item}}"
+    >
+
+      <view class="forum-content">
+        {{item.content}}
+      </view>
+
+      <view class="forum-footer">
+
+        <text class="forum-replies">
+          💬 {{item.replies.length}} 条回复
+        </text>
+
+      </view>
+
+    </view>
+
+  </view>
+
+</view>
+
+</view>

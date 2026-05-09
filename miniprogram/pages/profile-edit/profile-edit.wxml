@@ -1,0 +1,44 @@
+<view class="container">
+  <scroll-view class="scroll-content">
+    <!-- 头像部分 -->
+    <view class="avatar-section">
+      <image
+        class="avatar"
+        src="{{avatar}}"
+        mode="aspectFill"
+        bindtap="chooseAvatar"
+      />
+      <text class="tip">点击更换头像</text>
+    </view>
+
+    <!-- 表单内容 -->
+    <view class="form-container">
+      <!-- 昵称 -->
+      <view class="form-item">
+        <text class="label">昵称</text>
+        <input
+          class="input"
+          value="{{nickname}}"
+          bindinput="onNicknameInput"
+          maxlength="20"
+          placeholder="请输入昵称"
+        />
+      </view>
+
+      <!-- 简介 -->
+      <view class="form-item">
+        <text class="label">简介</text>
+        <textarea
+          class="textarea"
+          value="{{bio}}"
+          bindinput="onBioInput"
+          maxlength="100"
+          placeholder="写点什么吧"
+        />
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 保存按钮（固定底部） -->
+  <button class="save-btn" bindtap="saveProfile">保存资料</button>
+</view>
