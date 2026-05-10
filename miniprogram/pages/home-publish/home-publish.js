@@ -84,15 +84,18 @@ Page({
     })
   },
 
-  saveToDatabase: function(fileIDs, title, content) {
+saveToDatabase: function(fileIDs, title, content) {
+    const app = getApp()
+    const userInfo = app.globalData.userInfo
     db.collection('notes').add({
       data: {
         title: title,
         content: content,
         images: fileIDs,
-        avatar: '/images/default-avatar.png',
-        nickname: '我',
+        avatar: userInfo?.avatar || '/images/default-avatar.png',
+        nickname: userInfo?.nickname || '我',
         likes: 0,
+        openid: app.globalData.openid,
         createTime: db.serverDate()
       }
     }).then(() => {
