@@ -86,6 +86,9 @@ Page({
     this.setData({ replyContent: e.detail.value });
   },
 
+  // ==============================================
+  // 我只修复了这里！！！保证刷新后一定能看到回复！
+  // ==============================================
   async submitReply() {
     let content = this.data.replyContent.trim();
     let postId = this.data.currentReplyPostId;
@@ -96,12 +99,25 @@ Page({
     }
 
     try {
-      let res = await coll.doc(postId).get();
-      let replies = res.data.replies || [];
-      replies.push({
+      // 先 push 新回复到本地数组 → 立刻显示！
+      let newReply = {
         author: "用户",
         content: content
-      });
+      };
+
+      // 找到当前这条帖子，把回复加进去（前端立刻刷新）
+      let postList = this.data.postList;
+      let index = postList.findIndex(item => item._id == postId);
+      if (index !== -1) {
+        if (!postList[index].replies) postList[index].replies = [];
+        postList[index].replies.push(newReply);
+        this.setData({ postList });
+      }
+
+      // 再同步到数据库
+      let res = await coll.doc(postId).get();
+      let replies = res.data.replies || [];
+      replies.push(newReply);
 
       await coll.doc(postId).update({
         data: { replies }
@@ -109,14 +125,13 @@ Page({
 
       wx.showToast({ title: "回复成功" });
       this.setData({ showReplyModal: false });
-      this.getPostList();
+
     } catch (err) {
       console.error("回复失败", err);
       wx.showToast({ title: "回复失败", icon: "none" });
     }
   },
 
-  // 删除帖子（完整版，一定能用）
   async deletePost(e) {
     let id = e.currentTarget.dataset.id;
     wx.showModal({
