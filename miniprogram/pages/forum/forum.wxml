@@ -18,6 +18,16 @@
         </view>
 
         <button class="reply-btn" bindtap="openReplyModal" data-postid="{{item._id}}">回复</button>
+        
+        <!-- 删除按钮 现在在 回复 正下方 -->
+        <button 
+          class="reply-btn" 
+          style="color:#f44336; margin-top:10rpx;" 
+          bindtap="deletePost" 
+          data-id="{{item._id}}">
+          删除
+        </button>
+
       </view>
     </block>
   </scroll-view>

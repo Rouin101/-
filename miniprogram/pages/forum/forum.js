@@ -7,11 +7,22 @@ Page({
     replyContent: "",
     postList: [],
     showReplyModal: false,
-    currentReplyPostId: ""
+    currentReplyPostId: "",
+    openid: ""
   },
 
   onLoad() {
+    this.getOpenid();
     this.getPostList();
+  },
+
+  getOpenid() {
+    wx.cloud.callFunction({
+      name: "getOpenid",
+      success: res => {
+        this.setData({ openid: res.result.openid });
+      }
+    });
   },
 
   async getPostList() {
@@ -20,7 +31,6 @@ Page({
       let list = res.data.map(item => {
         return {
           ...item,
-          // 把时间对象变成正常字符串！！！
           createTime: item.createTime ? new Date(item.createTime).toLocaleString() : ""
         };
       });
@@ -104,5 +114,25 @@ Page({
       console.error("回复失败", err);
       wx.showToast({ title: "回复失败", icon: "none" });
     }
+  },
+
+  // 删除帖子（完整版，一定能用）
+  async deletePost(e) {
+    let id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: "确认删除",
+      content: "确定要删除这条内容吗？",
+      success: async (res) => {
+        if (res.confirm) {
+          try {
+            await coll.doc(id).remove();
+            wx.showToast({ title: "删除成功" });
+            this.getPostList();
+          } catch (err) {
+            wx.showToast({ title: "删除失败", icon: "none" });
+          }
+        }
+      }
+    });
   }
 });

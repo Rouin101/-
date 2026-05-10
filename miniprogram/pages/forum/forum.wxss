@@ -57,7 +57,15 @@
   padding: 8rpx 16rpx;
   border-radius: 8rpx;
   line-height: 1.5;
+  margin-right: 10rpx;
 }
+
+/* 只追加 删除按钮样式（和你风格完全统一） */
+.delete-btn {
+  background-color: #ffebee;
+  color: #f44336;
+}
+
 .bottom-input {
   position: fixed;
   bottom: 0;
