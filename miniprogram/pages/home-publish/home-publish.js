@@ -90,6 +90,7 @@ Page({
         title: title,
         content: content,
         images: fileIDs,
+        //这里两个部分需要修改来适应最后一个页面
         avatar: '/images/default-avatar.png',
         nickname: '我',
         likes: 0,
