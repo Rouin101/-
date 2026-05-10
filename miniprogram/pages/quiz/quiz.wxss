@@ -1,3 +1,17 @@
+/* pages/quiz/quiz.wxss */
+/* 页面滚动锁定 */
+.page-container {
+  min-height: 100vh;
+}
+
+.no-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
 /* 整体背景 */
 .container {
   background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
@@ -56,13 +70,13 @@
   justify-content: center;
 }
 
-/* ========= 答题区域 ========= */
+/* ========= 答题区域 - 题目框宽度保持不变 ========= */
 .quiz-wrap {
   padding: 40rpx;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* 稍微偏上 */
+  justify-content: flex-start;
   padding-top: 80rpx;
 }
 .progress-bar {
@@ -78,12 +92,15 @@
   transition: width 0.3s;
 }
 
+/* 题目卡片 - 固定宽度比例，不会随页面变化 */
 .quiz-card {
   background: #fff;
   padding: 40rpx;
   border-radius: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
   flex: 0 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 .question-info {
   display: flex;
@@ -188,96 +205,120 @@
   border: 1rpx solid #ddd;
 }
 
-/* ========= 排行榜页 ========= */
+/* ========= 排行榜页 - 宽度占满页面 ========= */
 .rank-page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 60rpx 0 30rpx;
+  padding: 60rpx 0 40rpx;
   box-sizing: border-box;
+  background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
+  width: 100%;
 }
 .rank-title {
-  font-size: 40rpx;
+  font-size: 44rpx;
   font-weight: bold;
   text-align: center;
   flex-shrink: 0;
-  margin-bottom: 30rpx;
+  margin-bottom: 40rpx;
+  padding: 0 30rpx;
+  color: #2d5ba1;
 }
 .rank-list {
   flex: 1;
   overflow-y: auto;
-  margin-bottom: 20rpx;
+  margin-bottom: 30rpx;
+  padding: 0;
+  width: 100%;
 }
 
-/* 列表项 */
+/* 列表项 - 宽度占满，不留过多空白 */
 .rank-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24rpx 0;                  /* 只保留上下内边距 */
+  padding: 28rpx 0;
   background: #fff;
   border-bottom: 1rpx solid #f0f0f0;
-  margin-bottom: 10rpx;
+  margin-bottom: 0;
   box-sizing: border-box;
+  width: 100%;
+  border-radius: 0;
 }
 
+/* 左侧区域 - 占满剩余空间 */
 .rank-left {
   display: flex;
   align-items: center;
   flex: 1;
   overflow: hidden;
-  padding-left: 30rpx;              /* 左侧留白 */
+  padding-left: 60rpx;
 }
+
 .rank-name {
-  margin-left: 15rpx;
-  font-size: 30rpx;
+  margin-left: 20rpx;
+  font-size: 32rpx;
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #333;
 }
 
+/* 分数 - 右侧留适当边距 */
 .rank-score {
-  font-size: 30rpx;
+  font-size: 32rpx;
   color: #2d5ba1;
   font-weight: bold;
-  padding-right: 30rpx;             /* 右侧留白 */
+  padding-right: 60rpx;
   flex-shrink: 0;
 }
 
-/* 前三名样式保持不变 */
+/* 排名数字样式 */
 .rank-num {
-  width: 60rpx;
-  height: 60rpx;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 30rpx;
+  font-size: 28rpx;
   line-height: 1;
   background: #f0f0f0;
   color: #666;
-  margin-right: 15rpx;
+  margin-right: 20rpx;
   flex-shrink: 0;
 }
-.rank-num.gold { background: #ffd700; color: #fff; font-size: 36rpx; }
-.rank-num.silver { background: #c0c0c0; color: #fff; font-size: 34rpx; }
-.rank-num.bronze { background: #cd7f32; color: #fff; font-size: 32rpx; }
+.rank-num.gold { background: #ffd700; color: #fff; font-size: 32rpx; }
+.rank-num.silver { background: #c0c0c0; color: #fff; font-size: 30rpx; }
+.rank-num.bronze { background: #cd7f32; color: #fff; font-size: 28rpx; }
 
-/* 底部返回按钮 */
-.rank-page .retry-btn {
+/* 空数据提示 */
+.empty-tip {
+  text-align: center;
+  padding: 80rpx;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 返回首页按钮 */
+.rank-back-btn {
   flex-shrink: 0;
   width: 80%;
-  margin: 0 auto;
-  background: transparent;
-  color: #666;
-  border: 1rpx solid #ddd;
+  margin: 20rpx auto 0;
+  background: #2d5ba1;
+  color: #fff;
+  border: none;
   border-radius: 50rpx;
   font-size: 34rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* ========= 错题页（保持原样） ========= */
+/* ========= 错题页 ========= */
 .error-page {
   padding: 60rpx 40rpx;
   min-height: 100vh;
@@ -302,10 +343,7 @@
   font-size: 28rpx;
 }
 
-/* 列表前三名行微调 */
-.rank-item .rank-name {
-  font-size: 30rpx;
-}
+/* 前三名加粗 */
 .rank-item:first-child .rank-name,
 .rank-item:nth-child(2) .rank-name,
 .rank-item:nth-child(3) .rank-name {

@@ -1,8 +1,7 @@
+// pages/timeline/timeline.js
 Page({
   data: {
-    // 头部图片路径
-    headerImage: "/images/timeline/2.jpg", 
-    // 时间线数据 - 按年份从早到晚排序
+    headerImage: "/images/timeline/2.jpg",
     timelineList: [
       {
         year: "1912",
@@ -47,7 +46,7 @@ Page({
         description: "1945年，吴健雄登上美国《时代》周刊封面，成为该刊封面人物。作为曼哈顿计划中唯一的华裔女科学家，她在核物理领域的突破性贡献被全球瞩目，被誉为'解锁原子时代的女性先驱'。《时代》周刊以'CHIEN-SHIUNG WU (1945)'为题，记录了她对物理学及二战进程的深远影响。"
       },
       {
-        year: "1950年代",
+        year: "1950",
         title: "β衰变领域权威",
         image: "",
         description: "20世纪50年代，吴健雄在哥伦比亚大学进行一系列精确的β衰变实验，成为该领域的世界级权威。她以极高的实验精度和创新能力，为弱相互作用研究奠定了坚实基础。"
@@ -107,38 +106,52 @@ Page({
       title: '',
       description: '',
       image: ''
-    }
+    },
+    pageScrollLock: false
   },
 
   onTapEvent: function(e) {
     const eventData = e.currentTarget.dataset.event;
-    this.setData({
-      showModal: true,
-      currentEvent: eventData
+    
+    // 保存当前滚动位置并禁止页面滚动
+    const query = wx.createSelectorQuery();
+    query.selectViewport().scrollOffset();
+    query.exec((res) => {
+      if (res && res[0]) {
+        this.setData({
+          showModal: true,
+          currentEvent: eventData,
+          pageScrollLock: true,
+          scrollTop: res[0].scrollTop
+        });
+      } else {
+        this.setData({
+          showModal: true,
+          currentEvent: eventData,
+          pageScrollLock: true,
+          scrollTop: 0
+        });
+      }
     });
-    // 打开弹窗时禁止页面滚动
-    this.setPageScrollLock(true);
   },
 
   onCloseModal: function() {
+    const savedScrollTop = this.data.scrollTop;
+    
     this.setData({
-      showModal: false
+      showModal: false,
+      pageScrollLock: false
     });
-    // 关闭弹窗时恢复页面滚动
-    this.setPageScrollLock(false);
-  },
-
-  // 控制页面滚动锁定
-  setPageScrollLock: function(lock) {
-    if (lock) {
-      this.setData({
-        pageScrollLock: true
-      });
-    } else {
-      this.setData({
-        pageScrollLock: false
-      });
-    }
+    
+    // 等待弹窗关闭动画完成后再恢复滚动位置
+    setTimeout(() => {
+      if (savedScrollTop > 0) {
+        wx.pageScrollTo({
+          scrollTop: savedScrollTop,
+          duration: 0
+        });
+      }
+    }, 100);
   },
 
   onImageError: function(e) {
@@ -147,5 +160,16 @@ Page({
 
   onLoad: function(options) {
     console.log("时间线页面加载");
+  },
+
+  // 阻止背景滚动
+  preventTouchMove: function(e) {
+    if (this.data.showModal) {
+      return false;
+    }
+  },
+
+  stopPropagation: function(e) {
+    return;
   }
 })

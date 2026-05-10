@@ -1,21 +1,25 @@
-.page-container {
-  min-height: 100vh;
+/* pages/timeline/timeline.wxss */
+page {
+  height: 100%;
+  background-color: #f0f2f5;
 }
 
-.no-scroll {
+.page-container {
+  min-height: 100vh;
+  background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
+  padding: 30rpx 30rpx 100rpx;
+  position: relative;
+}
+
+/* 滚动锁定 - 简单且不跳动 */
+.page-container.scroll-lock {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
-}
-
-.timeline-container {
-  min-height: 100vh;
-  background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
-  padding: 30rpx 30rpx 100rpx;
-  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* 装饰背景 */
@@ -245,6 +249,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  touch-action: none;
 }
 
 .modal-container {
@@ -306,6 +311,7 @@
   box-sizing: border-box;
   max-height: 50vh;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ========== 文字 ========== */
