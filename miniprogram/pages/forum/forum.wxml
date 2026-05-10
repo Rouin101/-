@@ -8,27 +8,23 @@
           <text class="time">{{item.createTime}}</text>
         </view>
 
-        <!-- 评论列表（100%能显示） -->
+        <!-- 评论列表（带 回复按钮！） -->
         <view class="reply-list" wx:if="{{item.replies && item.replies.length > 0}}">
-          <view class="reply-item" wx:for="{{item.replies}}" wx:key="index">
-            <text class="reply-author">{{item.author}}：</text>
-            <text class="reply-content">{{item.content}}</text>
+          <view class="reply-item" wx:for="{{item.replies}}" wx:for-item="reply" wx:key="index">
+            <text class="reply-author">{{reply.author}}：</text>
+            <text class="reply-content">{{reply.content}}</text>
+            <!-- 恢复：每条评论的回复按钮 -->
+            <button class="reply-btn" style="margin-left:10rpx" 
+              bindtap="openReplyToComment" 
+              data-postid="{{item._id}}" 
+              data-index="{{index}}">
+              回复
+            </button>
           </view>
         </view>
 
-        <!-- ✅ 这里修复！！！data-postid 必须写对！ -->
-        <button class="reply-btn" bindtap="openReplyModal" data-postid="{{item._id}}">
-          回复
-        </button>
-        
-        <button 
-          class="reply-btn" 
-          style="color:#f44336; margin-top:10rpx;" 
-          bindtap="deletePost" 
-          data-id="{{item._id}}">
-          删除
-        </button>
-
+        <button class="reply-btn" bindtap="openReplyModal" data-postid="{{item._id}}">回复帖子</button>
+        <button class="reply-btn" style="color:#f44336;margin-top:10rpx;" bindtap="deletePost" data-id="{{item._id}}">删除</button>
       </view>
     </block>
   </scroll-view>
@@ -40,7 +36,7 @@
 
   <view class="reply-modal" wx:if="{{showReplyModal}}">
     <view class="modal-content">
-      <view class="modal-title">回复帖子</view>
+      <view class="modal-title">回复</view>
       <input class="reply-input" placeholder="写下你的回复..." bindinput="onReplyInput" value="{{replyContent}}" />
       <view class="modal-buttons">
         <button class="cancel-btn" bindtap="closeReplyModal">取消</button>

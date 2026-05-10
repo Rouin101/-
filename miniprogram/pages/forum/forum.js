@@ -8,6 +8,7 @@ Page({
     postList: [],
     showReplyModal: false,
     currentReplyPostId: "",
+    replyingToCommentIndex: -1,
     openid: ""
   },
 
@@ -17,10 +18,11 @@ Page({
   },
 
   getOpenid() {
+    let that = this;
     wx.cloud.callFunction({
       name: "getOpenid",
       success: res => {
-        this.setData({ openid: res.result.openid });
+        that.setData({ openid: res.result.openid });
       }
     });
   },
@@ -28,12 +30,11 @@ Page({
   async getPostList() {
     try {
       let res = await coll.orderBy("createTime", "desc").get();
-      let list = res.data.map(item => {
-        return {
-          ...item,
-          createTime: item.createTime ? new Date(item.createTime).toLocaleString() : ""
-        };
-      });
+      let list = res.data.map(item => ({
+        ...item,
+        createTime: item.createTime ? new Date(item.createTime).toLocaleString() : "",
+        replies: item.replies || []
+      }));
       this.setData({ postList: list });
     } catch (err) {
       console.error("加载失败", err);
@@ -57,15 +58,14 @@ Page({
           author: "用户",
           content: content,
           createTime: db.serverDate(),
-          replies: []
+          replies: [],
+          _openid: this.data.openid
         }
       });
-
       wx.showToast({ title: "发布成功" });
       this.setData({ postContent: "" });
       this.getPostList();
     } catch (err) {
-      console.error("发布失败", err);
       wx.showToast({ title: "发布失败", icon: "none" });
     }
   },
@@ -74,6 +74,16 @@ Page({
     this.setData({
       showReplyModal: true,
       currentReplyPostId: e.currentTarget.dataset.postid,
+      replyingToCommentIndex: -1,
+      replyContent: ""
+    });
+  },
+
+  openReplyToComment(e) {
+    this.setData({
+      showReplyModal: true,
+      currentReplyPostId: e.currentTarget.dataset.postid,
+      replyingToCommentIndex: e.currentTarget.dataset.index,
       replyContent: ""
     });
   },
@@ -86,12 +96,10 @@ Page({
     this.setData({ replyContent: e.detail.value });
   },
 
-  // ==============================================
-  // 我只修复了这里！！！保证刷新后一定能看到回复！
-  // ==============================================
   async submitReply() {
     let content = this.data.replyContent.trim();
     let postId = this.data.currentReplyPostId;
+    let idx = this.data.replyingToCommentIndex;
 
     if (!content) {
       wx.showToast({ title: "回复不能为空", icon: "none" });
@@ -99,44 +107,80 @@ Page({
     }
 
     try {
-      // 先 push 新回复到本地数组 → 立刻显示！
-      let newReply = {
-        author: "用户",
-        content: content
-      };
-
-      // 找到当前这条帖子，把回复加进去（前端立刻刷新）
-      let postList = this.data.postList;
-      let index = postList.findIndex(item => item._id == postId);
-      if (index !== -1) {
-        if (!postList[index].replies) postList[index].replies = [];
-        postList[index].replies.push(newReply);
-        this.setData({ postList });
+      let newReply;
+      if (idx >= 0) {
+        const post = this.data.postList.find(p => p._id === postId);
+        newReply = {
+          author: "用户",
+          content: `回复@${post.replies[idx].author}：${content}`
+        };
+      } else {
+        newReply = { author: "用户", content: content };
       }
 
-      // 再同步到数据库
-      let res = await coll.doc(postId).get();
-      let replies = res.data.replies || [];
-      replies.push(newReply);
+      let list = this.data.postList;
+      let index = list.findIndex(i => i._id === postId);
+      if (index !== -1) {
+        if (!list[index].replies) list[index].replies = [];
+        list[index].replies.push(newReply);
+        this.setData({ postList: list });
+      }
 
       await coll.doc(postId).update({
-        data: { replies }
+        data: { replies: db.command.push(newReply) }
       });
 
       wx.showToast({ title: "回复成功" });
       this.setData({ showReplyModal: false });
-
     } catch (err) {
-      console.error("回复失败", err);
+      console.error(err);
       wx.showToast({ title: "回复失败", icon: "none" });
     }
   },
 
+  // ==========================================
+  // ✅ 终极修复：只有自己 + 有openid才能删
+  // ==========================================
   async deletePost(e) {
-    let id = e.currentTarget.dataset.id;
+    const id = e.currentTarget.dataset.id;
+    const openid = this.data.openid;
+
+    try {
+      const doc = await coll.doc(id).get();
+      const data = doc.data;
+
+      // 无openid的老帖子 → 禁止删除（最关键）
+      if (!data._openid) {
+        wx.showToast({ title: "无法删除此帖子", icon: "none" });
+        return;
+      }
+
+      // 不是自己发的 → 禁止删
+      if (data._openid !== openid) {
+        wx.showToast({ title: "只能删自己的帖子", icon: "none" });
+        return;
+      }
+
+      // 是自己发的 → 才能删
+      wx.showModal({
+        title: "确认删除",
+        success: async (res) => {
+          if (res.confirm) {
+            await coll.doc(id).remove();
+            wx.showToast({ title: "删除成功" });
+            this.getPostList();
+          }
+        }
+      });
+
+    } catch (err) {
+      wx.showToast({ title: "删除失败", icon: "none" });
+    }
+  }
+});
+
     wx.showModal({
       title: "确认删除",
-      content: "确定要删除这条内容吗？",
       success: async (res) => {
         if (res.confirm) {
           try {
@@ -149,5 +193,3 @@ Page({
         }
       }
     });
-  }
-});
