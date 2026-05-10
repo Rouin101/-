@@ -1,5 +1,6 @@
 <scroll-view scroll-y class="container">
   <view class="waterfall">
+    
     <view class="card" wx:for="{{noteList}}" wx:key="_id">
       
       
