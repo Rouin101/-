@@ -28,15 +28,19 @@ Page({
       const currentOpenid = app.globalData.openid
 
       if (!userInfo) {
-        const userRes = await db.collection('users').limit(1).get().catch(err => {
-          console.error('查询用户失败:', err)
-          return { data: [] }
-        })
+        const userRes = await db.collection('users')
+          .where({ openid: currentOpenid })
+          .get()
+          .catch(err => {
+            console.error('查询用户失败:', err)
+            return { data: [] }
+          })
 
         if (userRes.data.length > 0) {
           userInfo = userRes.data[0]
         } else {
           const newUser = {
+            openid: currentOpenid,
             nickname: '新用户',
             avatar: '/images/default-avatar.png',
             bio: '这个人很懒，还没有简介',
