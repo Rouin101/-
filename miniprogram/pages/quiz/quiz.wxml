@@ -1,52 +1,52 @@
 <!--pages/quiz/quiz.wxml-->
 <view class="container">
 
-<!-- 开始页 -->
-<view class="home-full" wx:if="{{showHome}}">
-  <view class="home-title">吴健雄 · 知识问答</view>
-  <view class="home-subtitle">“世界物理女王”的生平知多少？</view>
-  <view class="home-btns">
-    <button class="start-btn" bindtap="startQuiz">开始答题</button>
-    <button class="rank-btn-text" bindtap="goToRank">查看排行榜</button>
-  </view>
-</view>
-
-<!-- 答题页 -->
-<view class="quiz-wrap" wx:if="{{showQuiz}}">
-  <!-- 退出按钮 -->
-  <view class="exit-btn" bindtap="exitQuiz" hover-class="exit-btn-hover">
-    <text class="exit-icon">✕</text>
-  </view>
-
-  <view class="progress-bar">
-    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100+'%'}}"></view>
-  </view>
-  <view class="quiz-card">
-    <view class="question-info">
-      <text class="type-tag">{{questions[currentIndex].type === 'choice' ? '单选题' : '判断题'}}</text>
-      <text class="count-text">第 {{currentIndex + 1}} / {{questions.length}} 题</text>
+  <!-- 开始页 -->
+  <view class="home-full" wx:if="{{showHome}}">
+    <view class="home-title">吴健雄 · 知识问答</view>
+    <view class="home-subtitle">“世界物理女王”的生平知多少？</view>
+    <view class="home-btns">
+      <button class="start-btn" bindtap="startQuiz">开始答题</button>
+      <button class="rank-btn-text" bindtap="goToRank">查看排行榜</button>
     </view>
-    <view class="question-content">{{questions[currentIndex].question}}</view>
-    <view class="options-container">
-      <view 
-        class="option-item {{questions[currentIndex].userAnswer === index ? 'selected' : ''}}"
-        wx:for="{{questions[currentIndex].options}}" 
-        wx:key="index"
-        bindtap="selectOption"
-        data-index="{{index}}"
-      >
-        {{item}}
+  </view>
+
+  <!-- 答题页 -->
+  <view class="quiz-wrap" wx:if="{{showQuiz}}">
+    <!-- 退出按钮 -->
+    <view class="exit-btn" bindtap="exitQuiz" hover-class="exit-btn-hover">
+      <text class="exit-icon">✕</text>
+    </view>
+
+    <view class="progress-bar">
+      <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100+'%'}}"></view>
+    </view>
+    <view class="quiz-card">
+      <view class="question-info">
+        <text class="type-tag">{{questions[currentIndex].type === 'choice' ? '单选题' : '判断题'}}</text>
+        <text class="count-text">第 {{currentIndex + 1}} / {{questions.length}} 题</text>
+      </view>
+      <view class="question-content">{{questions[currentIndex].question}}</view>
+      <view class="options-container">
+        <view 
+          class="option-item {{questions[currentIndex].userAnswer === index ? 'selected' : ''}}"
+          wx:for="{{questions[currentIndex].options}}" 
+          wx:key="index"
+          bindtap="selectOption"
+          data-index="{{index}}"
+        >
+          {{item}}
+        </view>
       </view>
     </view>
+    <view class="btn-row">
+    <button class="prev-btn" bindtap="prevQuestion" disabled="{{currentIndex === 0}}">
+      上一题
+    </button>
+    <button class="next-btn-fixed" bindtap="nextQuestion" disabled="{{questions[currentIndex].userAnswer === undefined}}">
+      {{currentIndex === questions.length - 1 ? '提交结果' : '下一题'}}
+    </button>
   </view>
-  <view class="btn-row">
-  <button class="prev-btn" bindtap="prevQuestion" disabled="{{currentIndex === 0}}">
-    上一题
-  </button>
-  <button class="next-btn-fixed" bindtap="nextQuestion" disabled="{{questions[currentIndex].userAnswer === undefined}}">
-    {{currentIndex === questions.length - 1 ? '提交结果' : '下一题'}}
-  </button>
-</view>
 </view>
 
     <!-- 头部标题区 -->
@@ -69,34 +69,34 @@
             </view>
           </view>
           
-          <view class="timeline-right">
-            <view class="timeline-card">
-              <view class="card-content">
-                <view class="card-title">{{item.title}}</view>
-                <image 
-                  wx:if="{{item.image && item.image !== ''}}" 
-                  class="card-image" 
-                  src="{{item.image}}" 
-                  mode="aspectFill"
-                  binderror="onImageError"
-                  data-src="{{item.image}}"
-                ></image>
+            <view class="timeline-right">
+              <view class="timeline-card">
+                <view class="card-content">
+                  <view class="card-title">{{item.title}}</view>
+                  <image 
+                    wx:if="{{item.image && item.image !== ''}}" 
+                    class="card-image" 
+                    src="{{item.image}}" 
+                    mode="aspectFill"
+                    binderror="onImageError"
+                    data-src="{{item.image}}"
+                  ></image>
+                </view>
+                <view class="card-arrow">→</view>
               </view>
-              <view class="card-arrow">→</view>
             </view>
           </view>
-        </view>
-      </block>
+        </block>
+      </view>
     </view>
   </view>
-</view>
 
-<view class="modal-mask" wx:if="{{showModal}}" bindtap="onCloseModal" catchtouchmove="preventTouchMove">
-  <view class="modal-container" catchtap="stopPropagation">
-    <view class="modal-header">
-      <view class="modal-year">{{currentEvent.year}}</view>
-      <text class="modal-title">{{currentEvent.title}}</text>
-    </view>
+  <view class="modal-mask" wx:if="{{showModal}}" bindtap="onCloseModal" catchtouchmove="preventTouchMove">
+    <view class="modal-container" catchtap="stopPropagation">
+      <view class="modal-header">
+        <view class="modal-year">{{currentEvent.year}}</view>
+        <text class="modal-title">{{currentEvent.title}}</text>
+      </view>
     
     <scroll-view class="modal-scroll-content" scroll-y enhanced show-scrollbar="{{false}}" catchtouchmove="preventTouchMove">
       <view class="modal-text-wrapper">
