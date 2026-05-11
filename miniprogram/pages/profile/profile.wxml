@@ -149,41 +149,42 @@
 <!-- 论坛帖子 -->
 <view wx:elif="{{activeTab === 'forum'}}">
 
-  <view
-    wx:if="{{myForumPosts.length === 0}}"
-    class="empty-tip"
-  >
-    暂无论坛发布
-  </view>
+<view
+  wx:if="{{myForumPosts.length === 0}}"
+  class="empty-tip"
+>
+  暂无论坛发布
+</view>
+
+<view
+  wx:else
+  class="note-list"
+>
 
   <view
-    wx:else
-    class="note-list"
+    class="forum-item"
+    wx:for="{{myForumPosts}}"
+    wx:key="_id"
+    bindtap="goToForum"
+    data-item="{{item}}"
   >
 
-    <view
-      class="forum-item"
-      wx:for="{{myForumPosts}}"
-      wx:key="_id"
-      bindtap="goToForum"
-      data-item="{{item}}"
-    >
+    <!-- 加上 white-space: pre-wrap 保留换行和空格格式 -->
+    <view class="forum-content" style="white-space: pre-wrap;">
+    {{item.content}}
+    </view>
 
-      <view class="forum-content">
-        {{item.content}}
-      </view>
+    <view class="forum-footer">
 
-      <view class="forum-footer">
-
-        <text class="forum-replies">
-          💬 {{item.replies.length}} 条回复
-        </text>
-
-      </view>
+      <text class="forum-replies">
+        💬 {{item.replies.length}} 条回复
+      </text>
 
     </view>
 
   </view>
+
+</view>
 
 </view>
 

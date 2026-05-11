@@ -12,7 +12,6 @@ Page({
     wx.navigateBack({ delta: 1 })
   },
 
-  
 
   // 接收内容输入
   onContentInput(e) {
@@ -22,7 +21,14 @@ Page({
   // 提交发布
   async submitPost() {
     let { content } = this.data;
+    // --- 核心修改：彻底清洗开头和结尾的格式 ---
+    // 1. 去掉普通的首尾空格和换行
     content = content.trim();
+    // 2. 暴力替换掉所有的“全角空格”（中文空格 \u3000）
+    content = content.replace(/　/g, ''); 
+    // 3. 再次确保开头没有残留的换行或空白
+    content = content.replace(/^[\s\n\u3000]+/, '');
+    // --- 核心修改结束 ---
     
     if (!content) {
       return wx.showToast({ title: "内容不能为空", icon: "none" });
@@ -30,11 +36,14 @@ Page({
 
     wx.showLoading({ title: "发布中..." });
 
+    const app = getApp()
+    const userInfo = app.globalData.userInfo
     try {
       await coll.add({
         data: {
-          
-          author: "用户", // 后续可以换成真实的用户信息
+          openid: userInfo.openid,
+          avatar: userInfo.avatar,
+          author: userInfo.nickname,
           content: content,
           createTime: db.serverDate(),
           replies: []

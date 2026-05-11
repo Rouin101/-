@@ -3,23 +3,37 @@
   <scroll-view class="post-list" scroll-y enhanced="true">
     <block wx:for="{{postList}}" wx:key="_id">
       <view class="post-item">
-        <view class="post-content">
+        
+        <!-- 顶部：头像和昵称（横向排列，垂直居中） -->
+        <view class="user-info-row">
+          <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
           <text class="author">{{item.author}}</text>
-          <text class="content">{{item.content}}</text>
-          <text class="time">{{item.createTime}}</text>
         </view>
+
+        <!-- 中间：正文内容（独占一行，保留换行和空格格式） -->
+        <view class="content" style="white-space: pre-wrap;">{{item.content}}</view>
+        
+        <!-- 底部：发布时间（靠右） -->
+        <text class="time">{{item.createTime}}</text>
 
         <!-- 回复列表展示 -->
         <view class="reply-list" wx:if="{{item.replies && item.replies.length > 0}}">
           <block wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id">
+            <!-- 单条回复整体容器 -->
             <view class="reply-item">
-              <text class="reply-author">{{reply.author}}:</text>
-              <text class="reply-content">{{reply.content}}</text>
+              <!-- 新增：包裹头像和昵称的头部区域 -->
+              <view class="reply-header">
+                
+                <image class="avatar-small" src="{{reply.avatar}}" mode="aspectFill"></image> 
+                <text class="reply-author">{{reply.author}}</text>
+              </view>
+              <!-- 回复内容：独立出来，会自动换行到下一行 -->
+              <view class="reply-content" style="white-space: pre-wrap;">{{reply.content}}</view>
             </view>
           </block>
         </view>
 
-        <!-- 回复按钮：点击跳转到新的回复页面，并带上帖子ID和作者名 -->
+        <!-- 回复按钮 -->
         <view class="action-row">
           <button class="reply-btn" bindtap="goToReply" 
                   data-postid="{{item._id}}" 
@@ -34,7 +48,7 @@
     <view class="loading-tip">没有更多了~</view>
   </scroll-view>
 
-  <!-- 悬浮发帖按钮：点击跳转到新的发帖页面 -->
+  <!-- 悬浮发帖按钮 -->
   <view class="fab-btn" bindtap="goToPublish">
     <text class="plus-icon">✍️ 我要发帖</text>
   </view>

@@ -1,0 +1,29 @@
+<view class="publish-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="cancel-btn" bindtap="goBack">取消</view>
+    <view class="page-title">回复 @{{author}}</view>
+    <view class="placeholder"></view> <!-- 占位，让标题居中 -->
+  </view>
+
+  <!-- 内容输入区域 -->
+  <view class="input-wrapper">
+    <!-- 正文内容输入框 -->
+    <textarea 
+      class="content-textarea" 
+      placeholder="写下你的回复..." 
+      maxlength="200"
+      bindinput="onInput" 
+      value="{{replyContent}}"
+      auto-height
+      cursor-spacing="20"
+      adjust-position="{{true}}"
+    ></textarea>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="word-count">{{replyContent.length}}/200</view>
+    <button class="publish-btn" type="primary" bindtap="submitReply">发送</button>
+  </view>
+</view>

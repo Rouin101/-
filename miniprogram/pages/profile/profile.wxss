@@ -298,19 +298,18 @@
 }
 
 .forum-content {
-  font-size: 30rpx;
-
-  color: #333;
-
-  line-height: 1.7;
-
-  word-break: break-all;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-
-  overflow: hidden;
+  font-size: 28rpx;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
+  word-break: break-all; /* 防止长串英文或数字撑破布局 */
+  text-indent: 0;
+  /* --- 核心代码：限制最多显示 5 行，超出显示省略号 --- */
+  display: -webkit-box;          /* 必须结合的属性，将对象作为弹性伸缩盒子模型显示 */
+  -webkit-box-orient: vertical;  /* 必须结合的属性，设置或检索伸缩盒对象的子元素的排列方式 */
+  -webkit-line-clamp: 5;         /* 限制在一个块元素显示的文本的行数，这里设为 5 行 */
+  overflow: hidden;              /* 超出部分隐藏 */
+  text-overflow: ellipsis;       /* 超出部分显示省略号 */
 }
 
 .forum-footer {

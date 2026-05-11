@@ -10,6 +10,13 @@ Page({
     this.getPostList();
   },
 
+  onPullDownRefresh() {
+    console.log('用户触发了下拉刷新')
+    
+    // 1. 重新调用加载数据的函数
+    this.getPostList();
+  },
+  
   // 获取并格式化帖子列表
   async getPostList() {
     try {
@@ -25,6 +32,7 @@ Page({
     } catch (err) {
       console.error("加载失败", err);
     }
+    
   },
 
   // 1. 跳转到发帖页面

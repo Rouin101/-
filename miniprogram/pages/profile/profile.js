@@ -19,7 +19,7 @@ Page({
     
     // 1. 重新调用加载数据的函数
     this.loadAll()
-    
+    wx.stopPullDownRefresh() 
 
   },
 
@@ -44,7 +44,7 @@ Page({
     
     this.setData({ loading: true })
     wx.showLoading({ title: '加载中...' })
-    wx.stopPullDownRefresh() 
+    
     try {
       
       let userInfo = app.globalData.userInfo

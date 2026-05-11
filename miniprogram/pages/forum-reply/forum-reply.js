@@ -19,11 +19,15 @@ Page({
     let postId = this.data.postId;
     if (!content) return wx.showToast({ title: "回复不能为空", icon: "none" });
 
+    const app = getApp()
+    const userInfo = app.globalData.userInfo
+
     try {
       let res = await coll.doc(postId).get();
       let replies = res.data.replies || [];
       replies.push({
-        author: "用户", // 这里后续可以换成真实的用户昵称
+        avatar: userInfo.avatar,
+        author: userInfo.nickname, 
         content: content
       });
 

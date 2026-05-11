@@ -1,0 +1,86 @@
+/* 页面整体背景 */
+page {
+  background-color: #f5f5f5;
+}
+
+/* 最外层容器，使用 Flex 纵向布局，并占满全屏高度 */
+.publish-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 顶部导航栏 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  padding: 0 24rpx;
+  background-color: #ffffff;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.cancel-btn {
+  font-size: 30rpx;
+  color: #666666;
+  width: 80rpx; /* 固定宽度，配合右侧占位实现完美居中 */
+}
+
+.page-title {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #333333;
+}
+
+.placeholder {
+  width: 80rpx; /* 与左侧取消按钮等宽 */
+}
+
+/* 中间内容输入区域 */
+.input-wrapper {
+  flex: 1; /* 占据剩余所有空间 */
+  padding: 20rpx 24rpx;
+  background-color: #ffffff;
+  overflow-y: auto; /* 内容过多时可以内部滚动 */
+}
+
+.content-textarea {
+  width: 100%;
+  font-size: 32rpx;
+  color: #333333;
+  line-height: 1.6;
+  min-height: 100rpx; /* 初始最小高度 */
+  box-sizing: border-box;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); /* 适配全面屏底部 */
+  background-color: #ffffff;
+  border-top: 1rpx solid #eeeeee;
+}
+
+.word-count {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.publish-btn {
+  margin: 0;
+  padding: 0 32rpx;
+  font-size: 28rpx;
+  height: 64rpx;
+  line-height: 64rpx;
+  border-radius: 32rpx;
+  background-color: #07c160; /* 微信绿，也可以换成你喜欢的主题色 */
+  color: #ffffff;
+}
+
+.publish-btn::after {
+  border: none; /* 去掉小程序 button 默认的边框 */
+}
