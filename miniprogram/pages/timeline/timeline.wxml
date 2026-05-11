@@ -1,23 +1,12 @@
-<!-- miniprogram/pages/timeline/timeline.wxml -->
+<!-- timeline.wxml -->
 <view class="page-container" id="pageContainer">
-  <!-- WebGL粒子背景层 -->
-  <canvas
-    type="webgl"
-    id="particleCanvas"
-    class="particle-canvas"
-    bindtouchstart="onCanvasTouchStart"
-    bindtouchmove="onCanvasTouchMove"
-    bindtouchend="onCanvasTouchEnd"
-  ></canvas>
+  <!-- 全屏粒子背景（Canvas 2D） -->
+  <canvas type="2d" id="particleCanvas" class="particle-canvas-full"></canvas>
 
-  <!-- 2D粒子叠加层（致敬长河用） -->
-  <canvas
-    type="2d"
-    id="overlayCanvas"
-    class="overlay-canvas"
-  ></canvas>
+  <!-- 底部闪烁星空（可选装饰） -->
+  <canvas type="2d" id="starCanvas" class="star-canvas"></canvas>
 
-  <!-- 章节指示器（右侧）- 缩小点尺寸避免重叠 -->
+  <!-- 章节指示器（右侧） -->
   <view class="chapter-indicator" style="opacity: {{chapterIndicatorOpacity}};">
     <view class="chapter-dot {{currentChapter === 'departure' ? 'active' : ''}}"></view>
     <view class="chapter-line"></view>
@@ -36,7 +25,7 @@
     <text class="chapter-label-sub">{{chapterLabelSub}}</text>
   </view>
 
-  <!-- 主时间轴滚动区域，详情弹出时禁止滚动 -->
+  <!-- 主时间轴滚动区域 -->
   <scroll-view
     class="timeline-scroll"
     scroll-y="{{!showDetail}}"
@@ -82,20 +71,16 @@
           id="card-{{index}}"
           data-index="{{index}}"
         >
-          <!-- 3D卡片，绑定点击显示详情 -->
           <view
             class="timeline-card-3d"
             data-index="{{index}}"
             bindtap="onCardTap"
           >
             <view class="card-inner">
-              <!-- 年份标记（移向中央线一侧，紧贴中轴线） -->
               <view class="card-year-badge">
                 <text class="year-number">{{item.year}}</text>
               </view>
-              <!-- 卡片主体 -->
               <view class="card-body glass-card">
-                <!-- 只有存在图片时才显示图片区域 -->
                 <image
                   wx:if="{{item.image && item.image !== ''}}"
                   class="card-image"
@@ -110,7 +95,6 @@
               </view>
             </view>
           </view>
-          <!-- 时间线节点 -->
           <view class="timeline-node {{item._nodeActive ? 'node-active' : ''}}">
             <view class="node-inner"></view>
             <view class="node-ripple" wx:if="{{item._nodeActive}}"></view>
@@ -149,8 +133,6 @@
       <view class="tribute-description">
         无数科学先驱如星辰般汇聚，照亮人类探索真理的道路
       </view>
-      <canvas type="2d" id="tributeCanvas" class="tribute-canvas"></canvas>
-      <!-- 在致敬长河和科学寄语之间插入8.jpg，并缩小与上下内容的间距 -->
       <image class="tribute-image" src="/images/timeline/8.jpg" mode="widthFix" lazy-load></image>
       <view class="tribute-message">
         <text class="tribute-quote-text">"科学没有国界，但科学家有祖国。"</text>
@@ -162,9 +144,9 @@
     <view class="bottom-spacer"></view>
   </scroll-view>
 
-  <!-- 粒子流反转提示（宇称不守恒彩蛋） -->
+  <!-- 粒子流反转彩蛋（宇称不守恒提示） -->
   <view class="parity-hint {{parityHintVisible ? 'hint-visible' : ''}}" bindtap="onParityTap">
-    <text class="parity-hint-text">👆 点击反转粒子流</text>
+    <text class="parity-hint-text">👆 点击反转粒子流（宇称不守恒彩蛋）</text>
     <view class="parity-arrow {{parityReversed ? 'reversed' : ''}}">→</view>
   </view>
 
@@ -174,7 +156,7 @@
     <text class="loading-text">正在构建粒子宇宙...</text>
   </view>
 
-  <!-- 详情浮层（点击卡片显示） -->
+  <!-- 详情浮层 -->
   <view class="detail-mask" wx:if="{{showDetail}}" catchtouchmove="preventMove" bindtap="closeDetail">
     <view class="detail-container" catchtap="stopPropagation">
       <view class="detail-header">
