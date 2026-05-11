@@ -87,7 +87,7 @@ const fullQuestionBank = [
   {"type":"choice","question":"吴健雄的父亲吴仲裔曾参与什么革命活动？","options":["辛亥革命","二次革命","五四运动","北伐"],"answer":1,"knowledge":"吴仲裔早年加入同盟会，参与反清活动，辛亥革命后还参加了二次革命。他是一位具有进步思想的革命者，后来转向教育，希望通过启蒙救国，这对吴健雄的世界观产生了深远影响。"},
   {"type":"truefalse","question":"吴健雄的名字“健雄”意为“健康雄伟”。","answer":true,"knowledge":"父亲为她取这个充满阳刚之气的名字，就是希望她身体强健、意志雄伟，不输给任何男子。吴健雄确实没有辜负这个名字，用一生诠释了何为巾帼不让须眉。"},
   {"type":"choice","question":"吴健雄在哪一年正式加入美国籍？","options":["1940年代","1950年代","1960年代","从未加入"],"answer":1,"knowledge":"吴健雄于1954年正式加入美国籍，但她始终保留着深厚的中国情结。入籍后她得以更方便地参与国际学术交流，也更能自由地在海外为华人发声。"},
-  {"type":"truefalse","question":"吴健雄退休后最常去的中国学术机构是？","options":["中国科学院","南京大学","北京大学","清华大学"],"answer":1,"knowledge":"吴健雄对母校南京大学感情尤为深厚，退休后几乎每次回国都会到南京大学访问讲学。南京大学的吴健雄图书馆就是由她捐资修建的，成为一代代学子探寻知识的殿堂。"},
+  {"type":"choice","question":"吴健雄退休后最常去的中国学术机构是？","options":["中国科学院","南京大学","北京大学","清华大学"],"answer":1,"knowledge":"吴健雄对母校南京大学感情尤为深厚，退休后几乎每次回国都会到南京大学访问讲学。南京大学的吴健雄图书馆就是由她捐资修建的，成为一代代学子探寻知识的殿堂。"},
   {"type":"choice","question":"南京大学建有吴健雄什么设施？","options":["图书馆","实验室","纪念馆","雕像"],"answer":0,"knowledge":"南京大学鼓楼校区有吴健雄图书馆，是她在1980年代捐资建造的。图书馆门口还有她的铜像，常有师生前来瞻仰。这里不仅是藏书之地，更是一个励志的精神坐标。"},
   {"type":"truefalse","question":"1997年吴健雄病逝后，江泽民发唁电致哀。","answer":true,"knowledge":"1997年2月16日吴健雄在纽约病逝，时任国家主席江泽民发去唁电，高度评价她对科学的贡献和对祖国的热爱。国内外许多媒体都刊发了悼念文章，纪念这位伟大而不朽的女物理学家。"},
   {"type":"choice","question":"吴健雄曾被誉为“世界物理女王”的称号出现在什么媒体？","options":["纽约时报","华盛顿邮报","科学杂志","时代周刊"],"answer":0,"knowledge":"《纽约时报》曾在报道中称吴健雄为“物理女王”(Queen of Physics)，这个称号迅速被广泛传播。它既是对她在核物理领域统治力的肯定，也是媒体对女性科学家的罕见致敬。"},
@@ -102,7 +102,7 @@ const fullQuestionBank = [
   {"type":"choice","question":"为纪念吴健雄，中国曾发行什么？","options":["邮票","纪念币","明信片","电话卡"],"answer":0,"knowledge":"中国邮政发行过吴健雄纪念邮票，以表彰她的科学成就和爱国精神。方寸之间，她身着旗袍、胸佩奖章的形象深入人心，成为国家记忆的一部分。"},
   {"type":"truefalse","question":"吴健雄被视为华人女性在科学界的顶尖榜样。","answer":true,"knowledge":"在华人世界，吴健雄的名字几乎是科学女性成功的代名词。她用一生证明了华人女性有能力站在世界科学之巅，激励着一代又一代人勇敢追求科学梦想。"},
   {"type":"choice","question":"1990年小行星命名仪式在哪里举行？","options":["北京","南京","太仓","华盛顿"],"answer":0,"knowledge":"1990年，在北京举行了“吴健雄星”命名仪式，以表彰她的卓越贡献。这颗小行星编号2752，永久环绕太阳，让她成为了星空中的永恒存在，也与她的科学成就相映成辉。"},
-  {"type":"choice","question":"吴健雄的哪项实验被写入多国物理教材？","options":["宇称不守恒验证","矢量流守恒","曼哈顿实验","β谱测量"],"answer":0,"knowledge":"宇称不守恒验证实验已成为现代物理教学中的经典案例，被写入全球多国的高中及大学物理教材。学生们在学习这个实验时，总能感受到吴健雄精妙的实验设计和敢于挑战权威的勇气。"},
+  {"type":"truefalse","question":"吴健雄的哪项实验被写入多国物理教材？","options":["宇称不守恒验证","矢量流守恒","曼哈顿实验","β谱测量"],"answer":0,"knowledge":"宇称不守恒验证实验已成为现代物理教学中的经典案例，被写入全球多国的高中及大学物理教材。学生们在学习这个实验时，总能感受到吴健雄精妙的实验设计和敢于挑战权威的勇气。"},
   {"type":"truefalse","question":"吴健雄没有获得博士学位。","answer":false,"knowledge":"吴健雄于1940年获得加州大学伯克利分校物理学博士学位。她的博士论文研究铀核裂变产物，这项在当时极为前沿的工作为她赢得了学术界的初步声誉，也是她辉煌科学生涯的正式开端。"},
   {"type":"choice","question":"吴健雄认为科学最重要的品质是？","options":["聪明","勤奋","诚实","勇气"],"answer":2,"knowledge":"吴健雄多次强调整实验数据的诚实性，认为诚实是科学研究的基石。她宁可放慢速度，也要保证每个数据的真实可靠。这种求真务实的态度，使她的实验结果经得起时间考验。"},
   {"type":"truefalse","question":"吴健雄的生日与儿童节同一天。","answer":false,"knowledge":"吴健雄生日是5月31日，国际儿童节是6月1日，两者并非同一天，但非常临近。这个有趣的巧合让一些纪念活动会和儿童科普相结合，寓意科学的种子要在童年播撒。"},
@@ -156,12 +156,16 @@ const fullQuestionBank = [
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
-      const selected = pool.slice(0, 10).map(q => ({
+    
+      // 👇 加这一行：给每题后面补20个空格
+      const paddedPool = pool.map(q => ({ ...q, question: q.question + '                ' }));
+    
+      const selected = paddedPool.slice(0, 10).map(q => ({
         ...q,
         userAnswer: undefined,
         options: q.type === 'choice' ? q.options : ['正确', '错误']
       }));
-      
+  
       this.setData({
         questions: selected,
         currentIndex: 0,
@@ -250,19 +254,11 @@ nextQuestion() {
         callback();
         return;
       }
-    
-      // 获取全局用户信息
-      const app = getApp();
-      const userInfo = app.globalData.userInfo || {};
-      const nickName = userInfo.nickname || '吴健雄粉丝';
-      const avatarUrl = userInfo.avatar || '';
-    
       wx.cloud.callFunction({
         name: 'quizFunctions',
         data: {
           action: 'submit',
-          nickName: nickName,
-          avatarUrl: avatarUrl,
+          nickName: '大先生追随者',  // 可替换为真实昵称
           score: this.data.score
         },
         success: () => {
@@ -271,7 +267,7 @@ nextQuestion() {
         },
         fail: () => {
           wx.showToast({ title: '网络异常，分数暂未保存', icon: 'none' });
-          callback();
+          callback();  // 仍可查看错题
         }
       });
     },
@@ -291,30 +287,6 @@ nextQuestion() {
       });
     },
   
-    //退出答题
-    exitQuiz() {
-      wx.showModal({
-        title: '退出答题',
-        content: '确定要退出吗？当前答题进度不会保存。',
-        success: (res) => {
-          if (res.confirm) {
-            this.restart();
-          }
-        }
-      });
-    },
-
-    //上一题
-    // 上一题
-    prevQuestion() {
-      const { currentIndex } = this.data;
-      if (currentIndex > 0) {
-        this.setData({ currentIndex: currentIndex - 1 });
-      }
-    },
-
-  
-
     // 返回首页
     restart() {
       this.setData({
