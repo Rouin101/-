@@ -13,8 +13,13 @@
 
 <!-- 答题页 -->
 <view class="quiz-wrap" wx:if="{{showQuiz}}">
+  <!-- 退出按钮 -->
+  <view class="exit-btn" bindtap="exitQuiz" hover-class="exit-btn-hover">
+    <text class="exit-icon">✕</text>
+  </view>
+
   <view class="progress-bar">
-    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100}}%"></view>
+    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100+'%'}}"></view>
   </view>
   <view class="quiz-card">
     <view class="question-info">
@@ -34,9 +39,14 @@
       </view>
     </view>
   </view>
+  <view class="btn-row">
+  <button class="prev-btn" bindtap="prevQuestion" disabled="{{currentIndex === 0}}">
+    上一题
+  </button>
   <button class="next-btn-fixed" bindtap="nextQuestion" disabled="{{questions[currentIndex].userAnswer === undefined}}">
     {{currentIndex === questions.length - 1 ? '提交结果' : '下一题'}}
   </button>
+</view>
 </view>
 
 <!-- 结果页 -->
