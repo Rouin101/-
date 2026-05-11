@@ -1,3 +1,17 @@
+/* pages/quiz/quiz.wxss */
+/* 页面滚动锁定 */
+.page-container {
+  min-height: 100vh;
+}
+
+.no-scroll {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
 /* 整体背景 */
 .container {
   background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
@@ -56,7 +70,7 @@
   justify-content: center;
 }
 
-/* ========= 答题区域 ========= */
+/* ========= 答题区域 - 题目框宽度保持不变 ========= */
 .quiz-wrap {
   padding-top: 60rpx;
   min-height: 100vh;
@@ -284,9 +298,9 @@
   justify-content: center;
 }
 
-/* ========= 排行榜页 ========= */
+/* ========= 排行榜页 - 宽度占满页面 ========= */
 .rank-page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -295,7 +309,7 @@
 }
 
 .rank-title {
-  font-size: 40rpx;
+  font-size: 44rpx;
   font-weight: bold;
   text-align: center;
   flex-shrink: 0;
@@ -323,8 +337,11 @@
   margin-bottom: 16rpx;         /* ★ 每个卡片之间留出间距，你可以改成12rpx、20rpx */
   border-radius: 16rpx;         /* ★ 圆角大小，可改成12rpx或24rpx */
   box-sizing: border-box;
+  width: 100%;
+  border-radius: 0;
 }
 
+/* 左侧区域 - 占满剩余空间 */
 .rank-left {
   display: flex;
   align-items: center;
@@ -333,27 +350,28 @@
 }
 
 .rank-name {
-  margin-left: 15rpx;
-  font-size: 30rpx;
+  margin-left: 20rpx;
+  font-size: 32rpx;
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #333;
 }
 
 .rank-num {
-  width: 60rpx;
-  height: 60rpx;
+  width: 56rpx;
+  height: 56rpx;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 30rpx;
+  font-size: 28rpx;
   line-height: 1;
   background: #f0f0f0;
   color: #666;
-  margin-right: 15rpx;
+  margin-right: 20rpx;
   flex-shrink: 0;
 }
 
@@ -405,6 +423,10 @@
   border: 2rpx solid #2d5ba1;      /* 蓝色实线边框 */
   border-radius: 50rpx;
   font-size: 34rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ========= 错题页 ========= */
