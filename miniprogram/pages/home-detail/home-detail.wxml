@@ -3,7 +3,13 @@
   <!-- indicator-dots 显示小圆点, circular 开启循环播放 -->
   <swiper class="detail-swiper" indicator-dots="{{true}}" circular="{{true}}" autoplay="{{false}}">
     <swiper-item wx:for="{{detailInfo.images}}" wx:key="*this">
-      <image class="detail-image" src="{{item}}" mode="aspectFit"></image>
+      <image 
+        class="detail-image" 
+        src="{{item}}" 
+        mode="aspectFit"
+        bindtap="previewImage" 
+        data-index="{{index}}" 
+      ></image>
     </swiper-item>
   </swiper>
   

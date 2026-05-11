@@ -29,5 +29,25 @@ Page({
       wx.hideLoading()
       console.error(err)
     })
+  
+  },
+
+  // --- 👇 新增：图片预览功能 👇 ---
+  previewImage(e) {
+    // 1. 获取点击图片的索引
+    const index = e.currentTarget.dataset.index;
+    
+    // 2. 获取图片列表（这里兼容处理，防止 images 为空导致报错）
+    const images = this.data.detailInfo.images || [];
+
+    // 3. 调用微信原生预览接口
+    wx.previewImage({
+      current: images[index], // 当前显示图片的链接
+      urls: images,           // 需要预览的图片链接列表
+      success: () => {
+        console.log('预览成功');
+      }
+    });
   }
+
 })

@@ -102,7 +102,7 @@ const fullQuestionBank = [
   {"type":"choice","question":"为纪念吴健雄，中国曾发行什么？","options":["邮票","纪念币","明信片","电话卡"],"answer":0,"knowledge":"中国邮政发行过吴健雄纪念邮票，以表彰她的科学成就和爱国精神。方寸之间，她身着旗袍、胸佩奖章的形象深入人心，成为国家记忆的一部分。"},
   {"type":"truefalse","question":"吴健雄被视为华人女性在科学界的顶尖榜样。","answer":true,"knowledge":"在华人世界，吴健雄的名字几乎是科学女性成功的代名词。她用一生证明了华人女性有能力站在世界科学之巅，激励着一代又一代人勇敢追求科学梦想。"},
   {"type":"choice","question":"1990年小行星命名仪式在哪里举行？","options":["北京","南京","太仓","华盛顿"],"answer":0,"knowledge":"1990年，在北京举行了“吴健雄星”命名仪式，以表彰她的卓越贡献。这颗小行星编号2752，永久环绕太阳，让她成为了星空中的永恒存在，也与她的科学成就相映成辉。"},
-  {"type":"truefalse","question":"吴健雄的哪项实验被写入多国物理教材？","options":["宇称不守恒验证","矢量流守恒","曼哈顿实验","β谱测量"],"answer":0,"knowledge":"宇称不守恒验证实验已成为现代物理教学中的经典案例，被写入全球多国的高中及大学物理教材。学生们在学习这个实验时，总能感受到吴健雄精妙的实验设计和敢于挑战权威的勇气。"},
+  {"type":"choice","question":"吴健雄的哪项实验被写入多国物理教材？","options":["宇称不守恒验证","矢量流守恒","曼哈顿实验","β谱测量"],"answer":0,"knowledge":"宇称不守恒验证实验已成为现代物理教学中的经典案例，被写入全球多国的高中及大学物理教材。学生们在学习这个实验时，总能感受到吴健雄精妙的实验设计和敢于挑战权威的勇气。"},
   {"type":"truefalse","question":"吴健雄没有获得博士学位。","answer":false,"knowledge":"吴健雄于1940年获得加州大学伯克利分校物理学博士学位。她的博士论文研究铀核裂变产物，这项在当时极为前沿的工作为她赢得了学术界的初步声誉，也是她辉煌科学生涯的正式开端。"},
   {"type":"choice","question":"吴健雄认为科学最重要的品质是？","options":["聪明","勤奋","诚实","勇气"],"answer":2,"knowledge":"吴健雄多次强调整实验数据的诚实性，认为诚实是科学研究的基石。她宁可放慢速度，也要保证每个数据的真实可靠。这种求真务实的态度，使她的实验结果经得起时间考验。"},
   {"type":"truefalse","question":"吴健雄的生日与儿童节同一天。","answer":false,"knowledge":"吴健雄生日是5月31日，国际儿童节是6月1日，两者并非同一天，但非常临近。这个有趣的巧合让一些纪念活动会和儿童科普相结合，寓意科学的种子要在童年播撒。"},
@@ -161,7 +161,7 @@ const fullQuestionBank = [
         userAnswer: undefined,
         options: q.type === 'choice' ? q.options : ['正确', '错误']
       }));
-  
+      
       this.setData({
         questions: selected,
         currentIndex: 0,
@@ -250,11 +250,19 @@ nextQuestion() {
         callback();
         return;
       }
+    
+      // 获取全局用户信息
+      const app = getApp();
+      const userInfo = app.globalData.userInfo || {};
+      const nickName = userInfo.nickname || '吴健雄粉丝';
+      const avatarUrl = userInfo.avatar || '';
+    
       wx.cloud.callFunction({
         name: 'quizFunctions',
         data: {
           action: 'submit',
-          nickName: '物理爱好者',  // 可替换为真实昵称
+          nickName: nickName,
+          avatarUrl: avatarUrl,
           score: this.data.score
         },
         success: () => {
@@ -263,7 +271,7 @@ nextQuestion() {
         },
         fail: () => {
           wx.showToast({ title: '网络异常，分数暂未保存', icon: 'none' });
-          callback();  // 仍可查看错题
+          callback();
         }
       });
     },
@@ -283,6 +291,30 @@ nextQuestion() {
       });
     },
   
+    //退出答题
+    exitQuiz() {
+      wx.showModal({
+        title: '退出答题',
+        content: '确定要退出吗？当前答题进度不会保存。',
+        success: (res) => {
+          if (res.confirm) {
+            this.restart();
+          }
+        }
+      });
+    },
+
+    //上一题
+    // 上一题
+    prevQuestion() {
+      const { currentIndex } = this.data;
+      if (currentIndex > 0) {
+        this.setData({ currentIndex: currentIndex - 1 });
+      }
+    },
+
+  
+
     // 返回首页
     restart() {
       this.setData({

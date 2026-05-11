@@ -3,52 +3,33 @@ const db = wx.cloud.database()
 Page({
 
   data: {
-    // 用户信息
     userInfo: null,
-
-    // 我的精选帖子
     myNotes: [],
-
-    // 我的论坛帖子
     myForumPosts: [],
-
-    // 当前 tab
     activeTab: 'notes',
-
-    // 加载状态
     loading: true
   },
 
-  // 页面加载
   onLoad() {
     this.loadAll()
   },
 
-  // 页面显示
   onShow() {
     this.loadAll()
   },
 
-  // 加载数据
   async loadAll() {
-
-    this.setData({
-      loading: true
-    })
-
-    wx.showLoading({
-      title: '加载中...'
-    })
+    this.setData({ loading: true })
+    wx.showLoading({ title: '加载中...' })
 
     try {
-      // 优先使用全局 userInfo
       const app = getApp()
       let userInfo = app.globalData.userInfo
+      const currentOpenid = app.globalData.openid
 
-      // 如果没有全局 userInfo，从数据库获取
       if (!userInfo) {
         const userRes = await db.collection('users')
-          .limit(1)
+          .where({ openid: currentOpenid })
           .get()
           .catch(err => {
             console.error('查询用户失败:', err)
@@ -58,78 +39,83 @@ Page({
         if (userRes.data.length > 0) {
           userInfo = userRes.data[0]
         } else {
-          // 如果没有用户，创建一个默认用户
           const newUser = {
+            openid: currentOpenid,
             nickname: '新用户',
             avatar: '/images/default-avatar.png',
             bio: '这个人很懒，还没有简介',
             score: 0,
             createTime: db.serverDate()
           }
-
           try {
-            const addRes = await db.collection('users')
-              .add({
-                data: newUser
-              })
-
-            userInfo = {
-              ...newUser,
-              _id: addRes._id
-            }
+            const addRes = await db.collection('users').add({ data: newUser })
+            userInfo = { ...newUser, _id: addRes._id }
           } catch (err) {
             console.error('创建用户失败:', err)
-            userInfo = {
-              ...newUser,
-              _id: 'temp_' + Date.now()
-            }
+            userInfo = { ...newUser, _id: 'temp_' + Date.now() }
           }
         }
       }
 
-      // 获取用户的帖子和论坛数据
+      // 计算答题排名
+      try {
+        const rankRes = await wx.cloud.callFunction({
+          name: 'quizFunctions',
+          data: { action: 'getMyRank' }
+        });
+        if (rankRes.result && rankRes.result.success) {
+          const { score, rank } = rankRes.result;
+          userInfo.score = score || 0;
+          // rank 为数字，转成可显示的字符串
+          userInfo.rank = rank ? `第${rank}名` : '未上榜';
+        } else {
+          userInfo.rank = '未排名';
+        }
+      } catch (err) {
+        console.warn('获取排名失败:', err);
+        userInfo.rank = '加载失败';
+      }
+
+      app.globalData.userInfo = userInfo
+
       let notesRes = { data: [] }
       let forumRes = { data: [] }
 
-      // 查询精选帖子
       try {
         notesRes = await db.collection('notes')
-          .where({
-            userId: userInfo._id
-          })
+          .where({ openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
           .catch(err => {
             console.warn('查询精选帖子失败:', err)
             return { data: [] }
           })
+        console.log('查询条件 - openid:', currentOpenid)
+        console.log('查询结果 - 精选帖子:', notesRes.data)
       } catch (err) {
         console.warn('精选帖子查询异常:', err)
         notesRes = { data: [] }
       }
 
-      // 查询论坛帖子
       try {
         forumRes = await db.collection('forum')
-          .where({
-            userId: userInfo._id
-          })
+          .where({ openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
           .catch(err => {
             console.warn('查询论坛帖子失败:', err)
             return { data: [] }
           })
+        console.log('查询结果 - 论坛帖子:', forumRes.data)
       } catch (err) {
         console.warn('论坛帖子查询异常:', err)
         forumRes = { data: [] }
       }
 
       console.log('用户信息:', userInfo)
-      console.log('精选帖子:', notesRes.data)
-      console.log('论坛帖子:', forumRes.data)
+      console.log('精选帖子数:', notesRes.data.length)
+      console.log('论坛帖子数:', forumRes.data.length)
 
-      // 更新页面
       this.setData({
         userInfo,
         myNotes: notesRes.data || [],
@@ -137,18 +123,13 @@ Page({
         loading: false
       })
 
-      // 保存全局
       app.globalData.userInfo = userInfo
-
       wx.hideLoading()
 
     } catch (err) {
-
       console.error('加载数据失败:', err)
-
       this.setData({
         loading: false,
-        // 使用默认用户信息
         userInfo: {
           _id: 'temp_user',
           nickname: '用户',
@@ -159,57 +140,30 @@ Page({
         myNotes: [],
         myForumPosts: []
       })
-
       wx.hideLoading()
-
-      wx.showToast({
-        title: '加载失败，请返回重试',
-        icon: 'none'
-      })
+      wx.showToast({ title: '加载失败，请返回重试', icon: 'none' })
     }
   },
 
-  // 切换 tab
   switchTab(e) {
-
-    this.setData({
-      activeTab: e.currentTarget.dataset.tab
-    })
+    this.setData({ activeTab: e.currentTarget.dataset.tab })
   },
 
-  // 跳转精选帖子
   goToNote(e) {
-
-    const item = e.currentTarget.dataset.item
-
     const app = getApp()
-
-    app.globalData.targetNote = item
-
-    wx.switchTab({
-      url: '/pages/home/home'
-    })
+    app.globalData.targetNote = e.currentTarget.dataset.item
+    wx.switchTab({ url: '/pages/home/home' })
   },
 
-  // 跳转论坛帖子
   goToForum(e) {
-
-    const item = e.currentTarget.dataset.item
-
     const app = getApp()
-
-    app.globalData.targetPost = item
-
-    wx.switchTab({
-      url: '/pages/forum/forum'
-    })
+    app.globalData.targetPost = e.currentTarget.dataset.item
+    wx.switchTab({ url: '/pages/forum/forum' })
   },
 
-  // 编辑资料
   goEditProfile() {
-
-    wx.navigateTo({
-      url: '/pages/profile-edit/profile-edit'
-    })
+    wx.navigateTo({ url: '/pages/profile-edit/profile-edit' })
   }
 })
+
+

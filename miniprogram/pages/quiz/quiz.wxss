@@ -72,36 +72,47 @@
 
 /* ========= 答题区域 - 题目框宽度保持不变 ========= */
 .quiz-wrap {
-  padding: 40rpx;
+  padding-top: 60rpx;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  align-items: center;       /* 让卡片水平居中 */
   justify-content: flex-start;
-  padding-top: 80rpx;
 }
 .progress-bar {
-  height: 10rpx;
+  width: 100%;                /* 撑满父容器 */
+  height: 10rpx;              /* 高度写死，防止被重置 */
   background: #e0e0e0;
-  border-radius: 5rpx;
-  margin-bottom: 40rpx;
-  overflow: hidden;
+  border-radius: 0;
+  margin: 0;
+  flex-shrink: 0;            /* 防止被flex挤压 */
 }
+
 .progress {
   height: 100%;
   background: #2d5ba1;
   transition: width 0.3s;
 }
 
-/* 题目卡片 - 固定宽度比例，不会随页面变化 */
+/* 答题卡片 */
 .quiz-card {
   background: #fff;
   padding: 40rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.05);
-  flex: 0 0 auto;
-  width: 100%;
+  margin: 40rpx auto;
+  border-radius: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  
+  /* ★ 固定宽度，永不变窄 */
+  width: 690rpx;                     /* 固定像素宽度，最稳妥 */
+  max-width: calc(100vw - 60rpx);    /* 小屏手机自动缩小，大屏不超过690rpx */
+  flex-shrink: 0;                    /* 防止flex容器挤压卡片 */
   box-sizing: border-box;
+  
+  /* 保留之前的高度和滚动 */
+  height: auto;
+  overflow-y: auto;
 }
+
 .question-info {
   display: flex;
   justify-content: space-between;
@@ -123,6 +134,8 @@
   font-weight: bold;
   margin: 40rpx 0;
   line-height: 1.6;
+  text-align: center;         /* 短题目居中 */
+  word-break: break-all;      /* 过长单词强制换行，防止溢出 */
 }
 
 .options-container {
@@ -143,17 +156,90 @@
   font-weight: bold;
 }
 
+/* 按钮容器 */
+.btn-row {
+  display: flex;
+  width: 100%;
+  gap: 24rpx;                /* 适当增加间距 */
+  padding: 0 40rpx 0 30rpx;  /* 右侧多留一点，让下一题向中间靠 */
+  box-sizing: border-box;
+  margin-top: 20rpx;
+  justify-content: flex-start; /* 整体偏左对齐 */
+}
+
+/* 上一题按钮 */
+.prev-btn {
+  height: 100rpx;
+  width: 100rpx;               /* 现在会生效 */
+  flex-shrink: 0;
+  background: #fff;
+  color: #2d5ba1;
+  border: 2rpx solid #2d5ba1;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 重置 button 默认样式 */
+  padding: 0;                  /* 清除内边距 */
+  margin: 0;                   /* 清除外边距 */
+  line-height: normal;         /* 避免行高影响 */
+  min-width: auto;             /* 覆盖默认最小宽度 */
+  box-sizing: border-box;
+}
+
+/* 同时清除 button 自带的伪元素边框（如果有） */
+.prev-btn::after {
+  display: none;
+}
+
+/* 按钮容器 */
+.btn-row {
+  display: flex;
+  width: 100%;
+  gap: 20rpx;                 /* 两个按钮之间的间距 */
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+  justify-content: flex-start;  /* 从左开始排列 */
+}
+
+/* 上一题按钮（小尺寸，靠左） */
+.prev-btn {
+  width: 130rpx;                /* 固定窄宽度，远小于下一题按钮 */
+  height: 100rpx;
+  flex-shrink: 0;               /* 不被挤压变形 */
+  background: #fff;
+  color: #2d5ba1;
+  border: 2rpx solid #2d5ba1;
+  border-radius: 50rpx;
+  font-size: 28rpx;            /* 字稍小 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;          /* 防止文字换行 */
+}
+
+/* 下一题/提交 按钮（占满剩余空间） */
 .next-btn-fixed {
+  flex: 1;                      /* 占据所有剩余宽度 */
+  height: 100rpx;
   background: #2d5ba1;
   color: #fff;
   border-radius: 50rpx;
-  font-size: 34rpx;
-  width: 100%;
-  margin-top: 20rpx;
+  font-size: 36rpx;            /* 比上一题大，更突出 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.next-btn-fixed[disabled] {
-  background: #ccc !important;
-  color: #999 !important;
+
+/* 重置 button 默认伪元素边框 */
+.prev-btn::after,
+.next-btn-fixed::after {
+  display: none;
 }
 
 /* ========= 结果页（全屏） ========= */
@@ -200,9 +286,16 @@
   justify-content: center;
 }
 .retry-btn {
-  background: transparent;
-  color: #666;
-  border: 1rpx solid #ddd;
+  background: #fff;
+  color: #2d5ba1;
+  border: 2rpx solid #2d5ba1;
+  border-radius: 50rpx;
+  width: 80%;
+  margin: 20rpx auto;
+  font-size: 34rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ========= 排行榜页 - 宽度占满页面 ========= */
@@ -210,37 +303,39 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 60rpx 0 40rpx;
+  padding: 0;
   box-sizing: border-box;
-  background: linear-gradient(165deg, #f0f4fa 0%, #e8edf5 100%);
-  width: 100%;
+  background: transparent;
 }
+
 .rank-title {
   font-size: 44rpx;
   font-weight: bold;
   text-align: center;
   flex-shrink: 0;
-  margin-bottom: 40rpx;
-  padding: 0 30rpx;
-  color: #2d5ba1;
+  margin-bottom: 30rpx;
+  padding-top: 60rpx;
 }
+
 .rank-list {
   flex: 1;
   overflow-y: auto;
-  margin-bottom: 30rpx;
-  padding: 0;
-  width: 100%;
+  margin-bottom: 20rpx;
+  width: 100vw;            /* 保留这一行，保证滚动区域本身占满屏幕 */
+  padding: 0 30rpx;        /* ★ 左右留出30rpx距离 */
+  box-sizing: border-box;  /* ★ 让padding包含在宽度内，避免溢出 */
 }
 
-/* 列表项 - 宽度占满，不留过多空白 */
 .rank-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 28rpx 0;
+  width: 100%;
+  padding: 24rpx 30rpx;
   background: #fff;
-  border-bottom: 1rpx solid #f0f0f0;
-  margin-bottom: 0;
+  border-bottom: none;           /* ★ 去掉分割线，圆角卡片不需要 */
+  margin-bottom: 16rpx;         /* ★ 每个卡片之间留出间距，你可以改成12rpx、20rpx */
+  border-radius: 16rpx;         /* ★ 圆角大小，可改成12rpx或24rpx */
   box-sizing: border-box;
   width: 100%;
   border-radius: 0;
@@ -252,7 +347,6 @@
   align-items: center;
   flex: 1;
   overflow: hidden;
-  padding-left: 60rpx;
 }
 
 .rank-name {
@@ -265,16 +359,6 @@
   color: #333;
 }
 
-/* 分数 - 右侧留适当边距 */
-.rank-score {
-  font-size: 32rpx;
-  color: #2d5ba1;
-  font-weight: bold;
-  padding-right: 60rpx;
-  flex-shrink: 0;
-}
-
-/* 排名数字样式 */
 .rank-num {
   width: 56rpx;
   height: 56rpx;
@@ -290,26 +374,53 @@
   margin-right: 20rpx;
   flex-shrink: 0;
 }
-.rank-num.gold { background: #ffd700; color: #fff; font-size: 32rpx; }
-.rank-num.silver { background: #c0c0c0; color: #fff; font-size: 30rpx; }
-.rank-num.bronze { background: #cd7f32; color: #fff; font-size: 28rpx; }
 
-/* 空数据提示 */
-.empty-tip {
-  text-align: center;
-  padding: 80rpx;
-  color: #999;
-  font-size: 28rpx;
+.rank-num.gold {
+  background: #ffd700;
+  color: #fff;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+.rank-num.silver {
+  background: #c0c0c0;
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: bold;
+}
+.rank-num.bronze {
+  background: #cd7f32;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
 }
 
-/* 返回首页按钮 */
-.rank-back-btn {
+.rank-score {
+  font-size: 30rpx;
+  color: #2d5ba1;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.rank-item:first-child .rank-name,
+.rank-item:nth-child(2) .rank-name,
+.rank-item:nth-child(3) .rank-name {
+  font-weight: bold;
+  font-size: 32rpx;
+}
+
+.empty-tip {
+  text-align: center;
+  color: #999;
+  margin-top: 40rpx;
+}
+
+.rank-page .retry-btn {
   flex-shrink: 0;
   width: 80%;
-  margin: 20rpx auto 0;
-  background: #2d5ba1;
-  color: #fff;
-  border: none;
+  margin: 0 auto 30rpx auto;
+  background: #fff;                /* 白底 */
+  color: #2d5ba1;                  /* 蓝色字 */
+  border: 2rpx solid #2d5ba1;      /* 蓝色实线边框 */
   border-radius: 50rpx;
   font-size: 34rpx;
   height: 88rpx;
@@ -342,11 +453,29 @@
   color: #555;
   font-size: 28rpx;
 }
+/* 退出答题按钮 - 左上角浮动 */
+.exit-btn {
+  position: fixed;
+  left: 30rpx;
+  top: 90rpx;                /* 避开导航栏高度，可微调 */
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;              /* 确保在最上层 */
+  backdrop-filter: blur(4rpx);
+}
 
-/* 前三名加粗 */
-.rank-item:first-child .rank-name,
-.rank-item:nth-child(2) .rank-name,
-.rank-item:nth-child(3) .rank-name {
+.exit-icon {
+  font-size: 36rpx;
+  color: #fff;
   font-weight: bold;
-  font-size: 32rpx;
+  line-height: 1;
+}
+
+.exit-btn-hover {
+  background: rgba(0, 0, 0, 0.5);
 }
