@@ -126,7 +126,7 @@
 
       <image
         class="note-img"
-        src="{{item.image}}"
+        src="{{item.images[0]}}"
         mode="aspectFill"
       />
 
@@ -136,13 +136,7 @@
           {{item.title}}
         </text>
 
-        <view class="note-footer">
-
-          <text class="note-likes">
-            ❤️ {{item.likes}}
-          </text>
-
-        </view>
+        
 
       </view>
 

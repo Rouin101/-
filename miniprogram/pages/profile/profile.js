@@ -14,101 +14,91 @@ Page({
     this.loadAll()
   },
 
-  onShow() {
+  onPullDownRefresh() {
+    console.log('用户触发了下拉刷新')
+    
+    // 1. 重新调用加载数据的函数
     this.loadAll()
+    
+
   },
 
   async loadAll() {
+    const app = getApp()
+    if (!app.globalData.userInfo || !app.globalData.openid) {
+      // 1. 保持 loading 状态
+      this.setData({ loading: true })
+      
+      // 2. 提示用户正在初始化（非强制的 toast，不会遮挡页面）
+      wx.showToast({
+        title: '正在初始化...',
+        icon: 'none',
+        duration: 2000
+      })
+
+      
+      return
+    }
+    
+    
+    
     this.setData({ loading: true })
     wx.showLoading({ title: '加载中...' })
-
+    wx.stopPullDownRefresh() 
     try {
-      const app = getApp()
+      
       let userInfo = app.globalData.userInfo
       const currentOpenid = app.globalData.openid
 
-      if (!userInfo) {
-        const userRes = await db.collection('users')
-          .where({ openid: currentOpenid })
-          .get()
-          .catch(err => {
-            console.error('查询用户失败:', err)
-            return { data: [] }
-          })
+      
 
-        if (userRes.data.length > 0) {
-          userInfo = userRes.data[0]
-        } else {
-          const newUser = {
-            openid: currentOpenid,
-            nickname: '新用户',
-            avatar: '/images/default-avatar.png',
-            bio: '这个人很懒，还没有简介',
-            score: 0,
-            createTime: db.serverDate()
-          }
-          try {
-            const addRes = await db.collection('users').add({ data: newUser })
-            userInfo = { ...newUser, _id: addRes._id }
-          } catch (err) {
-            console.error('创建用户失败:', err)
-            userInfo = { ...newUser, _id: 'temp_' + Date.now() }
-          }
-        }
-      }
-
-      // 计算答题排名
       try {
-        const rankRes = await wx.cloud.callFunction({
-          name: 'quizFunctions',
-          data: { action: 'getMyRank' }
-        });
-        if (rankRes.result && rankRes.result.success) {
-          const { score, rank } = rankRes.result;
-          userInfo.score = score || 0;
-          // rank 为数字，转成可显示的字符串
-          userInfo.rank = rank ? `第${rank}名` : '未上榜';
+       
+        const myScore = userInfo.score || 0
+      
+        if (myScore > 0) {
+          // 2. 核心逻辑：查询 scores 表，统计有多少人的 score 字段大于我的分数
+          const countRes = await db.collection('scores')
+            .where({
+              score: db.command.gt(myScore) // gt = Greater Than (大于)
+            })
+            .count()
+      
+          // 3. 计算排名
+          userInfo.rank = countRes.total + 1
         } else {
-          userInfo.rank = '未排名';
+          userInfo.rank = '未上榜'
         }
+      
       } catch (err) {
-        console.warn('获取排名失败:', err);
-        userInfo.rank = '加载失败';
+        console.error('查询排名失败', err)
+        userInfo.rank = '查询错误'
       }
+    
 
-      app.globalData.userInfo = userInfo
-
+      // 初始化默认值
       let notesRes = { data: [] }
       let forumRes = { data: [] }
 
       try {
+        // 1. 查询 Notes (精简版)
+        // 直接使用解构赋值，如果报错则进入 catch
         notesRes = await db.collection('notes')
           .where({ openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
-          .catch(err => {
-            console.warn('查询精选帖子失败:', err)
-            return { data: [] }
-          })
-        console.log('查询条件 - openid:', currentOpenid)
-        console.log('查询结果 - 精选帖子:', notesRes.data)
-      } catch (err) {
-        console.warn('精选帖子查询异常:', err)
-        notesRes = { data: [] }
-      }
 
-      try {
+        // 2. 查询 Forum (精简版)
         forumRes = await db.collection('forum')
           .where({ openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
-          .catch(err => {
-            console.warn('查询论坛帖子失败:', err)
-            return { data: [] }
-          })
-        console.log('查询结果 - 论坛帖子:', forumRes.data)
+
       } catch (err) {
-        console.warn('论坛帖子查询异常:', err)
+        // 统一在这里捕获错误
+        console.warn('数据查询失败:', err)
+        // 如果出错，保持上面初始化的空数组即可，或者在这里手动重置
+        notesRes = { data: [] }
         forumRes = { data: [] }
       }
 
@@ -117,7 +107,7 @@ Page({
       console.log('论坛帖子数:', forumRes.data.length)
 
       this.setData({
-        userInfo,
+        userInfo:userInfo,
         myNotes: notesRes.data || [],
         myForumPosts: forumRes.data || [],
         loading: false
@@ -150,9 +140,16 @@ Page({
   },
 
   goToNote(e) {
-    const app = getApp()
-    app.globalData.targetNote = e.currentTarget.dataset.item
-    wx.switchTab({ url: '/pages/home/home' })
+    // 1. 从 dataset 中获取 item 对象
+    const item = e.currentTarget.dataset.item
+    
+    // 2. 拿到 _id (确保数据库里的字段是 _id)
+    const noteId = item._id
+
+    // 3. 跳转到详情页，拼接 id 参数
+    wx.navigateTo({
+      url: '/pages/home-detail/home-detail?id=' + noteId
+    })
   },
 
   goToForum(e) {

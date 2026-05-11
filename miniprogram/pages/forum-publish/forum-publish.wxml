@@ -1,0 +1,36 @@
+<view class="publish-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="cancel-btn" bindtap="goBack">取消</view>
+    <view class="page-title">发布新帖</view>
+    <view class="placeholder"></view> <!-- 占位，让标题居中 -->
+  </view>
+
+  <!-- 内容输入区域 -->
+  <view class="input-wrapper">
+    <!-- 标题输入框（如果不需要标题，可以把这段删掉） -->
+    <input 
+      class="title-input" 
+      placeholder="请输入标题（选填）" 
+      maxlength="30"
+      bindinput="onTitleInput" 
+      value="{{title}}"
+    />
+    
+    <!-- 正文内容输入框 -->
+    <textarea 
+      class="content-textarea" 
+      placeholder="分享你的新鲜事..." 
+      maxlength="500"
+      bindinput="onContentInput" 
+      value="{{content}}"
+      auto-height
+    ></textarea>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="word-count">{{content.length}}/500</view>
+    <button class="publish-btn" bindtap="submitPost">发布</button>
+  </view>
+</view>
