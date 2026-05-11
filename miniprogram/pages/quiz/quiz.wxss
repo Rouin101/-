@@ -142,17 +142,90 @@
   font-weight: bold;
 }
 
+/* 按钮容器 */
+.btn-row {
+  display: flex;
+  width: 100%;
+  gap: 24rpx;                /* 适当增加间距 */
+  padding: 0 40rpx 0 30rpx;  /* 右侧多留一点，让下一题向中间靠 */
+  box-sizing: border-box;
+  margin-top: 20rpx;
+  justify-content: flex-start; /* 整体偏左对齐 */
+}
+
+/* 上一题按钮 */
+.prev-btn {
+  height: 100rpx;
+  width: 100rpx;               /* 现在会生效 */
+  flex-shrink: 0;
+  background: #fff;
+  color: #2d5ba1;
+  border: 2rpx solid #2d5ba1;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* 重置 button 默认样式 */
+  padding: 0;                  /* 清除内边距 */
+  margin: 0;                   /* 清除外边距 */
+  line-height: normal;         /* 避免行高影响 */
+  min-width: auto;             /* 覆盖默认最小宽度 */
+  box-sizing: border-box;
+}
+
+/* 同时清除 button 自带的伪元素边框（如果有） */
+.prev-btn::after {
+  display: none;
+}
+
+/* 按钮容器 */
+.btn-row {
+  display: flex;
+  width: 100%;
+  gap: 20rpx;                 /* 两个按钮之间的间距 */
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  margin-top: 20rpx;
+  justify-content: flex-start;  /* 从左开始排列 */
+}
+
+/* 上一题按钮（小尺寸，靠左） */
+.prev-btn {
+  width: 130rpx;                /* 固定窄宽度，远小于下一题按钮 */
+  height: 100rpx;
+  flex-shrink: 0;               /* 不被挤压变形 */
+  background: #fff;
+  color: #2d5ba1;
+  border: 2rpx solid #2d5ba1;
+  border-radius: 50rpx;
+  font-size: 28rpx;            /* 字稍小 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  white-space: nowrap;          /* 防止文字换行 */
+}
+
+/* 下一题/提交 按钮（占满剩余空间） */
 .next-btn-fixed {
+  flex: 1;                      /* 占据所有剩余宽度 */
+  height: 100rpx;
   background: #2d5ba1;
   color: #fff;
-  border-radius: 0;
-  font-size: 34rpx;
-  width: 100%;
-  margin-top: 0;
+  border-radius: 50rpx;
+  font-size: 36rpx;            /* 比上一题大，更突出 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.next-btn-fixed[disabled] {
-  background: #ccc !important;
-  color: #999 !important;
+
+/* 重置 button 默认伪元素边框 */
+.prev-btn::after,
+.next-btn-fixed::after {
+  display: none;
 }
 
 /* ========= 结果页（全屏） ========= */
@@ -357,4 +430,30 @@
 .ek {
   color: #555;
   font-size: 28rpx;
+}
+/* 退出答题按钮 - 左上角浮动 */
+.exit-btn {
+  position: fixed;
+  left: 30rpx;
+  top: 90rpx;                /* 避开导航栏高度，可微调 */
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;              /* 确保在最上层 */
+  backdrop-filter: blur(4rpx);
+}
+
+.exit-icon {
+  font-size: 36rpx;
+  color: #fff;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.exit-btn-hover {
+  background: rgba(0, 0, 0, 0.5);
 }
