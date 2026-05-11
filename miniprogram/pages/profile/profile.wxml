@@ -128,7 +128,7 @@
 
       <image
         class="note-img"
-        src="{{item.image}}"
+        src="{{item.images[0]}}"
         mode="aspectFill"
       />
 
