@@ -87,7 +87,7 @@ const fullQuestionBank = [
   {"type":"choice","question":"吴健雄的父亲吴仲裔曾参与什么革命活动？","options":["辛亥革命","二次革命","五四运动","北伐"],"answer":1,"knowledge":"吴仲裔早年加入同盟会，参与反清活动，辛亥革命后还参加了二次革命。他是一位具有进步思想的革命者，后来转向教育，希望通过启蒙救国，这对吴健雄的世界观产生了深远影响。"},
   {"type":"truefalse","question":"吴健雄的名字“健雄”意为“健康雄伟”。","answer":true,"knowledge":"父亲为她取这个充满阳刚之气的名字，就是希望她身体强健、意志雄伟，不输给任何男子。吴健雄确实没有辜负这个名字，用一生诠释了何为巾帼不让须眉。"},
   {"type":"choice","question":"吴健雄在哪一年正式加入美国籍？","options":["1940年代","1950年代","1960年代","从未加入"],"answer":1,"knowledge":"吴健雄于1954年正式加入美国籍，但她始终保留着深厚的中国情结。入籍后她得以更方便地参与国际学术交流，也更能自由地在海外为华人发声。"},
-  {"type":"choice","question":"吴健雄退休后最常去的中国学术机构是？","options":["中国科学院","南京大学","北京大学","清华大学"],"answer":1,"knowledge":"吴健雄对母校南京大学感情尤为深厚，退休后几乎每次回国都会到南京大学访问讲学。南京大学的吴健雄图书馆就是由她捐资修建的，成为一代代学子探寻知识的殿堂。"},
+  {"type":"truefalse","question":"吴健雄退休后最常去的中国学术机构是？","options":["中国科学院","南京大学","北京大学","清华大学"],"answer":1,"knowledge":"吴健雄对母校南京大学感情尤为深厚，退休后几乎每次回国都会到南京大学访问讲学。南京大学的吴健雄图书馆就是由她捐资修建的，成为一代代学子探寻知识的殿堂。"},
   {"type":"choice","question":"南京大学建有吴健雄什么设施？","options":["图书馆","实验室","纪念馆","雕像"],"answer":0,"knowledge":"南京大学鼓楼校区有吴健雄图书馆，是她在1980年代捐资建造的。图书馆门口还有她的铜像，常有师生前来瞻仰。这里不仅是藏书之地，更是一个励志的精神坐标。"},
   {"type":"truefalse","question":"1997年吴健雄病逝后，江泽民发唁电致哀。","answer":true,"knowledge":"1997年2月16日吴健雄在纽约病逝，时任国家主席江泽民发去唁电，高度评价她对科学的贡献和对祖国的热爱。国内外许多媒体都刊发了悼念文章，纪念这位伟大而不朽的女物理学家。"},
   {"type":"choice","question":"吴健雄曾被誉为“世界物理女王”的称号出现在什么媒体？","options":["纽约时报","华盛顿邮报","科学杂志","时代周刊"],"answer":0,"knowledge":"《纽约时报》曾在报道中称吴健雄为“物理女王”(Queen of Physics)，这个称号迅速被广泛传播。它既是对她在核物理领域统治力的肯定，也是媒体对女性科学家的罕见致敬。"},
@@ -156,11 +156,7 @@ const fullQuestionBank = [
         const j = Math.floor(Math.random() * (i + 1));
         [pool[i], pool[j]] = [pool[j], pool[i]];
       }
-    
-      // 👇 加这一行：给每题后面补20个空格
-      const paddedPool = pool.map(q => ({ ...q, question: q.question + '                ' }));
-    
-      const selected = paddedPool.slice(0, 10).map(q => ({
+      const selected = pool.slice(0, 10).map(q => ({
         ...q,
         userAnswer: undefined,
         options: q.type === 'choice' ? q.options : ['正确', '错误']
@@ -258,7 +254,7 @@ nextQuestion() {
         name: 'quizFunctions',
         data: {
           action: 'submit',
-          nickName: '大先生追随者',  // 可替换为真实昵称
+          nickName: '物理爱好者',  // 可替换为真实昵称
           score: this.data.score
         },
         success: () => {
