@@ -138,13 +138,7 @@
           {{item.title}}
         </text>
 
-        <view class="note-footer">
-
-          <text class="note-likes">
-            ❤️ {{item.likes}}
-          </text>
-
-        </view>
+        
 
       </view>
 
