@@ -1,71 +1,191 @@
-<!-- pages/timeline/timeline.wxml -->
-<view class="page-container {{pageScrollLock ? 'scroll-lock' : ''}}">
-  <view class="timeline-container">
-    <view class="bg-decoration">
-      <view class="bg-circle bg-circle-1"></view>
-      <view class="bg-circle bg-circle-2"></view>
-      <view class="bg-circle bg-circle-3"></view>
+<!-- miniprogram/pages/timeline/timeline.wxml -->
+<view class="page-container" id="pageContainer">
+  <!-- WebGL粒子背景层 -->
+  <canvas
+    type="webgl"
+    id="particleCanvas"
+    class="particle-canvas"
+    bindtouchstart="onCanvasTouchStart"
+    bindtouchmove="onCanvasTouchMove"
+    bindtouchend="onCanvasTouchEnd"
+  ></canvas>
+
+  <!-- 2D粒子叠加层（致敬长河用） -->
+  <canvas
+    type="2d"
+    id="overlayCanvas"
+    class="overlay-canvas"
+  ></canvas>
+
+  <!-- 章节指示器（右侧）- 缩小点尺寸避免重叠 -->
+  <view class="chapter-indicator" style="opacity: {{chapterIndicatorOpacity}};">
+    <view class="chapter-dot {{currentChapter === 'departure' ? 'active' : ''}}"></view>
+    <view class="chapter-line"></view>
+    <view class="chapter-dot {{currentChapter === 'quest' ? 'active' : ''}}"></view>
+    <view class="chapter-line"></view>
+    <view class="chapter-dot {{currentChapter === 'peak' ? 'active' : ''}}"></view>
+    <view class="chapter-line"></view>
+    <view class="chapter-dot {{currentChapter === 'return' ? 'active' : ''}}"></view>
+    <view class="chapter-line"></view>
+    <view class="chapter-dot {{currentChapter === 'eternity' ? 'active' : ''}}"></view>
+  </view>
+
+  <!-- 章节标签浮动 -->
+  <view class="chapter-label {{chapterLabelVisible ? 'visible' : ''}}">
+    <text class="chapter-label-text">{{chapterLabelText}}</text>
+    <text class="chapter-label-sub">{{chapterLabelSub}}</text>
+  </view>
+
+  <!-- 主时间轴滚动区域，详情弹出时禁止滚动 -->
+  <scroll-view
+    class="timeline-scroll"
+    scroll-y="{{!showDetail}}"
+    enhanced
+    show-scrollbar="{{false}}"
+    bindscroll="onTimelineScroll"
+    scroll-top="{{scrollTop}}"
+    bindtouchstart="onScrollTouchStart"
+    bindtouchend="onScrollTouchEnd"
+    id="timelineScroll"
+  >
+    <!-- 顶部英雄区域 -->
+    <view class="hero-section" id="heroSection">
+      <view class="hero-portrait-frame">
+        <image class="hero-portrait-image" src="/images/timeline/2.jpg" mode="aspectFill"></image>
+        <view class="hero-glow"></view>
+      </view>
+      <view class="hero-title-block">
+        <text class="hero-name">吴健雄</text>
+        <text class="hero-name-en">Chien-Shiung Wu</text>
+        <text class="hero-subtitle">核物理女王 · 实验物理学大师</text>
+        <text class="hero-years">1912 - 1997</text>
+      </view>
+      <view class="hero-scroll-hint">
+        <text class="scroll-hint-text">向下滑动开启旅程</text>
+        <view class="scroll-hint-arrow">↓</view>
+      </view>
     </view>
 
-    <!-- 头部标题区 -->
-    <view class="hero">
-      <image wx:if="{{headerImage}}" class="hero-image hero-image-large" src="{{headerImage}}" mode="aspectFill" binderror="onImageError" data-src="{{headerImage}}"></image>
-      <text class="hero-title">吴健雄 · 时光轨迹</text>
-      <text class="hero-subtitle">世界物理女王 · 核物理先驱</text>
-      <view class="hero-line"></view>
+    <!-- 章节过渡区 -->
+    <view class="chapter-transition" wx:if="{{showChapterTransition}}">
+      <view class="transition-bg" style="background: {{transitionGradient}};"></view>
+      <text class="transition-title">{{transitionTitle}}</text>
+      <text class="transition-quote">{{transitionQuote}}</text>
     </view>
 
-    <!-- 时间线列表 -->
-    <view class="timeline-list">
-      <block wx:for="{{timelineList}}" wx:key="index">
-        <view class="timeline-item" bindtap="onTapEvent" data-event="{{item}}">
-          <view class="timeline-left">
-            <view class="timeline-year">{{item.year}}</view>
-            <view class="timeline-dot-wrapper">
-              <view class="timeline-dot"></view>
-              <view class="timeline-line" wx:if="{{index < timelineList.length - 1}}"></view>
+    <!-- 时间轴卡片列表 -->
+    <view class="timeline-track">
+      <view class="timeline-central-line"></view>
+      <block wx:for="{{timelineData}}" wx:key="year">
+        <view
+          class="timeline-card-wrapper {{item.chapter}} {{item._visible ? 'visible' : ''}}"
+          id="card-{{index}}"
+          data-index="{{index}}"
+        >
+          <!-- 3D卡片，绑定点击显示详情 -->
+          <view
+            class="timeline-card-3d"
+            data-index="{{index}}"
+            bindtap="onCardTap"
+          >
+            <view class="card-inner">
+              <!-- 年份标记（移向中央线一侧，紧贴中轴线） -->
+              <view class="card-year-badge">
+                <text class="year-number">{{item.year}}</text>
+              </view>
+              <!-- 卡片主体 -->
+              <view class="card-body glass-card">
+                <!-- 只有存在图片时才显示图片区域 -->
+                <image
+                  wx:if="{{item.image && item.image !== ''}}"
+                  class="card-image"
+                  src="{{item.image}}"
+                  mode="aspectFill"
+                  lazy-load
+                ></image>
+                <view class="card-content">
+                  <text class="card-title">{{item.title}}</text>
+                  <text class="card-description">{{item.description}}</text>
+                </view>
+              </view>
             </view>
           </view>
-          
-          <view class="timeline-right">
-            <view class="timeline-card">
-              <view class="card-content">
-                <view class="card-title">{{item.title}}</view>
-                <image 
-                  wx:if="{{item.image && item.image !== ''}}" 
-                  class="card-image" 
-                  src="{{item.image}}" 
-                  mode="aspectFill"
-                  binderror="onImageError"
-                  data-src="{{item.image}}"
-                ></image>
-              </view>
-              <view class="card-arrow">→</view>
-            </view>
+          <!-- 时间线节点 -->
+          <view class="timeline-node {{item._nodeActive ? 'node-active' : ''}}">
+            <view class="node-inner"></view>
+            <view class="node-ripple" wx:if="{{item._nodeActive}}"></view>
           </view>
         </view>
       </block>
     </view>
-  </view>
-</view>
 
-<!-- 弹窗 -->
-<view class="modal-mask" wx:if="{{showModal}}" bindtap="onCloseModal" catchtouchmove="preventTouchMove">
-  <view class="modal-container" catchtap="stopPropagation">
-    <view class="modal-header">
-      <view class="modal-year">{{currentEvent.year}}</view>
-      <text class="modal-title">{{currentEvent.title}}</text>
+    <!-- 数据可视化区域 -->
+    <view class="data-viz-section" id="dataVizSection">
+      <view class="viz-title">📊 科学生涯数据</view>
+      <canvas type="2d" id="dataVizCanvas" class="data-viz-canvas"></canvas>
+      <view class="viz-legend">
+        <view class="legend-item">
+          <view class="legend-color" style="background:#FFD700;"></view>
+          <text>论文发表: {{vizData.papers}}+篇</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background:#FF6B6B;"></view>
+          <text>重大奖项: {{vizData.awards}}+项</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background:#4ECDC4;"></view>
+          <text>诺奖提名: {{vizData.nobelNominations}}次</text>
+        </view>
+        <view class="legend-item">
+          <view class="legend-color" style="background:#C484E8;"></view>
+          <text>培养学者: {{vizData.students}}+位</text>
+        </view>
+      </view>
     </view>
-    
-    <scroll-view class="modal-scroll-content" scroll-y enhanced show-scrollbar="{{false}}" catchtouchmove="preventTouchMove">
-      <view class="modal-text-wrapper">
-        <text class="modal-text">{{currentEvent.description}}</text>
+
+    <!-- 致敬长河区域 -->
+    <view class="tribute-section" id="tributeSection">
+      <view class="tribute-title">✨ 致敬长河</view>
+      <view class="tribute-description">
+        无数科学先驱如星辰般汇聚，照亮人类探索真理的道路
       </view>
-      <view wx:if="{{currentEvent.image && currentEvent.image !== ''}}" class="modal-image-wrapper">
-        <image class="modal-image" src="{{currentEvent.image}}" mode="widthFix" binderror="onImageError" data-src="{{currentEvent.image}}"></image>
+      <canvas type="2d" id="tributeCanvas" class="tribute-canvas"></canvas>
+      <!-- 在致敬长河和科学寄语之间插入8.jpg，并缩小与上下内容的间距 -->
+      <image class="tribute-image" src="/images/timeline/8.jpg" mode="widthFix" lazy-load></image>
+      <view class="tribute-message">
+        <text class="tribute-quote-text">"科学没有国界，但科学家有祖国。"</text>
+        <text class="tribute-author">—— 吴健雄</text>
       </view>
-    </scroll-view>
-    
-    <view class="modal-close" bindtap="onCloseModal">关 闭</view>
+    </view>
+
+    <!-- 底部留白 -->
+    <view class="bottom-spacer"></view>
+  </scroll-view>
+
+  <!-- 粒子流反转提示（宇称不守恒彩蛋） -->
+  <view class="parity-hint {{parityHintVisible ? 'hint-visible' : ''}}" bindtap="onParityTap">
+    <text class="parity-hint-text">👆 点击反转粒子流</text>
+    <view class="parity-arrow {{parityReversed ? 'reversed' : ''}}">→</view>
+  </view>
+
+  <!-- 加载遮罩 -->
+  <view class="loading-overlay" wx:if="{{isLoading}}">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">正在构建粒子宇宙...</text>
+  </view>
+
+  <!-- 详情浮层（点击卡片显示） -->
+  <view class="detail-mask" wx:if="{{showDetail}}" catchtouchmove="preventMove" bindtap="closeDetail">
+    <view class="detail-container" catchtap="stopPropagation">
+      <view class="detail-header">
+        <text class="detail-year">{{detailData.year}}</text>
+        <view class="detail-close" bindtap="closeDetail">✕</view>
+      </view>
+      <image wx:if="{{detailData.image && detailData.image !== ''}}" class="detail-image" src="{{detailData.image}}" mode="aspectFill"></image>
+      <view class="detail-content">
+        <text class="detail-title">{{detailData.title}}</text>
+        <text class="detail-description">{{detailData.description}}</text>
+      </view>
+    </view>
   </view>
 </view>
