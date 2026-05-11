@@ -52,27 +52,23 @@ Page({
 
       
 
-      try {
-       
-        const myScore = userInfo.score || 0
-      
-        if (myScore > 0) {
-          // 2. 核心逻辑：查询 scores 表，统计有多少人的 score 字段大于我的分数
-          const countRes = await db.collection('scores')
-            .where({
-              score: db.command.gt(myScore) // gt = Greater Than (大于)
-            })
-            .count()
-      
-          // 3. 计算排名
-          userInfo.rank = countRes.total + 1
+       // 计算答题排名
+       try {
+        const rankRes = await wx.cloud.callFunction({
+          name: 'quizFunctions',
+          data: { action: 'getMyRank' }
+        });
+        if (rankRes.result && rankRes.result.success) {
+          const { score, rank } = rankRes.result;
+          userInfo.score = score || 0;
+          // rank 为数字，转成可显示的字符串
+          userInfo.rank = rank ? `第${rank}名` : '未上榜';
         } else {
-          userInfo.rank = '未上榜'
+          userInfo.rank = '未排名';
         }
-      
       } catch (err) {
-        console.error('查询排名失败', err)
-        userInfo.rank = '查询错误'
+        console.warn('获取排名失败:', err);
+        userInfo.rank = '加载失败';
       }
     
 
