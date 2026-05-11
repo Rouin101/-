@@ -14,7 +14,7 @@
 <!-- 答题页 -->
 <view class="quiz-wrap" wx:if="{{showQuiz}}">
   <view class="progress-bar">
-    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100}}%"></view>
+    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100}}"></view>
   </view>
   <view class="quiz-card">
     <view class="question-info">

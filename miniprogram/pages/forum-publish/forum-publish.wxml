@@ -8,14 +8,6 @@
 
   <!-- 内容输入区域 -->
   <view class="input-wrapper">
-    <!-- 标题输入框（如果不需要标题，可以把这段删掉） -->
-    <input 
-      class="title-input" 
-      placeholder="请输入标题（选填）" 
-      maxlength="30"
-      bindinput="onTitleInput" 
-      value="{{title}}"
-    />
     
     <!-- 正文内容输入框 -->
     <textarea 

@@ -3,7 +3,7 @@ const coll = db.collection("forum");
 
 Page({
   data: {
-    title: "",
+    
     content: ""
   },
 
@@ -12,10 +12,7 @@ Page({
     wx.navigateBack({ delta: 1 })
   },
 
-  // 接收标题输入
-  onTitleInput(e) {
-    this.setData({ title: e.detail.value })
-  },
+  
 
   // 接收内容输入
   onContentInput(e) {
@@ -24,7 +21,7 @@ Page({
 
   // 提交发布
   async submitPost() {
-    let { title, content } = this.data;
+    let { content } = this.data;
     content = content.trim();
     
     if (!content) {
@@ -36,7 +33,7 @@ Page({
     try {
       await coll.add({
         data: {
-          title: title.trim(), // 如果没填标题就是空字符串
+          
           author: "用户", // 后续可以换成真实的用户信息
           content: content,
           createTime: db.serverDate(),
