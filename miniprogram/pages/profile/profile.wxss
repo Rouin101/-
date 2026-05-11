@@ -347,3 +347,9 @@
 
   align-self: flex-start;
 }
+
+.score-detail {
+  font-size: 20rpx;
+  color: #aaa;
+  margin-top: 6rpx;
+}

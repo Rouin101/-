@@ -39,14 +39,12 @@
 <view class="score-card">
 
   <view class="score-item">
-    <text class="score-num red">
-      {{userInfo.score || 0}}
-    </text>
-
-    <text class="score-label">
-      答题排名
-    </text>
-  </view>
+  <text class="score-num red">
+    {{userInfo.rank || '未上榜'}}
+  </text>
+  <text class="score-label">答题排名</text>
+  <text class="score-detail" wx:if="{{userInfo.score > 0}}">最高 {{userInfo.score}} 分</text>
+</view>
 
   <view class="divider"></view>
 

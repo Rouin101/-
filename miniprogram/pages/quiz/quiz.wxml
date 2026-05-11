@@ -13,8 +13,13 @@
 
 <!-- 答题页 -->
 <view class="quiz-wrap" wx:if="{{showQuiz}}">
+  <!-- 退出按钮 -->
+  <view class="exit-btn" bindtap="exitQuiz" hover-class="exit-btn-hover">
+    <text class="exit-icon">✕</text>
+  </view>
+
   <view class="progress-bar">
-    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100}}%"></view>
+    <view class="progress" style="width: {{(currentIndex + 1) / questions.length * 100+'%'}}"></view>
   </view>
   <view class="quiz-card">
     <view class="question-info">
@@ -34,49 +39,74 @@
       </view>
     </view>
   </view>
+  <view class="btn-row">
+  <button class="prev-btn" bindtap="prevQuestion" disabled="{{currentIndex === 0}}">
+    上一题
+  </button>
   <button class="next-btn-fixed" bindtap="nextQuestion" disabled="{{questions[currentIndex].userAnswer === undefined}}">
     {{currentIndex === questions.length - 1 ? '提交结果' : '下一题'}}
   </button>
 </view>
-
-<!-- 结果页 -->
-<view class="result-full" wx:if="{{showResult}}">
-  <view class="score-title">挑战完成！</view>
-  <view class="score-num">{{score}} <text class="unit">分</text></view>
-  <view class="score-desc">{{score === 100 ? '满分！物理学真传人' : (score >= 80 ? '卓越的物理学守望者' : '继续加油，深入了解吴教授')}}</view>
-  <button class="r-btn" bindtap="uploadAndRank">上传分数并查看排行榜</button>
-  <button class="r-btn retry-btn" bindtap="viewErrors">查看错题解析</button>
-  <button class="r-btn retry-btn" bindtap="restart">重新挑战</button>
 </view>
 
-<!-- 排行榜页 -->
-<view class="rank-page" wx:if="{{showRank}}">
-  <view class="rank-title">🏆 积分排行榜</view>
-  <scroll-view scroll-y class="rank-list">
-    <view class="rank-item" wx:for="{{rankList}}" wx:key="index">
-      <view class="rank-left">
-        <text class="rank-num {{index === 0 ? 'gold' : (index === 1 ? 'silver' : (index === 2 ? 'bronze' : ''))}}">
-          {{index + 1}}
-        </text>
-        <text class="rank-name">{{item.nickName}}</text>
+    <!-- 头部标题区 -->
+    <view class="hero">
+      <image wx:if="{{headerImage}}" class="hero-image hero-image-large" src="{{headerImage}}" mode="aspectFill" binderror="onImageError" data-src="{{headerImage}}"></image>
+      <text class="hero-title">吴健雄 · 时光轨迹</text>
+      <text class="hero-subtitle">世界物理女王 · 核物理先驱</text>
+      <view class="hero-line"></view>
+    </view>
+
+    <!-- 时间线列表 -->
+    <view class="timeline-list">
+      <block wx:for="{{timelineList}}" wx:key="index">
+        <view class="timeline-item" bindtap="onTapEvent" data-event="{{item}}">
+          <view class="timeline-left">
+            <view class="timeline-year">{{item.year}}</view>
+            <view class="timeline-dot-wrapper">
+              <view class="timeline-dot"></view>
+              <view class="timeline-line" wx:if="{{index < timelineList.length - 1}}"></view>
+            </view>
+          </view>
+          
+          <view class="timeline-right">
+            <view class="timeline-card">
+              <view class="card-content">
+                <view class="card-title">{{item.title}}</view>
+                <image 
+                  wx:if="{{item.image && item.image !== ''}}" 
+                  class="card-image" 
+                  src="{{item.image}}" 
+                  mode="aspectFill"
+                  binderror="onImageError"
+                  data-src="{{item.image}}"
+                ></image>
+              </view>
+              <view class="card-arrow">→</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+
+<view class="modal-mask" wx:if="{{showModal}}" bindtap="onCloseModal" catchtouchmove="preventTouchMove">
+  <view class="modal-container" catchtap="stopPropagation">
+    <view class="modal-header">
+      <view class="modal-year">{{currentEvent.year}}</view>
+      <text class="modal-title">{{currentEvent.title}}</text>
+    </view>
+    
+    <scroll-view class="modal-scroll-content" scroll-y enhanced show-scrollbar="{{false}}" catchtouchmove="preventTouchMove">
+      <view class="modal-text-wrapper">
+        <text class="modal-text">{{currentEvent.description}}</text>
       </view>
-      <text class="rank-score">{{item.score}} 分</text>
-    </view>
-    <view wx:if="{{rankList.length === 0}}" class="empty-tip">暂无数据，快来作答吧~</view>
-  </scroll-view>
-  <button class="r-btn retry-btn" bindtap="restart">返回首页</button>
-</view>
-
-<!-- 错题页 -->
-<view class="error-page" wx:if="{{showError}}">
-  <view class="rank-title">📝 错题解析</view>
-  <scroll-view scroll-y class="error-list">
-    <view class="error-item" wx:for="{{wrongList}}" wx:key="index">
-      <text class="eq">{{item.question}}</text>
-      <text class="ek">✅ 解析：{{item.knowledge}}</text>
-    </view>
-  </scroll-view>
-  <button class="r-btn retry-btn" bindtap="restart">重新答题</button>
-</view>
-
+      <view wx:if="{{currentEvent.image && currentEvent.image !== ''}}" class="modal-image-wrapper">
+        <image class="modal-image" src="{{currentEvent.image}}" mode="widthFix" binderror="onImageError" data-src="{{currentEvent.image}}"></image>
+      </view>
+    </scroll-view>
+    
+    <view class="modal-close" bindtap="onCloseModal">关 闭</view>
+  </view>
 </view>
