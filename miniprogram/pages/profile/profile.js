@@ -59,19 +59,21 @@ Page({
 
       // 计算答题排名
       try {
-        const scoresRes = await db.collection('scores').orderBy('score', 'desc').get()
-        const scoreList = scoresRes.data || []
-        let userRank = '未排名'
-        for (let i = 0; i < scoreList.length; i++) {
-          if (scoreList[i]._openid === currentOpenid || scoreList[i].openid === currentOpenid) {
-            userRank = i + 1
-            break
-          }
+        const rankRes = await wx.cloud.callFunction({
+          name: 'quizFunctions',
+          data: { action: 'getMyRank' }
+        });
+        if (rankRes.result && rankRes.result.success) {
+          const { score, rank } = rankRes.result;
+          userInfo.score = score || 0;
+          // rank 为数字，转成可显示的字符串
+          userInfo.rank = rank ? `第${rank}名` : '未上榜';
+        } else {
+          userInfo.rank = '未排名';
         }
-        userInfo.rank = userRank
       } catch (err) {
-        console.warn('查询排名失败:', err)
-        userInfo.rank = '未排名'
+        console.warn('获取排名失败:', err);
+        userInfo.rank = '加载失败';
       }
 
       app.globalData.userInfo = userInfo
@@ -163,3 +165,5 @@ Page({
     wx.navigateTo({ url: '/pages/profile-edit/profile-edit' })
   }
 })
+
+
