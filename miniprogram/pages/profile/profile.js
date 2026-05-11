@@ -140,9 +140,16 @@ Page({
   },
 
   goToNote(e) {
-    const app = getApp()
-    app.globalData.targetNote = e.currentTarget.dataset.item
-    wx.switchTab({ url: '/pages/home/home' })
+    // 1. 从 dataset 中获取 item 对象
+    const item = e.currentTarget.dataset.item
+    
+    // 2. 拿到 _id (确保数据库里的字段是 _id)
+    const noteId = item._id
+
+    // 3. 跳转到详情页，拼接 id 参数
+    wx.navigateTo({
+      url: '/pages/home-detail/home-detail?id=' + noteId
+    })
   },
 
   goToForum(e) {
