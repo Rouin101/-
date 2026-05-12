@@ -1,35 +1,37 @@
-/* miniprogram/pages/timeline/timeline.wxss */
+/* timeline.wxss */
 .page-container {
   position: relative;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #0a0a14;
+  /* 深蓝紫色渐变背景（底层） */
+  background: linear-gradient(180deg, #050714 0%, #0a1a3a 40%, #0d2040 100%);
   font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
 
-/* 粒子背景层 */
-.particle-canvas {
+/* 全屏粒子背景画布 */
+.particle-canvas-full {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  pointer-events: auto;
+  pointer-events: none;  /* 让粒子层不干扰滚动点击 */
 }
 
-.overlay-canvas {
+/* 底部星空装饰（可选） */
+.star-canvas {
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 240rpx;
   z-index: 2;
   pointer-events: none;
 }
 
-/* 章节指示器（右侧）- 缩小点尺寸避免与卡片重叠 */
+/* 章节指示器（右侧） */
 .chapter-indicator {
   position: fixed;
   right: 16rpx;
@@ -277,7 +279,7 @@
   transform: translateX(-50%);
 }
 
-/* 卡片容器 – 添加浮现动画 */
+/* 卡片容器 – 浮现动画 */
 .timeline-card-wrapper {
   position: relative;
   margin: 40rpx 0;
@@ -335,7 +337,6 @@
   transform: scale(0.98);
 }
 
-/* 卡片主体宽度限制，防止溢出 */
 .card-body {
   max-width: 330rpx;
   min-height: 240rpx;
@@ -367,7 +368,7 @@
   line-height: 1.5;
 }
 
-/* 年份标记 – 紧贴中轴线，避免重叠 */
+/* 年份标记 – 紧贴中轴线 */
 .card-year-badge {
   position: absolute;
   top: 20rpx;
@@ -378,17 +379,15 @@
   white-space: nowrap;
 }
 
-/* 奇数项（卡片在左）：年份标记靠右，紧贴中轴线 */
 .timeline-card-wrapper:nth-child(odd) .card-year-badge {
   left: auto;
-  right: -160rpx;      /* 增大偏移量，使年份标记更靠近中轴线 */
+  right: -160rpx;
   flex-direction: row-reverse;
 }
 
-/* 偶数项（卡片在右）：年份标记靠左，紧贴中轴线 */
 .timeline-card-wrapper:nth-child(even) .card-year-badge {
   right: auto;
-  left: -160rpx;       /* 增大偏移量，使年份标记更靠近中轴线 */
+  left: -160rpx;
   flex-direction: row;
 }
 
@@ -400,7 +399,6 @@
   text-shadow: 0 0 20rpx rgba(140, 180, 255, 0.6);
 }
 
-/* 黄点尺寸缩小 */
 .year-dot {
   width: 10rpx;
   height: 10rpx;
@@ -449,55 +447,61 @@
   100% { width: 80rpx; height: 80rpx; opacity: 0; }
 }
 
-/* 数据可视化区域 */
+/* 数据可视化区域（仿照 tribute-section 样式） */
 .data-viz-section {
   padding: 80rpx 40rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .viz-title {
-  font-size: 36rpx;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 6rpx;
-  margin-bottom: 30rpx;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #e3dede;
+  margin-bottom: 20rpx;
 }
 
-.data-viz-canvas {
-  width: 600rpx;
-  height: 400rpx;
-  border-radius: 20rpx;
-  background: rgba(20, 24, 45, 0.5);
-  border: 1rpx solid rgba(255, 255, 255, 0.1);
+/* 新增的描述文字样式，保持和 tribute-description 一致 */
+.viz-description {
+  font-size: 28rpx;
+  color: #dadada;
+  margin-bottom: 40rpx;
+  padding: 0 20rpx;
+  line-height: 1.6;
 }
 
+/* 图片样式，完全对齐 tribute-image */
+.viz-image {
+  width: 100%;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  margin-bottom: 40rpx;
+  display: block;
+}
+
+/* 图例区域保持原样，微调间距即可 */
 .viz-legend {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20rpx;
-  margin-top: 30rpx;
+  gap: 30rpx;
+  padding: 0 20rpx;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  font-size: 24rpx;
+  color: #ebe8e8;
 }
 
 .legend-color {
   width: 20rpx;
   height: 20rpx;
-  border-radius: 4rpx;
+  border-radius: 50%;
+  margin-right: 10rpx;
 }
-
-.legend-item text {
-  font-size: 22rpx;
-  color: rgba(255, 255, 255, 0.8);
-}
-
 /* 致敬长河区域 */
 .tribute-section {
   padding: 80rpx 40rpx 120rpx;
@@ -521,22 +525,14 @@
   text-align: center;
 }
 
-.tribute-canvas {
-  width: 100%;
-  height: 0rpx;
-  border-radius: 20rpx;
-}
-
-/* 新增的致敬长河图片样式，缩小与上下内容的间距 */
 .tribute-image {
   width: 100%;
-  margin: 16rpx 0 8rpx 0; /* 原为30rpx 0 30rpx 0，缩小上下边距 */
+  margin: 16rpx 0 8rpx 0;
   border-radius: 20rpx;
   box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.3);
   border: 1rpx solid rgba(255, 215, 0, 0.2);
 }
 
-/* 缩小致敬区域与语录的距离，原 margin-top:20rpx，现调小 */
 .tribute-message {
   margin-top: 30rpx;
   text-align: center;
@@ -557,7 +553,7 @@
   margin-top: 12rpx;
 }
 
-/* 宇称不守恒彩蛋 */
+/* 宇称不守恒彩蛋（反转粒子流按钮） */
 .parity-hint {
   position: fixed;
   bottom: 120rpx;
@@ -574,6 +570,7 @@
   opacity: 0;
   transition: all 0.5s ease;
   pointer-events: none;
+  backdrop-filter: blur(10rpx);
 }
 
 .parity-hint.hint-visible {
@@ -584,6 +581,7 @@
 .parity-hint-text {
   font-size: 24rpx;
   color: #FFD700;
+  white-space: nowrap;
 }
 
 .parity-arrow {
