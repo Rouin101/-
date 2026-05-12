@@ -3,6 +3,7 @@ const coll = db.collection("forum");
 
 Page({
   data: {
+    
     postList: []
   },
 
@@ -10,11 +11,17 @@ Page({
     this.getPostList();
   },
 
+  onShow:function(){
+    
+    this.getPostList()
+  },
+  
   onPullDownRefresh() {
     console.log('用户触发了下拉刷新')
     
     // 1. 重新调用加载数据的函数
-    this.getPostList();
+    this.getPostList()
+    
   },
   
   // 获取并格式化帖子列表

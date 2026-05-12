@@ -148,7 +148,8 @@ const fullQuestionBank = [
       rankList: [],
       uploaded: false        // 防止重复上传
     },
-  
+    
+    
     // 开始答题：随机抽10题
     startQuiz() {
       const pool = [...this.data.allQuestions];

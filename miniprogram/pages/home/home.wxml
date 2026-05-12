@@ -1,4 +1,6 @@
-<scroll-view scroll-y class="container" style="height:100vh;padding-top: 60rpx;" enhanced = "true">
+<view class= "refreshword">拉这里刷新哦</view>
+<scroll-view scroll-y class="container" style="height:100vh;padding-top: 80rpx;" enhanced = "true">
+  
   <view class="waterfall">
     
     <view class="card" wx:for="{{noteList}}" wx:key="_id">

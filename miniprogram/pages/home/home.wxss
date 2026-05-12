@@ -1,6 +1,22 @@
 page {
-  background-color: #f5f5f5;
+  background-image: linear-gradient(to bottom, #124d7a, #381297);
   height: 100%;
+}
+
+.refreshword {
+  position: fixed;       /* 固定在页面顶部，不随瀑布流滚动 */
+  top: 20rpx;            /* 距离顶部留出一点安全距离 */
+  left: 50%;             /* 左边定位到屏幕正中间 */
+  transform: translateX(-50%); /* 向左回退自身宽度的50%，实现绝对水平居中 */
+  
+  z-index: 1001;         /* 确保它显示在瀑布流和其他内容的上方 */
+  
+  padding: 12rpx 40rpx;  /* 上下12rpx、左右40rpx的内边距，撑出“长按钮”的形状 */
+  background-color: rgba(36, 90, 156, 0.6); /* 半透明黑色背景，更有质感 */
+  color: #3a8999;        
+  font-size: 26rpx;      /* 适中的文字大小 */
+  border-radius: 50rpx;  /* 较大的圆角值，形成胶囊/长圆形按钮效果 */
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15); /* 加上一点阴影，增加立体感 */
 }
 
 .container {
@@ -16,10 +32,13 @@ page {
 }
 
 .card {
-  background-color: #fff;
-  border-radius: 12rpx;
+  background-color:transparent;
+  border-radius: 20rpx;
   overflow: hidden;
-  margin-bottom: 10rpx;
+  margin-bottom: 20rpx;
+  margin-left: 5px;
+  margin-right: 5px;
+  border:1px solid #cecbcb;
   break-inside: avoid;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
 }
@@ -36,7 +55,7 @@ page {
 
 .card-title {
   font-size: 30rpx;
-  color: #333;
+  color: #d4d1d1;
   font-weight: 500;
   line-height: 1.4;
   display: -webkit-box;
@@ -60,7 +79,7 @@ page {
 
 .nickname {
   font-size: 22rpx;
-  color: #666;
+  color: #cecbcb;
   flex: 1;
 }
 
@@ -76,12 +95,12 @@ page {
   bottom: 80rpx;
   width: 100rpx;
   height: 100rpx;
-  background: linear-gradient(45deg, #ff2442, #ff6b81);
+  background: linear-gradient(45deg, #245bff, #15278b);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 20rpx rgba(255, 36, 66, 0.4);
+  box-shadow: 0 4rpx 20rpx rgba(69, 36, 255, 0.4);
   z-index: 999;
 }
 
