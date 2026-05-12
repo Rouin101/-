@@ -1,39 +1,38 @@
 page {
-  background-color: #fff;
-  /* 删除 display: flex 和 flex-direction: column */
-  /* 让页面回归正常的文档流布局 */
+  background: linear-gradient(165deg, #f8f2fc 0%, #eedef7 100%);
 }
 
 .container {
   padding: 20rpx;
-  padding-bottom: 100rpx; 
-  /* 如果需要占满屏幕，可以用 min-height */
-  min-height: 100vh; 
+  padding-bottom: 100rpx;
+  min-height: 100vh;
   box-sizing: border-box;
 }
+
 /* 图片区域 */
 .image-section {
   padding: 20rpx;
-  background: #fff;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-radius: 20rpx;
   margin-bottom: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(107, 53, 160, 0.06);
 }
 
-/* 图片列表：Flex 布局，允许换行 */
 .image-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20rpx; /* 图片之间的间距 */
+  gap: 20rpx;
   margin-bottom: 20rpx;
 }
 
-/* 单个图片容器 */
 .image-item {
   position: relative;
   width: 200rpx;
   height: 200rpx;
   border-radius: 12rpx;
   overflow: hidden;
-  background-color: #f5f5f5;
+  background-color: #f3e8f9;
 }
 
 .preview-img {
@@ -41,14 +40,13 @@ page {
   height: 100%;
 }
 
-/* 删除按钮 */
 .delete-btn {
   position: absolute;
   top: 0;
   right: 0;
   width: 40rpx;
   height: 40rpx;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(107, 53, 160, 0.7);
   color: #fff;
   text-align: center;
   line-height: 40rpx;
@@ -57,7 +55,7 @@ page {
   z-index: 10;
 }
 
-/* 上传按钮样式 */
+/* 上传按钮 */
 .upload-btn {
   display: flex;
   flex-direction: column;
@@ -65,48 +63,59 @@ page {
   justify-content: center;
   width: 200rpx;
   height: 200rpx;
-  border: 1rpx dashed #ccc;
+  border: 1rpx dashed #6B35A0;
   border-radius: 12rpx;
-  background-color: #fafafa;
+  background-color: #faf5ff;
+  transition: all 0.2s;
+}
+.upload-btn:active {
+  background: #f3e8f9;
 }
 
 .upload-icon {
   font-size: 60rpx;
-  color: #999;
+  color: #6B35A0;
   margin-bottom: 10rpx;
 }
 
 .upload-text {
   font-size: 24rpx;
-  color: #999;
+  color: #6B35A0;
+  font-weight: 500;
 }
 
-/* 表单通用样式 */
+/* 表单通用 */
 .form-item {
   padding: 0 30rpx;
   margin-bottom: 20rpx;
-  background: #fff;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(107, 53, 160, 0.04);
 }
 
 .title-input {
   height: 80rpx;
   font-size: 32rpx;
-  border-bottom: 1rpx solid #eee;
+  border-bottom: 1rpx solid rgba(107,53,160,0.15);
+  color: #6B35A0;
 }
 
 .content-wrapper {
   padding: 20rpx 30rpx;
-  background: #fff;
-  /* 确保没有 overflow: hidden 导致内容被切掉 */
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-radius: 20rpx;
+  box-shadow: 0 6rpx 20rpx rgba(107, 53, 160, 0.04);
 }
 
 .content-textarea {
   width: 100%;
-  min-height: 300rpx; /* 强制最小高度 */
+  min-height: 300rpx;
   font-size: 30rpx;
   line-height: 1.6;
-  color: #333;
-  background-color: #fff; /* 确保背景是白色的 */
+  color: #3a3548;
+  background: transparent;
 }
 
 /* 底部按钮 */
@@ -114,21 +123,37 @@ page {
   display: flex;
   justify-content: space-between;
   padding: 30rpx;
-  background: #fff;
+  background: transparent;
   margin-top: 20rpx;
 }
 
 .btn-cancel {
-  background: #f5f5f5;
-  color: #666;
+  background: rgba(255,255,255,0.9);
+  color: #6B35A0;
   flex: 1;
   margin-right: 20rpx;
+  border: 2rpx solid rgba(107,53,160,0.2);
+  border-radius: 40rpx;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.btn-cancel:active {
+  background: #f3e8f9;
+  transform: scale(0.97);
 }
 
 .btn-publish {
-  background: #ff2442;
+  background: linear-gradient(135deg, #8a4bb3, #6B35A0);
+  box-shadow: 0 6rpx 18rpx rgba(107, 53, 160, 0.35);
   color: #fff;
   flex: 1;
   margin-left: 20rpx;
+  border-radius: 40rpx;
+  font-weight: 600;
+  border: none;
+  transition: all 0.2s;
 }
-
+.btn-publish:active {
+  transform: scale(0.97);
+  box-shadow: 0 4rpx 12rpx rgba(107, 53, 160, 0.4);
+}

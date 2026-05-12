@@ -146,7 +146,9 @@ const fullQuestionBank = [
       score: 0,
       wrongList: [],
       rankList: [],
-      uploaded: false        // 防止重复上传
+      uploaded: false,        // 防止重复上传
+      rankCache: null,         // 排行榜缓存 ← 新加
+      rankCacheTime: 0          // 上次缓存时间 ← 新加
     },
     
     
@@ -175,7 +177,28 @@ const fullQuestionBank = [
         wrongList: [],
         uploaded: false
       });
+      this.preloadRank();   // ← 新加这一行
     },
+
+    preloadRank() {
+      const now = Date.now();
+      if (this.data.rankCache && (now - this.data.rankCacheTime < 60000)) {
+        return; // 1分钟内直接用缓存，不请求
+      }
+      wx.cloud.callFunction({
+        name: 'quizFunctions',
+        data: { action: 'getRank' },
+        success: (res) => {
+          this.setData({
+            rankCache: res.result.rankList || [],
+            rankCacheTime: Date.now()
+          });
+        },
+        fail: () => {} // 静默失败，不影响主流程
+      });
+    },
+
+    
   
     // 统一选择答案（已将判断题答案转为索引）
 selectOption(e) {
@@ -279,16 +302,32 @@ nextQuestion() {
   
     // 直接从首页查看排行榜
     goToRank() {
+      // 有缓存直接显示
+      if (this.data.rankCache) {
+        this.setData({
+          rankList: this.data.rankCache,
+          showHome: false,
+          showRank: true
+        });
+        return;
+      }
+    
+      // 无缓存才请求
+      wx.showLoading({ title: '加载中...', mask: true });
       wx.cloud.callFunction({
         name: 'quizFunctions',
         data: { action: 'getRank' },
         success: (res) => {
+          const list = res.result.rankList || [];
           this.setData({
-            rankList: res.result.rankList || [],
+            rankList: list,
             showHome: false,
-            showRank: true
+            showRank: true,
+            rankCache: list,
+            rankCacheTime: Date.now()
           });
-        }
+        },
+        complete: () => wx.hideLoading()
       });
     },
   

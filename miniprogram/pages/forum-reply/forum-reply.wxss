@@ -1,9 +1,8 @@
 /* 页面整体背景 */
 page {
-  background-color: #f5f5f5;
+  background: linear-gradient(165deg, #f8f2fc 0%, #eedef7 100%);
 }
 
-/* 最外层容器，使用 Flex 纵向布局，并占满全屏高度 */
 .publish-container {
   display: flex;
   flex-direction: column;
@@ -17,40 +16,46 @@ page {
   justify-content: space-between;
   height: 88rpx;
   padding: 0 24rpx;
-  background-color: #ffffff;
-  border-bottom: 1rpx solid #eeeeee;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-bottom: 1rpx solid rgba(107,53,160,0.1);
 }
 
 .cancel-btn {
   font-size: 30rpx;
-  color: #666666;
-  width: 80rpx; /* 固定宽度，配合右侧占位实现完美居中 */
+  color: #6B35A0;
+  width: 80rpx;
+  font-weight: 500;
 }
 
 .page-title {
   font-size: 32rpx;
-  font-weight: 500;
-  color: #333333;
+  font-weight: bold;
+  color: #6B35A0;
 }
 
 .placeholder {
-  width: 80rpx; /* 与左侧取消按钮等宽 */
+  width: 80rpx;
 }
 
-/* 中间内容输入区域 */
+/* 内容输入区域 */
 .input-wrapper {
-  flex: 1; /* 占据剩余所有空间 */
+  flex: 1;
   padding: 20rpx 24rpx;
-  background-color: #ffffff;
-  overflow-y: auto; /* 内容过多时可以内部滚动 */
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  margin: 20rpx;
+  border-radius: 24rpx;
+  overflow-y: auto;
+  box-shadow: 0 8rpx 24rpx rgba(107, 53, 160, 0.08);
 }
 
 .content-textarea {
   width: 100%;
   font-size: 32rpx;
-  color: #333333;
+  color: #2d2b3e;
   line-height: 1.6;
-  min-height: 100rpx; /* 初始最小高度 */
+  min-height: 100rpx;
   box-sizing: border-box;
 }
 
@@ -60,27 +65,35 @@ page {
   align-items: center;
   justify-content: space-between;
   padding: 16rpx 24rpx;
-  padding-bottom: calc(16rpx + env(safe-area-inset-bottom)); /* 适配全面屏底部 */
-  background-color: #ffffff;
-  border-top: 1rpx solid #eeeeee;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-top: 1rpx solid rgba(107,53,160,0.1);
 }
 
 .word-count {
   font-size: 24rpx;
-  color: #999999;
+  color: #b0a8d0;
 }
 
 .publish-btn {
   margin: 0;
   padding: 0 32rpx;
   font-size: 28rpx;
+  font-weight: 600;
   height: 64rpx;
   line-height: 64rpx;
   border-radius: 32rpx;
-  background-color: #07c160; /* 微信绿，也可以换成你喜欢的主题色 */
-  color: #ffffff;
+  background: linear-gradient(135deg, #8a4bb3, #6B35A0);
+  box-shadow: 0 6rpx 18rpx rgba(107, 53, 160, 0.35);
+  color: #fff;
+  border: none;
+  transition: all 0.2s;
 }
-
+.publish-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 4rpx 12rpx rgba(107, 53, 160, 0.4);
+}
 .publish-btn::after {
-  border: none; /* 去掉小程序 button 默认的边框 */
+  border: none;
 }
