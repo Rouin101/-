@@ -1,13 +1,13 @@
-/* 容器占满全屏 */
+/* ========= 全局容器（淡紫渐变背景） ========= */
 .container {
   display: flex;
   flex-direction: column;
   height: 100vh;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  background: linear-gradient(165deg, #f8f2fc 0%, #eedef7 100%);
 }
 
-/* 帖子列表区域 */
+/* ========= 帖子列表区域 ========= */
 .post-list {
   flex: 1;
   height: 0;
@@ -15,78 +15,84 @@
   box-sizing: border-box;
 }
 
-/* 帖子卡片 */
+/* ========= 帖子卡片（白色圆角阴影） ========= */
 .post-item {
-  background: #fff;
-  border-radius: 16rpx;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-radius: 24rpx;
   padding: 24rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+  box-shadow: 0 8rpx 24rpx rgba(107, 53, 160, 0.08);
+  border: 1rpx solid rgba(107,53,160,0.06);
+  transition: all 0.2s;
+}
+.post-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 6rpx 20rpx rgba(107,53,160,0.12);
 }
 
-/* 新增：头像和昵称的横向排列容器 */
+/* ========= 头像与昵称行 ========= */
 .user-info-row {
   display: flex;
   flex-direction: row;
-  align-items: center; /* 核心：让头像和昵称垂直居中对齐 */
-  margin-bottom: 16rpx; /* 和下方正文拉开一点距离 */
+  align-items: center;
+  margin-bottom: 16rpx;
 }
 
-/* 主贴头像样式 */
 .avatar {
   width: 70rpx;
   height: 70rpx;
   border-radius: 50%;
-  flex-shrink: 0; /* 防止被挤压 */
-  margin-right: 16rpx; /* 头像和昵称之间的间距 */
+  flex-shrink: 0;
+  margin-right: 16rpx;
   background-color: #eee;
+  border: 2rpx solid rgba(107,53,160,0.1);
 }
 
-/* 昵称样式 */
-.author { 
+.author {
   font-size: 28rpx;
-  font-weight: bold; 
-  color: #333; 
+  font-weight: bold;
+  color: #6B35A0;           /* 昵称用主紫色 */
 }
 
-/* 正文内容：独立出来独占一行 */
-.content { 
+/* ========= 正文内容 ========= */
+.content {
   font-size: 30rpx;
-  color: #444; 
-  line-height: 1.6; 
-  margin-bottom: 12rpx; /* 和下方时间拉开距离 */
+  color: #2d2b3e;
+  line-height: 1.6;
+  margin-bottom: 12rpx;
   word-break: break-all;
 }
 
-/* 发布时间 */
-.time { 
-  display: block; /* 让它独占一行，才能 text-align: right */
-  color: #bbb; 
-  font-size: 22rpx; 
+/* ========= 发布时间 ========= */
+.time {
+  display: block;
+  color: #b0a8d0;
+  font-size: 22rpx;
   text-align: right;
   margin-bottom: 16rpx;
 }
 
-/* 回复列表 */
+/* ========= 回复列表区域 ========= */
 .reply-list {
   margin-top: 20rpx;
   padding-top: 20rpx;
-  border-top: 1rpx solid #f0f0f0;
-  background-color: #fafafa;
-  border-radius: 8rpx;
+  border-top: 1rpx solid rgba(107,53,160,0.1);
+  background-color: #faf5ff;
+  border-radius: 16rpx;
   padding: 16rpx;
 }
 
-/* 单条回复的整体容器：改为纵向排列 */
+/* ========= 单条回复 ========= */
 .reply-item {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   font-size: 26rpx;
   margin-bottom: 20rpx;
-  color: #666;
+  color: #555;
   line-height: 1.5;
   padding-bottom: 16rpx;
-  border-bottom: 1rpx solid #f0f0f0; /* 加个淡淡的底部分割线 */
+  border-bottom: 1rpx solid rgba(107,53,160,0.08);
 }
 
 .reply-item:last-child {
@@ -95,39 +101,38 @@
   border-bottom: none;
 }
 
-/* 新增：回复的头部（包裹头像和昵称，实现中心对齐） */
+/* 回复头部（头像+昵称） */
 .reply-header {
   display: flex;
   flex-direction: row;
-  align-items: center; /* 核心：头像和昵称垂直居中对齐 */
-  margin-bottom: 8rpx; /* 头部和下方内容拉开一点间距 */
+  align-items: center;
+  margin-bottom: 8rpx;
 }
 
-/* 回复列表里的小头像 */
 .avatar-small {
   width: 44rpx;
   height: 44rpx;
   border-radius: 50%;
-  flex-shrink: 0; /* 防止头像被挤压变形 */
-  margin-right: 12rpx; /* 头像和昵称的间距 */
+  flex-shrink: 0;
+  margin-right: 12rpx;
   background-color: #eee;
+  border: 1rpx solid rgba(107,53,160,0.12);
 }
 
-/* 回复的作者名 */
-.reply-author { 
-  color: #576b95; 
-  font-weight: 500; 
+.reply-author {
+  color: #6B35A0;            /* 回复者昵称紫色 */
+  font-weight: 600;
   font-size: 26rpx;
 }
 
-/* 回复的正文内容：独立换行 */
+/* 回复正文 */
 .reply-content {
-  color: #666;
-  word-break: break-all; /* 防止超长文本撑破布局 */
-  padding-left: 56rpx; /* 视觉优化：让内容左边缘和上方昵称对齐 (头像44 + 间距12) */
+  color: #4a4a5a;
+  word-break: break-all;
+  padding-left: 56rpx;        /* 与昵称对齐 */
 }
 
-/* 回复按钮行 */
+/* ========= 回复按钮 ========= */
 .action-row {
   text-align: right;
 }
@@ -138,37 +143,54 @@
   height: 56rpx;
   line-height: 56rpx;
   font-size: 24rpx;
-  background-color: #f0f2f5;
-  color: #576b95;
+  background-color: #f3e8f9;      /* 淡紫色背景 */
+  color: #6B35A0;                 /* 紫色文字 */
   border-radius: 28rpx;
   margin: 0;
+  font-weight: 500;
+  transition: all 0.2s;
 }
-.reply-btn::after { border: none; }
-/* 底部加载提示 */
-.loading-tip { 
-  text-align: center; 
-  color: #ccc; 
-  padding: 30rpx 0; 
-  font-size: 24rpx; 
+.reply-btn:active {
+  background: #e9d4f7;
+}
+.reply-btn::after {
+  border: none;
 }
 
-/* 悬浮发帖按钮 */
+/* ========= 底部加载提示 ========= */
+.loading-tip {
+  text-align: center;
+  color: #b0a8d0;
+  padding: 30rpx 0;
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+/* ========= 悬浮发帖按钮（紫色渐变，替代原绿色） ========= */
 .fab-btn {
   position: fixed;
   bottom: 60rpx;
   right: 40rpx;
-  background-color: #07c160;
+  background: linear-gradient(135deg, #8a4bb3, #6B35A0);
   color: #fff;
   padding: 20rpx 36rpx;
   border-radius: 50rpx;
-  box-shadow: 0 8rpx 20rpx rgba(7, 193, 96, 0.4);
+  box-shadow: 0 8rpx 24rpx rgba(107, 53, 160, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  transition: all 0.2s;
+}
+.fab-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 4rpx 16rpx rgba(107, 53, 160, 0.5);
 }
 
 .plus-icon {
   font-size: 28rpx;
   font-weight: 500;
+  margin-right: 8rpx;
 }
