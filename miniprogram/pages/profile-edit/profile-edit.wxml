@@ -15,7 +15,7 @@
     <view class="form-container">
       <!-- 昵称 -->
       <view class="form-item">
-        <text class="label">昵称</text>
+        <!-- 注意：label 挪到了 input 后面 -->
         <input
           class="input"
           value="{{nickname}}"
@@ -23,11 +23,12 @@
           maxlength="20"
           placeholder="请输入昵称"
         />
+        <text class="label">昵称</text>
       </view>
 
       <!-- 简介 -->
       <view class="form-item">
-        <text class="label">我学到的大先生精神</text>
+        <!-- 注意：label 挪到了 textarea 后面 -->
         <textarea
           class="textarea"
           value="{{bio}}"
@@ -35,6 +36,7 @@
           maxlength="100"
           placeholder="写点什么吧"
         />
+        <text class="label">我学到的大先生精神</text>
       </view>
     </view>
   </scroll-view>

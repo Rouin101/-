@@ -41,34 +41,50 @@
 .form-item {
   margin-bottom: 48rpx;
 }
-
 .label {
-  display: block;
-  margin-bottom: 16rpx;
-  font-size: 30rpx;
-  font-weight: 500;
-  color: #333;
+  display: flex;
+  align-items: center;
+  margin-top: 20rpx; /* 改为上方留白，与输入框拉开一点距离 */
+  font-size: 26rpx;
+  color: #888;
+  padding-left: 4rpx;
 }
 
+/* 利用伪元素在文字前面加一个小竖条 */
+.label::before {
+  content: '';
+  display: inline-block;
+  width: 6rpx;
+  height: 26rpx;
+  background-color: #4f8ff7; /* 你的主题蓝色 */
+  margin-right: 12rpx;
+  border-radius: 4rpx;
+}
 .input,
 .textarea {
   width: 100%;
   background: #fff;
-  border-radius: 12rpx;
-  padding: 20rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 24rpx 28rpx;
   box-sizing: border-box;
-  font-size: 28rpx;
+  font-size: 30rpx;
   color: #333;
   border: 1rpx solid #e5e5e5;
+  min-height: 88rpx;
 }
 
+/* 核心修复：单独控制提示文字的垂直位置 */
 .input::placeholder,
 .textarea::placeholder {
-  color: #bbb;
+  line-height: normal; /* 让提示文字不受父元素行高干扰，自动居中 */
+  color: #bbb;         /* 顺便在这里统一提示文字的颜色 */
 }
 
+/* 专门针对多行文本框的优化 */
 .textarea {
-  height: 220rpx;
+  height: 260rpx;
+  padding-top: 24rpx;
+  line-height: 1.6;
   resize: none;
 }
 

@@ -7,6 +7,8 @@ Page({
 
   onLoad: function() {
     this.getNotes()
+    
+    
   },
 
   onShow:function(){
