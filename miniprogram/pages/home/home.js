@@ -9,7 +9,11 @@ Page({
     this.getNotes()
   },
 
-
+  onShow:function(){
+    this.getNotes().then(() => {
+      wx.stopPullDownRefresh()
+    })
+  },
 
   onPullDownRefresh: function() {
     this.getNotes().then(() => {

@@ -57,6 +57,10 @@ Page({
       setTimeout(() => {
         wx.navigateBack({ delta: 1 })
       }, 1500);
+        
+        
+        
+        
 
     } catch (err) {
       wx.hideLoading();

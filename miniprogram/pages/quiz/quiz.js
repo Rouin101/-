@@ -150,7 +150,8 @@ const fullQuestionBank = [
       rankCache: null,         // 排行榜缓存 ← 新加
       rankCacheTime: 0          // 上次缓存时间 ← 新加
     },
-  
+    
+    
     // 开始答题：随机抽10题
     startQuiz() {
       const pool = [...this.data.allQuestions];
