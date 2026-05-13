@@ -154,6 +154,7 @@ const fullQuestionBank = [
     onPullDownRefresh:function(){
       console.log("触发刷新")
       this.goToRank()
+      wx.stopPullDownRefresh()
     },
     // 开始答题：随机抽10题
     startQuiz() {

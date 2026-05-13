@@ -14,6 +14,8 @@ Page({
     this.loadAll()
   },
 
+ 
+  
   onPullDownRefresh() {
     console.log('用户触发了下拉刷新')
     

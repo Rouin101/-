@@ -31,6 +31,7 @@ Page({
     checkUserInfo()
   },
 
+  
   onNicknameInput(e) {
     this.setData({ nickname: e.detail.value })
   },

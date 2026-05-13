@@ -38,5 +38,9 @@ Page({
     } catch (err) {
       console.error("回复失败", err);
     }
+  },
+
+  goBack(){
+    wx.navigateBack()
   }
 })
