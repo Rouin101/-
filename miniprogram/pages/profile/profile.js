@@ -156,7 +156,67 @@ Page({
 
   goEditProfile() {
     wx.navigateTo({ url: '/pages/profile-edit/profile-edit' })
-  }
+  },
+
+  // 删除精选帖子
+  deleteNote(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除这篇帖子吗？删除后无法恢复。',
+      confirmColor: '#ff4d4f', // 确认按钮设为红色，起到警示作用
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中...' });
+          const db = wx.cloud.database();
+          // ⚠️ 请替换为你真实的精选帖子集合名
+          db.collection('notes').doc(id).remove({
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '删除成功', icon: 'success' });
+              // 删除成功后，重新调用你原本加载数据的方法刷新页面
+              this.loadAll(); 
+            },
+            fail: (err) => {
+              wx.hideLoading();
+              console.error("删除失败", err);
+              wx.showToast({ title: '删除失败，请检查权限', icon: 'none' });
+            }
+          });
+        }
+      }
+    });
+  },
+
+  // 删除论坛帖子
+  deleteForum(e) {
+    const id = e.currentTarget.dataset.id;
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除这条论坛发布吗？',
+      confirmColor: '#ff4d4f',
+      success: (res) => {
+        if (res.confirm) {
+          wx.showLoading({ title: '删除中...' });
+          const db = wx.cloud.database();
+          // ⚠️ 请替换为你真实的论坛帖子集合名
+          db.collection('forum').doc(id).remove({
+            success: () => {
+              wx.hideLoading();
+              wx.showToast({ title: '删除成功', icon: 'success' });
+              // 删除成功后，重新调用你原本加载数据的方法刷新页面
+              this.loadAll();
+            },
+            fail: (err) => {
+              wx.hideLoading();
+              console.error("删除失败", err);
+              wx.showToast({ title: '删除失败，请检查权限', icon: 'none' });
+            }
+          });
+        }
+      }
+    });
+  },
 })
 
 
