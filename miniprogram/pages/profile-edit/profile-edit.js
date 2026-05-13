@@ -141,7 +141,7 @@ Page({
         }).then(() => {
           
           wx.hideLoading()
-          wx.showToast({ title: '保存成功' })
+          wx.showToast({ title: '保存成功请刷新' })
 
           // ----------------- 核心清除缓存逻辑 -----------------
           // 1. 获取全局的页面实例（假设排行榜所在的页面路径是 pages/index/index）
