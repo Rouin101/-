@@ -21,6 +21,7 @@ exports.main = async (event, context) => {
         // 无记录，直接新增
         await db.collection('scores').add({
           data: {
+            _openid:openid,
             openid,
             nickName: nickName || '匿名用户',
             avatarUrl: avatarUrl || '',
@@ -37,6 +38,7 @@ exports.main = async (event, context) => {
             .doc(oldRecord._id)
             .update({
               data: {
+                
                 score,
                 nickName: nickName || oldRecord.nickName,
                 avatarUrl: avatarUrl || oldRecord.avatarUrl,
