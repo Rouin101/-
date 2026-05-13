@@ -151,7 +151,10 @@ const fullQuestionBank = [
       rankCacheTime: 0          // 上次缓存时间 ← 新加
     },
     
-    
+    onPullDownRefresh:function(){
+      console.log("触发刷新")
+      this.goToRank()
+    },
     // 开始答题：随机抽10题
     startQuiz() {
       const pool = [...this.data.allQuestions];
@@ -182,8 +185,8 @@ const fullQuestionBank = [
 
     preloadRank() {
       const now = Date.now();
-      if (this.data.rankCache && (now - this.data.rankCacheTime < 60000)) {
-        return; // 1分钟内直接用缓存，不请求
+      if (this.data.rankCache && (now - this.data.rankCacheTime < 10)) {
+        return; 
       }
       wx.cloud.callFunction({
         name: 'quizFunctions',
@@ -302,15 +305,7 @@ nextQuestion() {
   
     // 直接从首页查看排行榜
     goToRank() {
-      // 有缓存直接显示
-      if (this.data.rankCache) {
-        this.setData({
-          rankList: this.data.rankCache,
-          showHome: false,
-          showRank: true
-        });
-        return;
-      }
+      
     
       // 无缓存才请求
       wx.showLoading({ title: '加载中...', mask: true });

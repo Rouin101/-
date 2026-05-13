@@ -119,11 +119,45 @@ Page({
             }
           })
         }).then(() => {
-          
-          
+          return db.collection("forum").where({
+            openid: app.globalData.openid
+          }).update({
+            data: {
+              author: nickname.trim(),  // 同步更新论坛里的昵称
+              avatarUrl: avatar || '',    // 同步更新论坛里的头像
+              updateTime: db.serverDate()
+            }
+          })
+        }).then(() => {
+          return db.collection("scores").where({
+            openid: app.globalData.openid
+          }).update({
+            data: {
+              nickName: nickname.trim(),  // 同步更新scores里的昵称
+              avatarUrl: avatar || '',    // 同步更新scores里的头像
+              updateTime: db.serverDate()
+            }
+          })
+        }).then(() => {
           
           wx.hideLoading()
           wx.showToast({ title: '保存成功' })
+
+          // ----------------- 核心清除缓存逻辑 -----------------
+          // 1. 获取全局的页面实例（假设排行榜所在的页面路径是 pages/index/index）
+          const pages = getCurrentPages()
+          const homePage = pages.find(page => page.route === 'pages/quiz/quiz')
+          
+          // 2. 如果该页面存在，直接清空它的排行榜缓存
+          if (homePage) {
+            homePage.setData({
+              rankCache: null,
+              rankCacheTime: 0
+            })
+            console.log('排行榜缓存已在编辑资料后清除')
+          }
+          // --------------------------------------------------
+
 
           app.globalData.userInfo = {
             ...app.globalData.userInfo,
