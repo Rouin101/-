@@ -109,6 +109,19 @@ Page({
             updateTime: db.serverDate()
           }
         }).then(() => {
+          return db.collection("notes").where({
+            openid: app.globalData.openid
+          }).update({
+            data: {
+              nickname: nickname.trim(),  // 同步更新笔记里的昵称
+              avatarUrl: avatar || '',    // 同步更新笔记里的头像
+              updateTime: db.serverDate()
+            }
+          })
+        }).then(() => {
+          
+          
+          
           wx.hideLoading()
           wx.showToast({ title: '保存成功' })
 
@@ -119,6 +132,10 @@ Page({
             bio: bio || ''
           }
 
+          
+          
+          
+          
           setTimeout(() => { wx.navigateBack() }, 800)
         }).catch(err => {
           console.error('更新用户失败:', err)
@@ -161,5 +178,7 @@ Page({
       wx.hideLoading()
       wx.showToast({ title: '保存失败: 查询失败', icon: 'none' })
     })
+
+    
   }
 })
