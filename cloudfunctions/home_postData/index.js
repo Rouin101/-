@@ -14,13 +14,7 @@ exports.main = async (event, context) => {
   // 2. 提取前端（小程序）传过来的参数
   const {title, content, images} = event
 
-  // 3. 基础校验：防止有人恶意提交空数据
-  if (!title || !title.trim()) {
-    return { code: -1, message: '标题不能为空' }
-  }
-  if (images.length === 0){
-    return { code: -1, message: '至少上传一张图片' }
-  }
+  
   
   try {
     // 4. 向 notes 集合插入一条新记录

@@ -2,7 +2,7 @@
   <!-- 顶部导航栏 -->
   <view class="nav-bar">
     <view class="cancel-btn" bindtap="goBack">取消</view>
-    <view class="page-title">回复 @{{author}}</view>
+    <view class="page-title">回复 @{{nickname}}</view>
     <view class="placeholder"></view> <!-- 占位，让标题居中 -->
   </view>
 

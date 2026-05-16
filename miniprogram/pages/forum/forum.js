@@ -1,10 +1,11 @@
 const db = wx.cloud.database();
-const coll = db.collection("forum");
+const coll = db.collection("forum_post");
 
 Page({
   data: {
     
-    postList: []
+    postList: [],
+    avatarList:[]
   },
 
   onLoad() {
@@ -21,7 +22,7 @@ Page({
     
     // 1. 重新调用加载数据的函数
     this.getPostList()
-    
+    wx.stopPullDownRefresh()
   },
   
   // 获取并格式化帖子列表
@@ -51,9 +52,9 @@ Page({
 
   // 2. 跳转到回复页面，并带上帖子ID和作者名
   goToReply(e) {
-    const { postid, author } = e.currentTarget.dataset
+    const { postid, nickname } = e.currentTarget.dataset
     wx.navigateTo({
-      url: `/pages/forum-reply/forum-reply?postId=${postid}&author=${author}` // 请确保这里是你回复页面的真实路径
+      url: `/pages/forum-reply/forum-reply?postId=${postid}&nickname=${nickname}` 
     })
   }
 })

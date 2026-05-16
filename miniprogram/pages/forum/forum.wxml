@@ -7,7 +7,7 @@
         <!-- 顶部：头像和昵称（横向排列，垂直居中） -->
         <view class="user-info-row">
           <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
-          <text class="author">{{item.author}}</text>
+          <text class="author">{{item.nickname}}</text>
         </view>
 
         <!-- 中间：正文内容（独占一行，保留换行和空格格式） -->
@@ -17,8 +17,8 @@
         <text class="time">{{item.createTime}}</text>
 
         <!-- 回复列表展示 -->
-        <view class="reply-list" wx:if="{{item.replies && item.replies.length > 0}}">
-          <block wx:for="{{item.replies}}" wx:for-item="reply" wx:key="id">
+        <view class="reply-list" wx:if="{{item.replies}}">
+          <block wx:for="{{avatarList}}" wx:for-item="reply" wx:key="id">
             <!-- 单条回复整体容器 -->
             <view class="reply-item">
               <!-- 新增：包裹头像和昵称的头部区域 -->
@@ -37,7 +37,7 @@
         <view class="action-row">
           <button class="reply-btn" bindtap="goToReply" 
                   data-postid="{{item._id}}" 
-                  data-author="{{item.author}}">
+                  data-nickname="{{item.author}}">
             回复
           </button>
         </view>
