@@ -28,10 +28,10 @@ exports.main = async (event, context) => {
         createTime: db.serverDate(), 
       }
     })
-    return { success: true, id: res._id }
+    return { code: 0, id: res._id }
   } catch (err) {
     console.error('云函数发帖失败', err)
-    return { success: false, err }
+    return { code: -1 , err }
   }
         
         

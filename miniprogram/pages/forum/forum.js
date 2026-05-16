@@ -5,7 +5,7 @@ Page({
   data: {
     
     postList: [],
-    avatarList:[]
+    
   },
 
   onLoad() {

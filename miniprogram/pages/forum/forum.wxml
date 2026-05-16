@@ -18,26 +18,14 @@
 
         <!-- 回复列表展示 -->
         <view class="reply-list" wx:if="{{item.replies}}">
-          <block wx:for="{{avatarList}}" wx:for-item="reply" wx:key="id">
-            <!-- 单条回复整体容器 -->
-            <view class="reply-item">
-              <!-- 新增：包裹头像和昵称的头部区域 -->
-              <view class="reply-header">
-                
-                <image class="avatar-small" src="{{reply.avatar}}" mode="aspectFill"></image> 
-                <text class="reply-author">{{reply.author}}</text>
-              </view>
-              <!-- 回复内容：独立出来，会自动换行到下一行 -->
-              <view class="reply-content" style="white-space: pre-wrap;">{{reply.content}}</view>
-            </view>
-          </block>
+          
         </view>
 
         <!-- 回复按钮 -->
         <view class="action-row">
           <button class="reply-btn" bindtap="goToReply" 
                   data-postid="{{item._id}}" 
-                  data-nickname="{{item.author}}">
+                  data-nickname="{{item.nickname}}">
             回复
           </button>
         </view>
