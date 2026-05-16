@@ -131,7 +131,36 @@
   word-break: break-all;
   padding-left: 56rpx;        /* 与昵称对齐 */
 }
+/* 回复列表容器 */
+.reply-list {
+  display: flex;
+  flex-direction: row;
+  
+  /* --- 修改这里 --- */
+  align-items: flex-start; /* 改成顶部对齐，解决垂直掉落问题 */
+  
+  padding-left: 20rpx;
+  margin-top: 15rpx;
+  overflow: visible;
+  flex-wrap: nowrap;
+}
 
+/* 回复头像 */
+.reply-avatar {
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 50%;
+  border: 2rpx solid #ffffff;
+  
+  /* 这里的重叠数值可以是负数，也可以根据需求调整 */
+  margin-left: -10rpx; 
+  
+  flex-shrink: 0;
+}
+
+.reply-avatar:first-child {
+  margin-left: 0;
+}
 /* ========= 回复按钮 ========= */
 .action-row {
   text-align: right;

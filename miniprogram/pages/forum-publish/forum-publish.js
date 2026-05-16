@@ -2,21 +2,23 @@ const db = wx.cloud.database();
 
 
 Page({
+  
   data: {
-    
     content: ""
   },
 
+  
   // 返回上一页
   goBack() {
     wx.navigateBack({ delta: 1 })
   },
 
-
+  
   // 接收内容输入
   onContentInput(e) {
     this.setData({ content: e.detail.value })
   },
+
 
   // 提交发布
   async submitPost() {
@@ -27,16 +29,11 @@ Page({
     }
 
     wx.showLoading({ title: "发布中..." });
-
-    
     wx.cloud.callFunction({
       name: 'forum_postData',
       data: {
-        
         content: content,
       }
-        
-        
         
     }).then(res => {
       wx.hideLoading()
@@ -53,4 +50,9 @@ Page({
     })
   }
 
+
 })
+    
+        
+        
+        
