@@ -5,7 +5,6 @@
     
     <view class="card" wx:for="{{noteList}}" wx:key="_id">
       
-      
       <navigator url="/pages/home-detail/home-detail?id={{item._id}}">
         <image 
           wx:if="{{item.images && item.images.length > 0}}"
@@ -14,6 +13,7 @@
           mode="widthFix" 
           lazy-load
         ></image>
+      
         
         <view class="card-content">
           <text class="card-title">{{item.title}}</text>
