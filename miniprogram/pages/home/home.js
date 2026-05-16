@@ -29,13 +29,12 @@ Page({
     // 1. 调用云函数 
     wx.cloud.callFunction({
       name: 'home_getData', 
-      data: {} // 这里暂时不需要传参数
+      data: {} 
     }).then(res => {
       console.log('云函数返回的数据：', res.result)
 
       // 2. 判断 code 是否为 0 (成功)
       if (res.result.code === 0) {
-        
         // 3. 直接拿到 data 赋值
         // 注意：云函数返回的结构是 { code: 0, message: '...', data: [...] }
         // 所以我们要取 res.result.data
@@ -49,8 +48,9 @@ Page({
           icon: 'none'
         })
       }
-      
       wx.hideLoading()
+        
+      
     }).catch(err => {
       // 4. 捕获系统级错误（比如云函数不存在、网络断了）
       wx.hideLoading()

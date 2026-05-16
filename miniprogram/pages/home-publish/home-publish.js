@@ -4,17 +4,20 @@ Page({
   data: {
     title: '',
     content: '',
-    tempFilePaths: [] // 必须是数组
+    tempFilePaths: [] 
   },
+
 
   onTitleInput: function(e) {
     this.setData({ title: e.detail.value })
   },
 
+  
   onContentInput: function(e) {
     this.setData({ content: e.detail.value })
   },
 
+  
   chooseImage: function() {
     // 使用箭头函数确保 this 指向正确
     wx.chooseMedia({
@@ -41,6 +44,7 @@ Page({
     })
   },
 
+  
   deleteImage: function(e) {
     const index = e.currentTarget.dataset.index
     const files = this.data.tempFilePaths
@@ -48,10 +52,12 @@ Page({
     this.setData({ tempFilePaths: files })
   },
 
+  
   goBack: function() {
     wx.navigateBack({ delta: 1 })
   },
 
+  
   confirmPublish: function() {
     const { title, content, tempFilePaths } = this.data
 
@@ -84,30 +90,32 @@ Page({
     })
   },
 
-saveToDatabase: function(fileIDs, title, content) {
-    const app = getApp()
-    const userInfo = app.globalData.userInfo
-    db.collection('notes').add({
+  
+  saveToDatabase: function(fileIDs, title, content) {
+    // 调用云函数
+    wx.cloud.callFunction({
+      name: 'home_postData',
       data: {
         title: title,
         content: content,
-        images: fileIDs,
-
-        avatar: userInfo?.avatar || '/images/default-avatar.png',
-        nickname: userInfo?.nickname || '我',
-
-        likes: 0,
-        openid: app.globalData.openid,
-        createTime: db.serverDate()
+        images: fileIDs
+        // 注意：这里不需要再传 nickname, avatar, openid 了
+        // 云函数会自动去 users 集合里抓取最新、最准确的信息
       }
-    }).then(() => {
+    }).then(res => {
       wx.hideLoading()
-      wx.showToast({ title: '发布成功' })
-      setTimeout(() => { wx.navigateBack({ delta: 1 }) }, 1500)
+      if (res.result.code === 0) {
+        wx.showToast({ title: '发布成功', icon: 'success' })
+        setTimeout(() => { wx.navigateBack({ delta: 1 }) }, 1500)
+      } else {
+        wx.showToast({ title: res.result.message || '发布失败', icon: 'none' })
+      }
     }).catch(err => {
       wx.hideLoading()
-      wx.showToast({ title: '发布失败', icon: 'none' })
+      wx.showToast({ title: '系统错误', icon: 'none' })
       console.error(err)
     })
   }
+
+
 })

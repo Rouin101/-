@@ -82,7 +82,7 @@ Page({
         // 1. 查询 Notes (精简版)
         // 直接使用解构赋值，如果报错则进入 catch
         notesRes = await db.collection('notes')
-          .where({ openid: currentOpenid })
+          .where({ _openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
 
