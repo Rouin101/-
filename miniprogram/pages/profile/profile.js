@@ -5,7 +5,9 @@ Page({
     userInfo: null,
     myNotes: [],
     myForumPosts: [],
+    myForumReplies:[],
     activeTab: 'notes',
+    forumSubTab:'posts',
     loading: true
   },
 
@@ -55,8 +57,9 @@ Page({
       // 初始化默认值
       let notesRes = { data: [] }
       let forumRes = { data: [] }
+      let replyRes = { data: [] }
       
-      ////查询两个集合
+      ////查询三个集合
       try {
         
         // 1. 查询 Notes 
@@ -70,6 +73,12 @@ Page({
           .where({ _openid: currentOpenid })
           .orderBy('createTime', 'desc')
           .get()
+        
+        // 3. 查询 Forum_reply
+        replyRes = await db.collection('forum_reply')
+          .where({ _openid: currentOpenid })
+          .orderBy('createTime', 'desc')
+          .get()
 
         } catch (err) {
           // 统一在这里捕获错误
@@ -77,12 +86,14 @@ Page({
           // 如果出错，保持上面初始化的空数组即可
           notesRes = { data: [] }
           forumRes = { data: [] }
+          replyRes = { data: [] }
         }
        
         this.setData({
           userInfo:userInfo,
           myNotes: notesRes.data || [],
           myForumPosts: forumRes.data || [],
+          myForumReplies: replyRes.data || [],
           loading: false
         })
   
@@ -101,17 +112,24 @@ Page({
             score: 0
           },
           myNotes: [],
-          myForumPosts: []
+          myForumPosts: [],
+          myForumReplies:[]
         })
         wx.hideLoading()
         wx.showToast({ title: '加载失败，请返回重试', icon: 'none' })
       }
     },
 
+    // 一级tab切换
     switchTab(e) {
       this.setData({ activeTab: e.currentTarget.dataset.tab })
     },
       
+    // 新增：切换论坛二级 Tab
+    switchForumSubTab(e) {
+      this.setData({ forumSubTab: e.currentTarget.dataset.tab })
+    },
+
     goToNote(e) {
       // 1. 从 dataset 中获取 item 对象
       const item = e.currentTarget.dataset.item
@@ -192,6 +210,44 @@ Page({
         }
       });
     },
+    
+    deleteReply(e){
+      const id = e.currentTarget.dataset.id;
+      wx.showModal({
+        title: '提示',
+        content: '确定要删除这条回复吗？',
+        confirmColor: '#ff4d4f',
+        success: (res) => {
+          if (res.confirm) {
+            wx.showLoading({ title: '删除中...' });
+            const db = wx.cloud.database();
+            
+            db.collection('forum_reply').doc(id).remove({
+              success: () => {
+                wx.hideLoading();
+                wx.showToast({ title: '删除成功', icon: 'success' });
+                // 删除成功后，重新调用你原本加载数据的方法刷新页面
+                this.loadAll();
+              },
+              fail: (err) => {
+                wx.hideLoading();
+                console.error("删除失败", err);
+                wx.showToast({ title: '删除失败，请检查权限', icon: 'none' });
+              }
+            });
+          }
+        }
+      });
+    },
+
+    async replygoToForum(e){
+      const item = e.currentTarget.dataset.item
+      const Id = item._id
+      const db = wx.cloud.database();
+      const res = await db.collection('forum_reply').doc(Id).get()
+      const NoteId = res.data.postId
+      wx.navigateTo({url: '/pages/forum-detail/forum-detail?id=' + NoteId})
+    }
     
   })
     
