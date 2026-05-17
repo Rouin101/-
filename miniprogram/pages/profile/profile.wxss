@@ -144,7 +144,8 @@
 
 /* ===== Tab 栏 ===== */
 .tab-bar {
-  margin: 36rpx 24rpx 24rpx;
+  margin: 20rpx 24rpx 24rpx;
+  margin-bottom: 5rpx;
   background: rgba(255,255,255,0.95);
   backdrop-filter: blur(10rpx);
   border-radius: 24rpx;
@@ -170,7 +171,35 @@
   font-weight: 700;
   box-shadow: 0 6rpx 18rpx rgba(107, 53, 160, 0.3);
 }
+.second-tab-bar {
+  margin: 10px 80rpx 20rpx;
+  height:30px;
+  align-items: center;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10rpx);
+  border-radius: 24rpx;
+  display: flex;
+  padding: 10rpx;
+  box-shadow: 0 8rpx 24rpx rgba(107, 53, 160, 0.08);
+}
 
+.empty-tip {
+  flex: 1;
+  text-align: center;
+  padding: 22rpx 0;
+  font-size: 28rpx;
+  color: #6B35A0;
+  border-radius: 18rpx;
+  transition: all 0.3s;
+  font-weight: 500;
+}
+
+.empty-tip.active {
+  background: linear-gradient(135deg, #8a4bb3, #6B35A0);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 6rpx 18rpx rgba(107, 53, 160, 0.3);
+}
 /* ===== 空状态 ===== */
 .loading-tip,
 .empty-tip {

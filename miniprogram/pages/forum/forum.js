@@ -1,10 +1,11 @@
 const db = wx.cloud.database();
-const coll = db.collection("forum");
+const coll = db.collection("forum_post");
 
 Page({
   data: {
     
-    postList: []
+    postList: [],
+    
   },
 
   onLoad() {
@@ -21,24 +22,29 @@ Page({
     
     // 1. 重新调用加载数据的函数
     this.getPostList()
-    
+    wx.stopPullDownRefresh()
   },
   
   // 获取并格式化帖子列表
   async getPostList() {
-    try {
-      let res = await coll.orderBy("createTime", "desc").get();
-      let list = res.data.map(item => {
-        return {
-          ...item,
-          // 把时间对象变成正常字符串
-          createTime: item.createTime ? new Date(item.createTime).toLocaleString() : ""
-        };
-      });
-      this.setData({ postList: list });
-    } catch (err) {
-      console.error("加载失败", err);
-    }
+    wx.showLoading({ title: '加载中...' })
+    
+    wx.cloud.callFunction({
+      name: 'forum_getData'
+    }).then(res => {
+      wx.hideLoading()
+      if (!res.result.code) {
+        // 云函数返回的 data 里，每一条帖子都已经自带了 replies 数组
+        this.setData({
+          postList: res.result.data
+        })
+      } else {
+        wx.showToast({ title: '加载失败', icon: 'none' })
+      }
+    }).catch(err => {
+      wx.hideLoading()
+      console.error(err)
+    })
     
   },
 
@@ -51,9 +57,9 @@ Page({
 
   // 2. 跳转到回复页面，并带上帖子ID和作者名
   goToReply(e) {
-    const { postid, author } = e.currentTarget.dataset
+    const { postid, nickname } = e.currentTarget.dataset
     wx.navigateTo({
-      url: `/pages/forum-reply/forum-reply?postId=${postid}&author=${author}` // 请确保这里是你回复页面的真实路径
+      url: `/pages/forum-reply/forum-reply?postId=${postid}&nickname=${nickname}` 
     })
   }
 })

@@ -1,191 +1,204 @@
 <view class="container">
 
-<!-- 顶部用户信息 -->
-<view class="profile-card">
-
-  <!-- 头像 -->
-  <view class="avatar-wrap">
-    <image
-      class="avatar"
-      src="{{userInfo.avatar || '/images/default-avatar.png'}}"
-      mode="aspectFill"
-    />
-  </view>
-
-  <!-- 用户信息 -->
-  <view class="user-info">
-
-    <text class="nickname">
-      {{userInfo.nickname || '未登录'}}
-    </text>
-
-    <text class="bio">
-      {{userInfo.bio || '这个人很懒，还没有简介'}}
-    </text>
-
-    <!-- 编辑资料 -->
-    <view
-      class="edit-btn"
-      bindtap="goEditProfile"
-    >
-      编辑资料
-    </view>
-
-  </view>
-
-</view>
-
-<!-- 数据统计 -->
-<view class="score-card">
-
-  <view class="score-item">
-  <text class="score-num red">
-    {{userInfo.rank || '未上榜'}}
-  </text>
-  <text class="score-label">答题排名</text>
-  <text class="score-detail" wx:if="{{userInfo.score > 0}}">最高 {{userInfo.score}} 分</text>
-</view>
-
-  <view class="divider"></view>
-
-  <view class="score-item">
-    <text class="score-num">
-      {{myNotes.length}}
-    </text>
-
-    <text class="score-label">
-      我的帖子
-    </text>
-  </view>
-
-  <view class="divider"></view>
-
-  <view class="score-item">
-    <text class="score-num">
-      {{myForumPosts.length}}
-    </text>
-
-    <text class="score-label">
-      论坛发布
-    </text>
-  </view>
-
-</view>
-
-<!-- tab -->
-<view class="tab-bar">
-
-  <view
-    class="tab-item {{activeTab === 'notes' ? 'active' : ''}}"
-    bindtap="switchTab"
-    data-tab="notes"
-  >
-    我的帖子
-  </view>
-
-  <view
-    class="tab-item {{activeTab === 'forum' ? 'active' : ''}}"
-    bindtap="switchTab"
-    data-tab="forum"
-  >
-    论坛发布
-  </view>
-
-</view>
-
-<!-- 加载中 -->
-<view
-  wx:if="{{loading}}"
-  class="empty-tip"
->
-  加载中...
-</view>
-
-<!-- 精选帖子 -->
-<view wx:elif="{{activeTab === 'notes'}}">
-
-  <view
-    wx:if="{{myNotes.length === 0}}"
-    class="empty-tip"
-  >
-    暂无我的帖子
-  </view>
-
-  <view
-    wx:else
-    class="note-list"
-  >
-
-    <view
-      class="note-item"
-      wx:for="{{myNotes}}"
-      wx:key="_id"
-      bindtap="goToNote"
-      data-item="{{item}}"
-    >
-
+  <!-- 顶部用户信息 -->
+  <view class="profile-card">
+    <!-- 头像 -->
+    <view class="avatar-wrap">
       <image
-        class="note-img"
-        src="{{item.images[0]}}"
+        class="avatar"
+        src="{{userInfo.avatar || '/images/default-avatar.png'}}"
         mode="aspectFill"
       />
-
-      <view class="note-content">
-
-        <text class="note-title">
-          {{item.title}}
-        </text>
-
-        
-
-      </view>
-      <view class="delete-btn" catchtap="deleteNote" data-id="{{item._id}}">删除</view>
     </view>
 
-  </view>
 
-</view>
-
-<!-- 论坛帖子 -->
-<view wx:elif="{{activeTab === 'forum'}}">
-
-<view
-  wx:if="{{myForumPosts.length === 0}}"
-  class="empty-tip"
->
-  暂无论坛发布
-</view>
-
-<view
-  wx:else
-  class="note-list"
->
-
-  <view
-    class="forum-item"
-    wx:for="{{myForumPosts}}"
-    wx:key="_id"
-    bindtap="goToForum"
-    data-item="{{item}}"
-  >
-
-    <!-- 加上 white-space: pre-wrap 保留换行和空格格式 -->
-    <view class="forum-content" style="white-space: pre-wrap;">
-    {{item.content}}
-    </view>
-
-    <view class="forum-footer">
-
-      <text class="forum-replies">
-        💬 {{item.replies.length}} 条回复
+    <!-- 用户信息 -->
+    <view class="user-info">
+      <text class="nickname">
+        {{userInfo.nickname || '未登录'}}
       </text>
 
+      <text class="bio">
+        {{userInfo.bio || '这个人很懒，还没有简介'}}
+      </text>
+
+      <!-- 编辑资料 -->
+      <view
+        class="edit-btn"
+        bindtap="goEditProfile"
+      >
+        编辑资料
+      </view>
+
     </view>
-    <view class="delete-btn" catchtap="deleteForum" data-id="{{item._id}}">删除</view>
+
   </view>
 
+
+  <!-- 数据统计 -->
+  <view class="score-card">
+
+    <view class="score-item">
+      <text class="score-num red">
+        {{userInfo.rank || '未上榜'}}
+      </text>
+      <text class="score-label">答题排名</text>
+      <text class="score-detail" wx:if="{{userInfo.score > 0}}">最高 {{userInfo.score}} 分</text>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="score-item">
+      <text class="score-num">
+        {{myNotes.length}}
+      </text>
+
+      <text class="score-label">
+        我的帖子
+      </text>
+    </view>
+
+    <view class="divider"></view>
+
+    <view class="score-item">
+      <text class="score-num">
+        {{myForumPosts.length}}
+      </text>
+
+      <text class="score-label">
+        论坛发布
+      </text>
+    </view>
+
+  </view>
+
+  <!-- tab -->
+  <view class="tab-bar">
+
+    <view
+      class="tab-item {{activeTab === 'notes' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="notes"
+    >
+      我的帖子
+    </view>
+
+    <view
+      class="tab-item {{activeTab === 'forum' ? 'active' : ''}}"
+      bindtap="switchTab"
+      data-tab="forum"
+    >
+      论坛发布
+    </view>
+
+  </view>
+
+  <!-- 加载中 -->
+  <view
+    wx:if="{{loading}}"
+    class="empty-tip"
+  >
+    加载中...
+  </view>
+
+  <!-- 精选帖子 -->
+  <view wx:elif="{{activeTab === 'notes'}}">
+
+    <view
+      wx:if="{{myNotes.length === 0}}"
+      class="empty-tip"
+    >
+      暂无我的帖子
+    </view>
+
+    <view
+      wx:else
+      class="note-list"
+    >
+
+      <view
+        class="note-item"
+        wx:for="{{myNotes}}"
+        wx:key="_id"
+        bindtap="goToNote"
+        data-item="{{item}}"
+      >
+
+        <image
+          class="note-img"
+          src="{{item.images[0]}}"
+          mode="aspectFill"
+        />
+
+        <view class="note-content">
+
+          <text class="note-title">
+            {{item.title}}
+          </text>
+
+        </view>
+        <view class="delete-btn" catchtap="deleteNote" data-id="{{item._id}}">删除</view>
+      </view>
+
+    </view>
+
+  </view>
+
+          
+
+  <!-- 论坛帖子 -->
+<view wx:elif="{{activeTab === 'forum'}}">
+
+<!-- 新增：二级 Tab 导航 -->
+<view class="second-tab-bar">
+  <view
+    class="tab-item {{forumSubTab === 'posts' ? 'active' : ''}}"
+    bindtap="switchForumSubTab"
+    data-tab="posts"
+  >
+    我的发帖
+  </view>
+  <view
+    class="tab-item {{forumSubTab === 'replies' ? 'active' : ''}}"
+    bindtap="switchForumSubTab"
+    data-tab="replies"
+  >
+    我的回复
+  </view>
 </view>
 
-</view>
+<!-- 版块一：我的发帖（原本的内容放在这里） -->
+<view wx:if="{{forumSubTab === 'posts'}}">
+  <view wx:if="{{myForumPosts.length === 0}}" class="empty-tip">
+    暂无论坛发布
+  </view>
+  <view wx:else class="note-list">
+    <view class="forum-item" wx:for="{{myForumPosts}}" wx:key="_id" bindtap="goToForum" data-item="{{item}}">
+      <view class="forum-content" style="white-space: pre-wrap;">
+        {{item.content}}
+      </view>
+      <view class="delete-btn" catchtap="deleteForum" data-id="{{item._id}}">删除</view>
+    </view>
+  </view>
+  </view>
+
+  <!-- 版块二：我的回复（新增的内容放在这里） -->
+  <view wx:if="{{forumSubTab === 'replies'}}">
+    <view wx:if="{{myForumReplies.length === 0}}" class="empty-tip">
+      暂无我的回复
+    </view>
+    <view wx:else class="note-list">
+      <!-- 假设回复的数据结构和发帖类似，你可以根据实际情况调整样式 -->
+      <view class="forum-item" wx:for="{{myForumReplies}}" wx:key="_id" bindtap="replygoToForum" data-item="{{item}}">
+        <view class="forum-content" style="white-space: pre-wrap;">
+          {{item.content}}
+        </view>
+        <!-- 回复通常不支持直接删除，如果需要可以保留或删除此按钮 -->
+        <view class="delete-btn" catchtap="deleteReply" data-id="{{item._id}}">删除</view>
+      </view>
+    </view>
+  </view>
+
+  </view>
 
 </view>

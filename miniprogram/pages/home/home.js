@@ -7,46 +7,58 @@ Page({
 
   onLoad: function() {
     this.getNotes()
-    
-    
   },
-
+    
   onShow:function(){
     this.getNotes().then(() => {
       wx.stopPullDownRefresh()
     })
   },
-
+    
   onPullDownRefresh: function() {
     this.getNotes().then(() => {
       wx.stopPullDownRefresh()
     })
   },
 
+
+
   getNotes: function() {
     wx.showLoading({ title: '加载中...' })
-    return db.collection('notes').orderBy('createTime', 'desc').get().then(res => {
-      
-      
-      // 遍历数据，确保 images 字段是一个数组
-      const list = res.data.map(item => {
-        // 如果 images 是字符串（比如 "url1,url2"），把它切分成数组
-        if (item.images && typeof item.images === 'string') {
-          item.images = item.images.split(',')
-        }
-        // 如果 images 已经是数组，保持不变
-        // 如果 images 不存在，保持 undefined（页面会通过 wx:if 隐藏）
-        return item
-      })
-      
+    
+    // 1. 调用云函数 
+    wx.cloud.callFunction({
+      name: 'home_getData', 
+      data: {} 
+    }).then(res => {
+      console.log('云函数返回的数据：', res.result)
 
-      this.setData({ 
-        noteList: list 
-      })
+      // 2. 判断 code 是否为 0 (成功)
+      if (res.result.code === 0) {
+        // 3. 直接拿到 data 赋值
+        // 注意：云函数返回的结构是 { code: 0, message: '...', data: [...] }
+        // 所以我们要取 res.result.data
+        this.setData({
+          noteList: res.result.data
+        })
+      } else {
+        // 如果云函数里报了错
+        wx.showToast({
+          title: res.result.message || '加载失败',
+          icon: 'none'
+        })
+      }
       wx.hideLoading()
+        
+      
     }).catch(err => {
+      // 4. 捕获系统级错误（比如云函数不存在、网络断了）
       wx.hideLoading()
-      console.error(err)
+      console.error('调用云函数失败：', err)
+      wx.showToast({
+        title: '系统错误',
+        icon: 'none'
+      })
     })
   }
  

@@ -1,0 +1,58 @@
+<view class="container">
+  <!-- 1. 渲染帖子主体内容（从 post 对象中取数据） -->
+  <!-- 1. 帖子主体 -->
+  <view class="post-detail">
+    <!-- 1. 头像 -->
+    <image class="avatar" src="{{post.avatar}}" mode="aspectFill"></image>
+
+    <!-- 2. 右侧文字大容器 -->
+    <view class="info-box">
+      
+      <!-- 【第一行】头像旁边的作者栏（独立容器） -->
+      <view class="top-row">
+        
+        <text class="post-author">{{post.nickname}}</text>
+      </view>
+
+      <!-- 【第二行】剩下的正文和时间（独立容器） -->
+      <view class="bottom-area">
+        <text class="post-content">{{post.content}}</text>
+        <text class="post-time">{{post.createTime}}</text>
+      </view>
+
+    </view>
+  </view>
+  <!-- 2. 渲染回复列表 -->
+<view class="reply-section">
+  <view class="reply-title">全部回复 ({{replies.length}})</view>
+  
+  <block wx:if="{{replies.length > 0}}">
+    <view class="reply-item" wx:for="{{replies}}" wx:key="_id">
+      
+      <!-- 左侧：回复者的头像 -->
+      <image class="reply-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+
+      <!-- 右侧：回复的文字大容器 -->
+      <view class="reply-info-box">
+        
+        <!-- 【第一行】回复者昵称 -->
+        <view class="reply-top-row">
+          <text class="reply-author">{{item.nickname}}</text>
+        </view>
+
+        <!-- 【第二行】回复内容和时间 -->
+        <view class="reply-bottom-area">
+          <text class="reply-content">{{item.content}}</text>
+          <text class="reply-time">{{item.createTime}}</text>
+        </view>
+
+      </view>
+    </view>
+  </block>
+
+  <!-- 暂无回复提示 -->
+  <view wx:else class="no-reply">
+    暂无回复，快来抢沙发吧！
+  </view>
+</view>
+</view>
