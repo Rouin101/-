@@ -135,7 +135,7 @@
 .reply-list {
   display: flex;
   flex-direction: row;
-  
+  height:25px;
   /* --- 修改这里 --- */
   align-items: flex-start; /* 改成顶部对齐，解决垂直掉落问题 */
   
