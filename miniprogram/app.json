@@ -9,7 +9,8 @@
     "pages/home-publish/home-publish",
     "pages/home-detail/home-detail",
     "pages/forum-publish/forum-publish",
-    "pages/forum-reply/forum-reply"
+    "pages/forum-reply/forum-reply",
+    "pages/forum-detail/forum-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

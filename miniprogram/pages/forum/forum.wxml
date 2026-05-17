@@ -2,7 +2,7 @@
   <!-- 帖子列表展示区域 -->
   <scroll-view class="post-list" scroll-y enhanced="true">
     <block wx:for="{{postList}}" wx:key="_id">
-      <view class="post-item">
+      <navigator class="post-item" url="/pages/forum-detail/forum-detail?id={{item._id}}">
         
         <!-- 顶部：头像和昵称（横向排列，垂直居中） -->
         <view class="user-info-row">
@@ -25,13 +25,8 @@
               src="{{reply.avatar}}" 
             />
           </block>
-          
-          
-          
-          
-         
         </view>
-
+          
         <!-- 回复按钮 -->
         <view class="action-row">
           <button class="reply-btn" bindtap="goToReply" 
@@ -40,8 +35,13 @@
             回复
           </button>
         </view>
-      </view>
+          
+      </navigator>
+          
     </block>
+          
+         
+
     
     <!-- 底部加载提示 -->
     <view class="loading-tip">没有更多了~</view>

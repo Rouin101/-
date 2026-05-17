@@ -1,0 +1,176 @@
+/* 页面最外层容器 */
+.container {
+  padding: 20rpx;
+  background: linear-gradient(165deg, #f8f2fc 0%, #eedef7 100%);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 外层容器：横向排列，左边头像，右边文字 */
+/* 最外层：头像和文字左右排列 */
+.post-detail {
+  display: flex;
+  flex-direction: row;
+  /* 关键：顶部对齐，这样第一行就会贴着顶部 */
+  align-items: flex-start; 
+  padding: 30rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  margin-top: 15rpx;
+  width:90%;
+}
+
+/* 头像样式 */
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+  /* 可选：如果第一行文字很短，想让头像视觉上垂直居中，可以加这句 */
+  /* margin-top: 10rpx; */ 
+}
+
+/* 右侧文字容器：垂直排列 */
+.info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =================核心修改区域================= */
+
+/* 【第一行】作者栏：水平排列，垂直居中 */
+.top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center; 
+  font-size: 40rpx;
+  color: #653da5;
+  font-weight: bold;
+  margin-right: 10rpx;
+  /* 这里不需要justify-content，默认靠左即可 */
+  margin-top: 15rpx;
+}
+
+/* 【第二行】正文和时间区域：垂直排列 */
+.bottom-area {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx; /* 和第一行拉开一点距离 */
+  
+}
+
+/* 正文 */
+.post-content {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 10rpx; /* 内容和时间之间的间距 */
+}
+
+/* 时间：靠右对齐 */
+.post-time {
+  font-size: 24rpx;
+  color: #999;
+  align-self: flex-end; /* 关键：让时间在父容器（bottom-area）中靠右 */
+}
+
+/* 辅助样式 */
+.label {
+  font-weight: bold;
+}
+/* ========= 回复列表区域 ========= */
+.reply-section {
+  background: #fff;
+  padding: 10rpx;
+  margin: 20rpx;
+  border-radius: 20rpx;
+  width:95%;
+}
+
+.reply-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+/* 单条回复容器 */
+.reply-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; /* 顶部对齐 */
+  margin-bottom: -1rpx;
+  /* 加上边框：3rpx宽度的紫色实线边框 */
+  border: 2rpx solid #eae8ef; 
+  
+  /* 建议：加上内边距，防止文字紧贴边框 */
+  padding: 5rpx; 
+  
+  /* 建议：加上圆角，让边框看起来更柔和 */
+  border-radius: 10rpx; 
+}
+
+.reply-item:last-child {
+  margin-bottom: 0;
+}
+
+/* 回复头像（比帖子主体小一点） */
+.reply-avatar {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+/* 右侧文字容器 */
+.reply-info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 【第一行】回复者昵称 */
+.reply-top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.reply-author {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #6B35A0; /* 用你喜欢的紫色 */
+  margin-top: 8rpx;
+}
+
+/* 【第二行】回复内容和时间 */
+.reply-bottom-area {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8rpx;
+}
+
+.reply-content {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 8rpx;
+}
+
+/* 回复时间靠右 */
+.reply-time {
+  font-size: 22rpx;
+  color: #999;
+  align-self: flex-end;
+}
+
+/* 暂无回复提示 */
+.no-reply {
+  text-align: center;
+  color: #999;
+  font-size: 26rpx;
+  padding: 40rpx 0;
+}
