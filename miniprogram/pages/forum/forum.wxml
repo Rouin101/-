@@ -17,14 +17,20 @@
         <text class="time">{{item.createTime}}</text>
 
         <!-- 回复列表展示 -->
-        <view class="reply-list" wx:if="{{item.replies.length>0}}">
-          <block class = "reply-item" wx:for="{{item.replies}}" wx:key="_id" wx:for-item="reply">
-            <image 
-              class="reply-avatar" 
-              wx:if="{{index < 12}}"
-              src="{{reply.avatar}}" 
-            />
-          </block>
+        <view class="reply-list" wx:if="{{item.replies.length > 0}}">
+          <!-- 1. 给头像们加一个包裹层 -->
+          <view class="reply-avatars">
+            <block wx:for="{{item.replies}}" wx:key="_id" wx:for-item="reply">
+              <image 
+                class="reply-avatar" 
+                wx:if="{{index < 12}}"
+                src="{{reply.avatar}}" 
+              />
+            </block>
+          </view>
+          
+          <!-- 2. 全部回复文字（会自动被推到最右侧） -->
+          <view class="reply-more">全部回复</view>
         </view>
           
         <!-- 回复按钮 -->

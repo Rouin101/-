@@ -135,14 +135,24 @@
 .reply-list {
   display: flex;
   flex-direction: row;
-  height:25px;
-  /* --- 修改这里 --- */
-  align-items: flex-start; /* 改成顶部对齐，解决垂直掉落问题 */
+  /* 核心：让子元素（头像组和文字）在水平方向两端对齐 */
+  justify-content: space-between; 
+  align-items: center; /* 垂直居中对齐 */
   
-  padding-left: 20rpx;
-  margin-top: 15rpx;
-  overflow: visible;
-  flex-wrap: nowrap;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(107,53,160,0.1);
+  background-color: #faf5ff;
+  border-radius: 16rpx;
+  padding: 16rpx 20rpx; /* 左右增加一点内边距 */
+  box-sizing: border-box;
+}
+
+/* 新增：包裹头像的容器 */
+.reply-avatars {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 /* 回复头像 */
@@ -151,15 +161,20 @@
   height: 48rpx;
   border-radius: 50%;
   border: 2rpx solid #ffffff;
-  
-  /* 这里的重叠数值可以是负数，也可以根据需求调整 */
-  margin-left: -10rpx; 
-  
+  margin-left: -10rpx; /* 头像重叠效果 */
   flex-shrink: 0;
 }
 
 .reply-avatar:first-child {
-  margin-left: 0;
+  margin-left: 0; /* 第一个头像不需要重叠 */
+}
+
+/* 新增：全部回复文字样式 */
+.reply-more {
+  font-size: 24rpx;
+  color: #6B35A0; /* 使用你的主题紫色 */
+  font-weight: 500;
+  padding: 0 10rpx;
 }
 /* ========= 回复按钮 ========= */
 .action-row {
@@ -175,7 +190,7 @@
   background-color: #f3e8f9;      /* 淡紫色背景 */
   color: #6B35A0;                 /* 紫色文字 */
   border-radius: 28rpx;
-  margin: 0;
+  margin: 10rpx;
   font-weight: 500;
   transition: all 0.2s;
 }

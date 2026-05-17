@@ -108,7 +108,7 @@
   border: 2rpx solid #eae8ef; 
   
   /* 建议：加上内边距，防止文字紧贴边框 */
-  padding: 7rpx; 
+  padding: 10rpx; 
   
   /* 建议：加上圆角，让边框看起来更柔和 */
   border-radius: 10rpx; 
