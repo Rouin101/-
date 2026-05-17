@@ -21,7 +21,25 @@ Page({
     if (!content) return wx.showToast({ title: "回复不能为空", icon: "none" });
 
     try {
-      // 2. 直接调用你写好的 addReply 云函数
+      // ==========================================
+      // 1. 新增：先进行敏感词检测
+      // ==========================================
+      wx.showLoading({ title: "检测中..." }); // 给用户一个正在检测的反馈
+      
+      const checkRes = await wx.cloud.callFunction({
+        name: 'msgCheck', // 调用你之前写的检测云函数
+        data: { text: content }
+      });
+
+      // 如果检测不通过，直接拦截
+      if (!checkRes.result) {
+        wx.hideLoading();
+        return wx.showToast({ title: "内容含有违规信息", icon: "none" });
+      }
+
+      // ==========================================
+      // 2. 检测通过后，再执行原来的提交逻辑
+      // ==========================================
       const res = await wx.cloud.callFunction({
         name: 'forum_postReply',
         data: {
@@ -29,22 +47,19 @@ Page({
           content: content
         }
       });
-          
 
       wx.hideLoading();
 
-      // 3. 根据云函数返回的结果做提示
       if (res.result && res.result.success) {
         wx.showToast({ title: "回复成功", icon: "success" });
-        // 延迟返回上一页（通常是帖子详情页，详情页刷新后就能看到你刚发的回复了）
         setTimeout(() => wx.navigateBack({ delta: 1 }), 1500);
       } else {
         wx.showToast({ title: res.result.msg || "回复失败", icon: "none" });
       }
-      
+
     } catch (err) {
       wx.hideLoading();
-      console.error("回复失败", err);
+      console.error("操作失败", err);
       wx.showToast({ title: "网络异常，请重试", icon: "none" });
     }
   },
