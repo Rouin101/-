@@ -2,9 +2,9 @@ App({
   globalData: {
     userInfo: null,
     hasUserInfo: false,
-    openid: '',
     envId: 'cloud1-d9gtolotcc12e3953'
   },
+    
 
   onLaunch: function () {
     if (!wx.cloud) {
@@ -24,9 +24,11 @@ App({
       config: { env: this.globalData.envId },
       data: { type: 'getOpenId' }
     }).then(resp => {
-      if (resp.result && resp.result.openid) {
-        this.globalData.openid = resp.result.openid
-        this.getUserInfo()
+      
+      if (resp.result && resp.result._openid) {
+        const user_openid = resp.result._openid
+        this.getUserInfo(user_openid)
+      
       } else {
         console.error('获取OpenID失败:', resp)
         this.globalData.hasUserInfo = false
@@ -37,54 +39,70 @@ App({
     })
   },
 
-  getUserInfo: function () {
-    if (!this.globalData.openid) {
+  getUserInfo: function (current_openid) {
+    if (!current_openid) {
       this.globalData.hasUserInfo = false
       return
     }
 
     const db = wx.cloud.database()
-    // 同时查询 openid 或 _openid 字段
+    
     db.collection('users').where(
-      db.command.or([
-        { openid: this.globalData.openid },
-        { _openid: this.globalData.openid }
-      ])
+      { _openid: current_openid }
     ).get().then(res => {
       if (res.data.length > 0) {
+        //老用户查记录直接登录
         this.globalData.userInfo = res.data[0]
         this.globalData.hasUserInfo = true
-        console.log('用户已存在:', this.globalData.userInfo)
+        console.log("老用户登录成功")
       } else {
-        // 新用户，自动创建
-        console.log('开始创建新用户，openid:', this.globalData.openid)
+        // 新用户，手动创建数据，异步存储
+        const newUserInfo = {
+          
+          nickname: '微信用户',
+          avatar: '/images/default-avatar.png',
+          bio: '这个人很懒，还没有简介',
+          createTime: db.serverDate() 
+        }
+        
         db.collection('users').add({
-          data: {
-            openid: this.globalData.openid,
-            nickname: '微信用户',
-            avatar: '/images/default-avatar.png',
-            bio: '',
-            score: 0,
-            createTime: db.serverDate()
-          }
+          data: newUserInfo
         }).then(addRes => {
-          console.log('新用户创建成功，ID:', addRes._id)
-          db.collection('users').doc(addRes._id).get().then(newUserRes => {
-            this.globalData.userInfo = newUserRes.data
-            this.globalData.hasUserInfo = true
-            console.log('新用户创建成功:', this.globalData.userInfo)
-          }).catch(err => {
-            console.error('加载新用户失败:', err)
-            this.globalData.hasUserInfo = false
-          })
+          console.log("新用户创建成功")
         }).catch(err => {
-          console.error('创建用户失败:', err)
+          console.error('加载新用户失败:', err)
           this.globalData.hasUserInfo = false
         })
+
+        //无论数据库写入是否完成，先带着数据进入
+        this.globalData.userInfo = newUserInfo
+        this.globalData.hasUserInfo = true
       }
+    console.log(this.globalData) 
+
     }).catch(err => {
       console.error('查询用户失败:', err)
       this.globalData.hasUserInfo = false
     })
   }
 })
+    
+  
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+          
+           
+          
+      
+      
+            
+            
+          

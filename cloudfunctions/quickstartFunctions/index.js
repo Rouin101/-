@@ -9,7 +9,7 @@ const getOpenId = async () => {
   // 获取基础信息
   const wxContext = cloud.getWXContext();
   return {
-    openid: wxContext.OPENID,
+    _openid: wxContext.OPENID,
     appid: wxContext.APPID,
     unionid: wxContext.UNIONID,
   };

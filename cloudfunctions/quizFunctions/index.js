@@ -79,7 +79,7 @@ exports.main = async (event, context) => {
     try {
       // 查找当前用户的记录
       const myRes = await db.collection('scores')
-        .where({ openid })
+        .where({ _openid })
         .get()
 
       if (myRes.data.length === 0) {
