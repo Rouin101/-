@@ -91,7 +91,9 @@
   font-size: 30rpx;
   font-weight: bold;
   color: #333;
-  margin-bottom: 30rpx;
+  margin-left: 17rpx;
+  margin-top: 17rpx;
+  margin-bottom: 7rpx;
   padding-bottom: 20rpx;
   border-bottom: 1rpx solid #f0f0f0;
 }
@@ -106,7 +108,7 @@
   border: 2rpx solid #eae8ef; 
   
   /* 建议：加上内边距，防止文字紧贴边框 */
-  padding: 5rpx; 
+  padding: 7rpx; 
   
   /* 建议：加上圆角，让边框看起来更柔和 */
   border-radius: 10rpx; 
