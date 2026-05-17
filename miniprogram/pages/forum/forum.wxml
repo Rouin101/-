@@ -35,7 +35,7 @@
           
         <!-- 回复按钮 -->
         <view class="action-row">
-          <button class="reply-btn" bindtap="goToReply" 
+          <button class="reply-btn" catchtap="goToReply" 
                   data-postid="{{item._id}}" 
                   data-nickname="{{item.nickname}}">
             回复

@@ -31,6 +31,7 @@ page {
 .waterfall {
   column-count: 2;
   column-gap: 10rpx;
+  break-inside: avoid; 
 }
 
 .card {
@@ -42,12 +43,13 @@ page {
   overflow: hidden;
   margin-bottom: 20rpx;
   margin-left: 5px;
-  margin-right: 5px;
+  margin-right:5px;
   border:1px solid #cecbcb;
   break-inside: avoid;
   box-shadow: 0 6rpx 20rpx rgba(107, 53, 160, 0.08);
   border: 1rpx solid rgba(107,53,160,0.06);
   transition: all 0.2s;
+  width: 97%;
 }
 .card:active {
   transform: scale(0.98);

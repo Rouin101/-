@@ -16,8 +16,9 @@ Page({
   },
     
   onPullDownRefresh: function() {
+    wx.stopPullDownRefresh()
     this.getNotes().then(() => {
-      wx.stopPullDownRefresh()
+      
     })
   },
 
