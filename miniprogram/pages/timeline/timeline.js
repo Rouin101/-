@@ -112,7 +112,8 @@ Page({
       { year: "1934", title: "大学毕业", image: "/images/timeline/5.jpg", description: "吴健雄毕业于国立中央大学物理系。毕业后先后在浙江大学任物理系助教，后进入中央研究院物理研究所工作，开始了她的科研生涯。", chapter: 'departure' },
       { year: "1936", title: "远渡重洋赴美留学", image: "/images/timeline/6.jpg", description: "吴健雄离开中国前往美国加州大学伯克利分校深造，师从物理学巨匠欧内斯特·劳伦斯和塞格雷，开启核物理研究生涯。", chapter: 'quest' },
       { year: "1944", title: "参与曼哈顿计划", image: "", description: "吴健雄以外国籍科学家身份加入哥伦比亚大学战时研究部门，参与曼哈顿计划，致力于解决核反应堆链式反应的关键问题，为原子弹研制做出重要贡献。", chapter: 'quest' },
-      { year: "1945", title: "登上时代周刊", image: "/images/timeline/1.jpg", description: "1945年，吴健雄登上美国《时代》周刊封面，成为该刊封面人物。作为曼哈顿计划中唯一的华裔女科学家，她在核物理领域的突破性贡献被全球瞩目，被誉为'解锁原子时代的女性先驱'。", chapter: 'quest' },
+      { year: "1945", title: "战后科学声誉崛起", image: "/images/timeline/1.jpg", description: "二战结束后，吴健雄因曼哈顿计划中的卓越贡献受到学界广泛认可。她以非美国籍身份参与最高机密项目的经历被传为佳话，研究也开始从战时应用转向基础物理探索，为日后β衰变研究奠定基础。", chapter: 'quest' },
+
       { year: "1950", title: "β衰变领域权威", image: "", description: "20世纪50年代，吴健雄在哥伦比亚大学进行一系列精确的β衰变实验，成为该领域的世界级权威。她以极高的实验精度和创新能力，为弱相互作用研究奠定了坚实基础。", chapter: 'peak' },
       { year: "1957", title: "宇称不守恒实验验证", image: "/images/timeline/4.jpg", description: "1957年，吴健雄通过精密的β衰变实验，验证了宇称不守恒理论。这一颠覆性发现彻底改写了物理学基本定律，帮助李政道和杨振宁获得诺贝尔奖。吴健雄虽未获奖，但被公认为'核物理女王'。", chapter: 'peak' },
       { year: "1958", title: "获普林斯顿大学名誉博士", image: "", description: "1958年，吴健雄获得普林斯顿大学名誉博士学位，成为普林斯顿大学历史上第一位获得名誉博士学位的女性。同年，她还当选为美国国家科学院院士。", chapter: 'peak' },
